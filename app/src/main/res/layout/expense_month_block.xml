@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="120dp"
+    android:layout_height="120dp"
+    android:layout_centerVertical="true"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/expense_border"
+    tools:context=".ExpenseMonthWiseBlock">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="40dp"
+        android:background="@drawable/expenses_block_border"
+        android:textColor="@color/primaryText"
+        android:fontFamily="sans-serif"
+        android:textScaleX="1.5"
+        android:textAlignment="center"
+        android:id="@+id/expenseBlockName"/>
+
+</LinearLayout>
+
