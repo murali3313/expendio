@@ -5,6 +5,40 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/monthWiseTotalExpenditure"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/primaryLight"
+            android:background="@drawable/expenses_block_border"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="10dp"
+            android:paddingTop="3dp"
+            android:paddingLeft="20dp"/>
+
+        <ImageButton
+            android:id="@+id/addExpenseInCurrentMonth"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="70dp"
+            android:background="@drawable/ic_add_expense" />
+
+        <ImageButton
+            android:id="@+id/addExpenseVoice"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="40dp"
+            android:background="@mipmap/ic_record_expense" />
+
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

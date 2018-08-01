@@ -105,6 +105,7 @@ public class ReasonProcessor extends Processor {
         put("lempira", true);
         put("forint", true);
         put("rupee", true);
+        put("rupees", true);
         put("rupiah", true);
         put("Right)", true);
         put("rial", true);

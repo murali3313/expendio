@@ -13,12 +13,14 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ExpenseListener"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".ExpenseAcceptance"
@@ -30,6 +32,14 @@
         <activity
             android:name=".ExpenseTimelineView"
             android:theme="@android:style/Theme.Holo.NoActionBar" />
+
+        <activity
+            android:name=".DayWiseExpenseEdit"
+            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
+
+        <activity
+            android:name=".MonthWiseExpenseEdit"
+            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
     </application>
 
 </manifest>

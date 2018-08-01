@@ -62,11 +62,23 @@ public class Utils {
         return globalAccessibleSharedPreferences;
     }
 
-    public static List<Expense> getDeserializedExpenses(String expensesString) {
-        List<Expense> expenses = new ArrayList<>();
+    public static Expenses getDeserializedExpenses(String expensesString) {
+        Expenses expenses = new Expenses();
         try {
             ObjectMapper obj = new ObjectMapper();
-            expenses = obj.readValue(expensesString, new TypeReference<List<Expense>>() {
+            expenses = obj.readValue(expensesString, new TypeReference<Expenses>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return expenses;
+    }
+
+    public static MonthWiseExpenses getDeserializedMonthWiseExpenses(String expensesString) {
+        MonthWiseExpenses expenses = new MonthWiseExpenses();
+        try {
+            ObjectMapper obj = new ObjectMapper();
+            expenses = obj.readValue(expensesString, new TypeReference<MonthWiseExpenses>() {
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -79,6 +91,17 @@ public class Utils {
         try {
             ObjectMapper obj = new ObjectMapper();
             expensesString = obj.writeValueAsString(expenses);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return expensesString;
+    }
+
+    public static String getSerializedExpenses(MonthWiseExpenses monthWiseExpenses) {
+        String expensesString = null;
+        try {
+            ObjectMapper obj = new ObjectMapper();
+            expensesString = obj.writeValueAsString(monthWiseExpenses);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -101,4 +124,40 @@ public class Utils {
         return expenseGroupedByDate;
 
     }
+
+    public static void saveExpenses(Expenses expenses) {
+        SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
+        Map<String, MonthWiseExpenses> allMonthWiseExpenses = new HashMap<>();
+
+        for (Expense expens : expenses) {
+            MonthWiseExpenses storedExpenses;
+            if (isNull(allMonthWiseExpenses.get(expens.getStorageKey()))) {
+                storedExpenses = getDeserializedMonthWiseExpenses(localStorageForPreferences.getString(expens.getStorageKey(), "[]"));
+                allMonthWiseExpenses.put(expens.getStorageKey(), storedExpenses);
+            } else {
+                storedExpenses = allMonthWiseExpenses.get(expens.getStorageKey());
+            }
+            storedExpenses.addExpense(expens);
+
+        }
+        SharedPreferences.Editor edit = localStorageForPreferences.edit();
+
+        for (Map.Entry<String, MonthWiseExpenses> allEditedExpense : allMonthWiseExpenses.entrySet()) {
+            edit.putString(allEditedExpense.getKey(), getSerializedExpenses(allEditedExpense.getValue()));
+        }
+        edit.apply();
+    }
+
+    public static void saveDayWiseExpenses(String storageKey, String dateMonth, Expenses expenses) {
+        SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
+        MonthWiseExpenses storedExpenses = getDeserializedMonthWiseExpenses(localStorageForPreferences.getString(storageKey, "[]"));
+        storedExpenses.updateExpenses(dateMonth,expenses);
+
+        SharedPreferences.Editor edit = localStorageForPreferences.edit();
+
+        edit.putString(storageKey, getSerializedExpenses(storedExpenses));
+        edit.apply();
+    }
+
+
 }

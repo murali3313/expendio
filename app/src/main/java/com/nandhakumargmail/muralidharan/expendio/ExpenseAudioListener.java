@@ -23,10 +23,10 @@ public class ExpenseAudioListener
     private SpeechRecognizer speech = null;
     private Intent recognizerIntent;
     private SharedPreferences localStorageForPreferences;
-    private ExpenseListener expenseMain;
+    private SpeechActivity expenseMain;
     private static ExpenseAudioStatements expenseAudioStatements;
 
-    public ExpenseAudioListener(SharedPreferences localStorageForPreferences, ExpenseListener expenseMain) {
+    public ExpenseAudioListener(SharedPreferences localStorageForPreferences, SpeechActivity expenseMain) {
         this.localStorageForPreferences = localStorageForPreferences;
         this.expenseMain = expenseMain;
         speech = SpeechRecognizer.createSpeechRecognizer(expenseMain);

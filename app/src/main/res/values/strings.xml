@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Expendio</string>
     <string name="title_home">Home</string>
-    <string name="title_talk">Talk</string>
+    <string name="title_expense_analysis">Expense Analysis</string>
     <string name="title_notifications">Notifications</string>
     <string name="audio_record_permission_denied">Sorry couldn\'t hear, permission issues</string>
     <string name="listening">Listening, please continue...</string>

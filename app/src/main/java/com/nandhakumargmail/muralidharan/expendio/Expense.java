@@ -10,7 +10,9 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +24,6 @@ import static java.lang.String.format;
 import static java.lang.String.join;
 import static java.util.Objects.isNull;
 
-@NoArgsConstructor
 @Setter
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -35,6 +36,12 @@ public class Expense {
     private String expenseStatement;
     private Set<String> associatedExpenseTags = new ArraySet<>();
 
+    public Expense() {
+        this.spentOn = new Date();
+        this.amountSpent = new BigDecimal("0");
+        this.expenseStatement = "";
+    }
+
     public Expense(BigDecimal amountSpent, Date spentOn, List<String> spentFor, String expenseStatement) {
         this.amountSpent = amountSpent;
         this.spentOn = spentOn;
@@ -42,6 +49,11 @@ public class Expense {
         this.expenseStatement = expenseStatement;
         this.expenseTags = new ExpenseTags(Utils.getLocalStorageForPreferences());
         addTags();
+    }
+
+    public Expense(Date spentDate) {
+        this();
+        this.spentOn = spentDate;
     }
 
     @JsonIgnore
@@ -105,7 +117,7 @@ public class Expense {
     @JsonIgnore
     public String getStorageKey() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMMM/yyyy");
-        String formattedString = simpleDateFormat.format(this.spentOn);
+        String formattedString = simpleDateFormat.format(this.getStartDate());
         String month = formattedString.substring(formattedString.indexOf("/") + 1, formattedString.lastIndexOf("/")).toUpperCase();
         return format("Expense-%s-%d", month, this.spentYear());
     }
@@ -116,6 +128,11 @@ public class Expense {
     }
 
     public String getDateMonth() {
+        return new SimpleDateFormat("MM-dd").format(this.spentOn);
+    }
+
+    @JsonIgnore
+    public String getDateMonthHumanReadable() {
         return new SimpleDateFormat("dd-MMM").format(this.spentOn);
     }
 
@@ -127,5 +144,54 @@ public class Expense {
         } else {
             return this.associatedExpenseTags;
         }
+    }
+
+    @JsonIgnore
+    public long getStartDate() {
+        Date currentDate = this.getSpentOn();
+        int startDayOfMonth = getStartDayOfMonth();
+        if (this.spentDay() < startDayOfMonth) {
+            int month = this.spentMonth() - 1;
+            if (month < 0) {
+                currentDate.setYear(spentYear() - 1);
+                currentDate.setMonth(11);
+            } else {
+                currentDate.setMonth(month);
+            }
+        }
+        currentDate.setDate(startDayOfMonth);
+
+        return currentDate.getTime();
+    }
+
+    @JsonIgnore
+    public long getEndDate() {
+        Integer month = this.spentMonth();
+        Integer year = this.spentYear();
+        int startDayOfMonth = getStartDayOfMonth();
+        if (this.spentDay() < startDayOfMonth) {
+            int month1 = this.spentMonth() - 1;
+            if (month1 < 0) {
+                year = this.spentYear() - 1;
+                month = 11;
+            } else {
+                month = month1;
+            }
+        }
+        GregorianCalendar g = new GregorianCalendar(year, month, startDayOfMonth);
+        g.add(Calendar.MONTH, 1);
+        g.add(Calendar.DATE, -1);
+
+
+        return g.getTimeInMillis();
+    }
+
+    public Date getSpentOn() {
+        return new Date(this.spentOn.getTime());
+    }
+
+    @JsonIgnore
+    private int getStartDayOfMonth() {
+        return Utils.getLocalStorageForPreferences().getInt("startDayOfMonth", 1);
     }
 }

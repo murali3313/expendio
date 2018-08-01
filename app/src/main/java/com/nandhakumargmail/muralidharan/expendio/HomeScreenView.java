@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nex3z.flowlayout.FlowLayout;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,23 +29,23 @@ public class HomeScreenView extends LinearLayout implements IDisplayAreaView {
     }
 
     public void load() {
-        HashMap<String, List<Expense>> allExpensesMonthWise = getAllExpensesMonthWise();
+        HashMap<String, MonthWiseExpenses> allExpensesMonthWise = getAllExpensesMonthWise();
         FlowLayout homeScreenContainer = findViewById(R.id.homeScreen);
         homeScreenContainer.removeAllViews();
-        for (Map.Entry<String, List<Expense>> monthWise : allExpensesMonthWise.entrySet()) {
-            ExpenseMonthWiseBlock expenseMonthWiseBlock = new ExpenseMonthWiseBlock(getContext(), null, monthWise,this);
+        for (Map.Entry<String, MonthWiseExpenses> monthWise : allExpensesMonthWise.entrySet()) {
+            ExpenseMonthWiseBlock expenseMonthWiseBlock = new ExpenseMonthWiseBlock(getContext(), null, monthWise, this);
             homeScreenContainer.addView(expenseMonthWiseBlock);
 
         }
     }
 
-    private HashMap<String, List<Expense>> getAllExpensesMonthWise() {
-        HashMap<String, List<Expense>> allExpenses = new HashMap<>();
+    private HashMap<String, MonthWiseExpenses> getAllExpensesMonthWise() {
+        HashMap<String, MonthWiseExpenses> allExpenses = new HashMap<>();
         Map<String, ?> all = Utils.getLocalStorageForPreferences().getAll();
         for (Map.Entry<String, ?> entry : all.entrySet()) {
             if (entry.getKey().startsWith("Expense-")) {
                 try {
-                    List<Expense> expenses = obj.readValue(all.get(entry.getKey()).toString(), new TypeReference<List<Expense>>() {
+                    MonthWiseExpenses expenses = obj.readValue(all.get(entry.getKey()).toString(), new TypeReference<MonthWiseExpenses>() {
                     });
                     allExpenses.put(entry.getKey(), expenses);
                 } catch (IOException e) {

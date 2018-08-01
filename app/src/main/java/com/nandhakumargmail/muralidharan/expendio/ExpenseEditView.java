@@ -5,13 +5,16 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
+import static com.nandhakumargmail.muralidharan.expendio.Utils.isEmpty;
 import static java.util.Arrays.asList;
 
 public class ExpenseEditView extends LinearLayout {
@@ -23,16 +26,19 @@ public class ExpenseEditView extends LinearLayout {
     ImageButton remove;
     LinearLayout tagsContainer;
     private ExpensesEditView parentView;
+    private boolean makeDatePermissibleWithinMonthLimit;
 
 
-    public ExpenseEditView(Context context, @Nullable AttributeSet attrs, Expense expens, ExpensesEditView parentView) {
+    public ExpenseEditView(Context context, @Nullable AttributeSet attrs, Expense expens, ExpensesEditView parentView, boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit) {
         super(context, attrs);
         this.parentView = parentView;
+        this.makeDatePermissibleWithinMonthLimit = makeDatePermissibleWithinMonthLimit;
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.expense_edit, this);
         this.expense = expens;
         spentOn = findViewById(R.id.spentOn);
+        spentOn.setEnabled(makeDateEditable);
         amount = findViewById(R.id.amount);
         reason = findViewById(R.id.reason);
         remove = findViewById(R.id.remove);
@@ -48,6 +54,9 @@ public class ExpenseEditView extends LinearLayout {
         reason.setText(expense.getSpentForDisplayText());
 
         for (String tag : expense.getAssociatedExpenseTags()) {
+            if (isEmpty(tag.trim())) {
+                continue;
+            }
             TextView textView = new TextView(this.getContext(), null);
             textView.setText(tag);
             textView.setPadding(15, 5, 15, 5);
@@ -60,8 +69,14 @@ public class ExpenseEditView extends LinearLayout {
                 expense.setSpentOnBy(year, month, dayOfMonth);
                 spentOn.setText(expense.getSpentOnDisplayText());
             }, expense.spentYear(), expense.spentMonth(), expense.spentDay());
+            if (makeDatePermissibleWithinMonthLimit) {
+                DatePicker datePicker = datePickerDialog.getDatePicker();
+                datePicker.setMinDate(expense.getStartDate());
+                datePicker.setMaxDate(expense.getEndDate());
+            }
             datePickerDialog.show();
         });
+
 
         remove.setOnClickListener(v -> {
             parentView.removeView(this);
