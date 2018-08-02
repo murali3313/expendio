@@ -11,15 +11,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import java.math.BigDecimal;
+
 import static com.nandhakumargmail.muralidharan.expendio.Utils.getLocalStorageForPreferences;
 import static com.nandhakumargmail.muralidharan.expendio.Utils.loadLocalStorageForPreferences;
 
 public class ExpenseListener extends SpeechActivity {
 
-    private static ExpenseAudioListener expenseAudioListener = null;
 
     HomeScreenView homeScreenView;
-    ExpenseTalkView expenseTalkView;
+    ExpenseTalkView analyticsView;
     NotificationView notificationView;
 
 
@@ -33,8 +34,7 @@ public class ExpenseListener extends SpeechActivity {
                     loadDisplayArea(homeScreenView);
                     return true;
                 case R.id.navigation_talk:
-                    loadDisplayArea(expenseTalkView);
-                    listenExpense();
+                    loadDisplayArea(analyticsView);
                     return true;
                 case R.id.navigation_notifications:
                     loadDisplayArea(notificationView);
@@ -44,25 +44,7 @@ public class ExpenseListener extends SpeechActivity {
         }
     };
 
-    private void listenExpense() {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, REQ_CODE_SPEECH_INPUT);
-    }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQ_CODE_SPEECH_INPUT: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    expenseAudioListener.startListening();
-                } else {
-                    showToast(R.string.audio_record_permission_denied);
-                }
-                return;
-            }
-        }
-    }
 
     @Override
     protected void onPostResume() {
@@ -72,17 +54,17 @@ public class ExpenseListener extends SpeechActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense_listener);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         loadLocalStorageForPreferences(this.getApplicationContext());
-        expenseAudioListener = new ExpenseAudioListener(getLocalStorageForPreferences(), this);
         homeScreenView = new HomeScreenView(ExpenseListener.this.getApplicationContext(), null);
-        expenseTalkView = new ExpenseTalkView(ExpenseListener.this.getApplicationContext(), null);
+        analyticsView = new ExpenseTalkView(ExpenseListener.this.getApplicationContext(), null);
         notificationView = new NotificationView(ExpenseListener.this.getApplicationContext(), null);
         loadDisplayArea(homeScreenView);
+        super.onCreate(savedInstanceState);
+
     }
 
     private void loadDisplayArea(IDisplayAreaView displayAreaView) {

@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 
 import static com.nandhakumargmail.muralidharan.expendio.Utils.isEmpty;
@@ -87,8 +88,10 @@ public class ExpenseEditView extends LinearLayout {
 
     public Expense getEditedExpense() {
         String[] words = Utils.splitStatementBy(reason.getText().toString(), " ");
-        expense.setSpentFor(asList(words));
-        expense.setAmountSpent(new BigDecimal(amount.getText().toString()));
+        expense.setSpentFor(new ArrayList<>(asList(words)));
+        String amount = this.amount.getText().toString();
+        expense.setExpenseStatement(reason.getText().toString());
+        expense.setAmountSpent(new BigDecimal(isEmpty(amount) ? "0" : amount));
         return expense;
     }
 }

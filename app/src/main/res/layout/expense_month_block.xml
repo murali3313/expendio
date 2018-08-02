@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="135dp"
-    android:layout_height="135dp"
+    android:layout_width="180dp"
+    android:layout_height="180dp"
     android:layout_centerVertical="true"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/expense_border"
@@ -10,6 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
         android:paddingTop="40dp"
         android:background="@drawable/expenses_block_border"
         android:textColor="@color/primaryText"

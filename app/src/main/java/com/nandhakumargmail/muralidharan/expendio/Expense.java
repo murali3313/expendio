@@ -20,6 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static com.nandhakumargmail.muralidharan.expendio.Utils.isEmpty;
 import static java.lang.String.format;
 import static java.lang.String.join;
 import static java.util.Objects.isNull;
@@ -40,6 +41,7 @@ public class Expense {
         this.spentOn = new Date();
         this.amountSpent = new BigDecimal("0");
         this.expenseStatement = "";
+        this.expenseTags = new ExpenseTags(Utils.getLocalStorageForPreferences());
     }
 
     public Expense(BigDecimal amountSpent, Date spentOn, List<String> spentFor, String expenseStatement) {
@@ -124,7 +126,8 @@ public class Expense {
 
 
     public String getAmountSpent() {
-        return this.amountSpent.equals(new BigDecimal(0)) ? "" : this.amountSpent.toString();
+
+        return isNull(this.amountSpent) || this.amountSpent.equals(new BigDecimal(0)) ? "" : this.amountSpent.toString();
     }
 
     public String getDateMonth() {
@@ -193,5 +196,15 @@ public class Expense {
     @JsonIgnore
     private int getStartDayOfMonth() {
         return Utils.getLocalStorageForPreferences().getInt("startDayOfMonth", 1);
+    }
+
+    public void santiseData() {
+        if (spentFor.isEmpty() || isEmpty(spentFor.get(0))) {
+            spentFor.clear();
+            spentFor.add("Miscellaneous");
+        }
+        if (isEmpty(expenseStatement.trim()))
+            this.expenseStatement = "Miscellaneous";
+
     }
 }

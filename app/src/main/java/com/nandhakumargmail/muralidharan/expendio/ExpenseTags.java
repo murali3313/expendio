@@ -36,6 +36,7 @@ public class ExpenseTags {
         defaultTags.put("pharmacy", asList("Health"));
         defaultTags.put("bus", asList("Travel"));
         defaultTags.put("travel", asList("Travel"));
+        defaultTags.put("miscellaneous", asList("Misc."));
         loadDefaultExpenseTagsIfNotInitialized();
 
     }

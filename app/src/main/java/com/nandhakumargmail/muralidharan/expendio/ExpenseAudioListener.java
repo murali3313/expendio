@@ -14,6 +14,7 @@ import static android.speech.RecognizerIntent.EXTRA_LANGUAGE;
 import static android.speech.RecognizerIntent.EXTRA_LANGUAGE_MODEL;
 import static android.speech.RecognizerIntent.LANGUAGE_MODEL_FREE_FORM;
 import static com.nandhakumargmail.muralidharan.expendio.ListeningQueues.DEAF;
+import static com.nandhakumargmail.muralidharan.expendio.ListeningQueues.PROCESSING;
 import static com.nandhakumargmail.muralidharan.expendio.ListeningQueues.READY;
 
 public class ExpenseAudioListener
@@ -25,6 +26,8 @@ public class ExpenseAudioListener
     private SharedPreferences localStorageForPreferences;
     private SpeechActivity expenseMain;
     private static ExpenseAudioStatements expenseAudioStatements;
+    boolean userStopped;
+
 
     public ExpenseAudioListener(SharedPreferences localStorageForPreferences, SpeechActivity expenseMain) {
         this.localStorageForPreferences = localStorageForPreferences;
@@ -38,6 +41,9 @@ public class ExpenseAudioListener
         expenseAudioStatements = new ExpenseAudioStatements(localStorageForPreferences);
     }
 
+    public void clearAudioStatements() {
+        expenseAudioStatements.clear();
+    }
 
     @Override
     public void onReadyForSpeech(Bundle params) {
@@ -66,7 +72,7 @@ public class ExpenseAudioListener
 
     @Override
     public void onError(int error) {
-        if (error == 7) {
+        if (error == 7 && !userStopped) {
             speech.cancel();
             speech.startListening(recognizerIntent);
         }
@@ -77,18 +83,7 @@ public class ExpenseAudioListener
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         String userWords = matches.get(0);
-        expenseAudioStatements.addStatement(userWords);
-        if (expenseAudioStatements.isExpenseStatementCompleteFromUser()) {
-            speech.stopListening();
-            expenseMain.updateWithUserSpeech(expenseAudioStatements, false);
-            expenseAudioStatements.performSpecificActions();
-            expenseMain.displayExpenseForCorrection(expenseAudioStatements.getProcessedExpenses());
-
-        } else {
-            expenseAudioStatements.performSpecificActions();
-            expenseMain.updateWithUserSpeech(expenseAudioStatements, true);
-            speech.startListening(recognizerIntent);
-        }
+        processAudioResult(userWords);
 
     }
 
@@ -113,5 +108,28 @@ public class ExpenseAudioListener
     public void startOver() {
         expenseAudioStatements.clear();
         startListening();
+    }
+
+    public void processAudioResult(String userWords) {
+        expenseAudioStatements.addStatement(userWords);
+        if (expenseAudioStatements.isExpenseStatementCompleteFromUser()) {
+            userStopped = true;
+            speech.stopListening();
+            expenseMain.listeningInfo(PROCESSING);
+            expenseMain.updateWithUserSpeech(expenseAudioStatements);
+            expenseAudioStatements.performSpecificActions();
+            if (expenseAudioStatements.isNotEmpty()) {
+                expenseMain.displayExpenseForCorrection(expenseAudioStatements.getProcessedExpenses());
+            } else {
+                expenseMain.doneWithListening();
+            }
+
+        } else {
+            userStopped = false;
+
+            expenseAudioStatements.performSpecificActions();
+            expenseMain.updateWithUserSpeech(expenseAudioStatements);
+            speech.startListening(recognizerIntent);
+        }
     }
 }

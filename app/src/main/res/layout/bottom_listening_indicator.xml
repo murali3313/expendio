@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/listeningMode"
+    android:layout_width="wrap_content"
+    android:layout_height="500dp"
+    android:orientation="vertical"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/talkText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="100dp" />
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/audio_processor_indicator_text"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginBottom="7dp"
+                android:gravity="top"
+                android:paddingLeft="5dp"
+                android:text="@string/listening"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <pl.droidsonroids.gif.GifImageButton
+                android:id="@+id/audio_processor_indicator"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:src="@drawable/listening" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+
+            <com.nandhakumargmail.muralidharan.expendio.SwipeButton
+                android:id="@+id/clear_last_statement"
+                android:layout_width="210dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                app:button_background="@drawable/slide_button"
+                app:button_bottom_padding="2dp"
+                app:button_image_disabled="@mipmap/ic_clear"
+                app:button_image_enabled="@mipmap/ic_clear"
+                app:button_image_height="30dp"
+                app:button_image_width="75dp"
+                app:button_left_padding="2dp"
+                app:button_right_padding="2dp"
+                app:button_top_padding="2dp"
+                app:button_trail_enabled="true"
+                app:direction_in_left="false"
+                app:has_activate_state="false"
+                app:initial_state="disabled"
+                app:inner_text="CLEAR"
+                app:inner_text_background="@drawable/slide_button_rounded"
+                app:inner_text_bottom_padding="1dp"
+                app:inner_text_color="@android:color/holo_blue_light"
+                app:inner_text_size="10sp"
+                app:inner_text_top_padding="2dp"></com.nandhakumargmail.muralidharan.expendio.SwipeButton>
+
+            <com.nandhakumargmail.muralidharan.expendio.SwipeButton
+                android:id="@+id/stop_listening"
+                android:layout_width="210dp"
+                android:layout_height="30dp"
+                android:layout_gravity="bottom"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                app:button_background="@drawable/slide_button"
+                app:button_bottom_padding="2dp"
+                app:button_image_disabled="@mipmap/ic_done"
+                app:button_image_enabled="@mipmap/ic_done"
+                app:button_image_height="30dp"
+                app:button_image_width="75dp"
+                app:button_left_padding="2dp"
+                app:button_right_padding="2dp"
+                app:button_top_padding="2dp"
+                app:has_activate_state="true"
+                app:initial_state="disabled"
+                app:inner_text="DONE"
+                app:inner_text_background="@drawable/slide_button_rounded"
+                app:inner_text_bottom_padding="1dp"
+                app:inner_text_color="@android:color/holo_blue_light"
+                app:inner_text_size="10sp"
+                app:inner_text_top_padding="2dp"></com.nandhakumargmail.muralidharan.expendio.SwipeButton>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
+

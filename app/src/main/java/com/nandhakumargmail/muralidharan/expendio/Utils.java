@@ -128,7 +128,7 @@ public class Utils {
     public static void saveExpenses(Expenses expenses) {
         SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
         Map<String, MonthWiseExpenses> allMonthWiseExpenses = new HashMap<>();
-
+        expenses.sanitizeData();
         for (Expense expens : expenses) {
             MonthWiseExpenses storedExpenses;
             if (isNull(allMonthWiseExpenses.get(expens.getStorageKey()))) {
@@ -149,9 +149,10 @@ public class Utils {
     }
 
     public static void saveDayWiseExpenses(String storageKey, String dateMonth, Expenses expenses) {
+        expenses.sanitizeData();
         SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
         MonthWiseExpenses storedExpenses = getDeserializedMonthWiseExpenses(localStorageForPreferences.getString(storageKey, "[]"));
-        storedExpenses.updateExpenses(dateMonth,expenses);
+        storedExpenses.updateExpenses(dateMonth, expenses);
 
         SharedPreferences.Editor edit = localStorageForPreferences.edit();
 

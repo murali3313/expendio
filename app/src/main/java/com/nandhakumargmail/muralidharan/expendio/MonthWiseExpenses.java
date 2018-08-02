@@ -63,7 +63,9 @@ public class MonthWiseExpenses {
             return;
         }
         for (Expense expense : expensesList) {
-            this.dayWiseExpenses.get(expense.getDateMonth()).clear();
+            Expenses expenses = this.dayWiseExpenses.get(expense.getDateMonth());
+            if (!isNull(expenses))
+                expenses.clear();
         }
         for (Expense expens : expensesList) {
             addExpense(expens);

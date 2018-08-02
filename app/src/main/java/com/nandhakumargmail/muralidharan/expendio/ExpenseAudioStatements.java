@@ -10,7 +10,9 @@ import java.util.Map;
 
 class ExpenseAudioStatements {
     private final String keyEndOfStatement = "END_OF_STATEMENT_MARKER";
-    private final String defaultEndOfStatement = "STOP";
+    public static final String defaultEndOfStatement = "STOP";
+    public static final String CLEAR = "Clear";
+
     private List<String> userStatements = new ArrayList<>();
     SpeechToExpenseEngine speechToExpenseEngine;
 
@@ -19,7 +21,7 @@ class ExpenseAudioStatements {
 
     public ExpenseAudioStatements(SharedPreferences localStorageForPreferences) {
         speechActions = new HashMap<String, SpeechAction>() {{
-            put("Clear", SpeechAction.CLEAR_LAST_STATEMENT);
+            put(CLEAR, SpeechAction.CLEAR_LAST_STATEMENT);
             put("Refresh", SpeechAction.REFRESH);
             put("Stop", SpeechAction.STOP);
         }};
@@ -103,5 +105,9 @@ class ExpenseAudioStatements {
 
     public List<Expense> getProcessedExpenses() {
         return speechToExpenseEngine.processAudio(this.getAllStatements());
+    }
+
+    public boolean isNotEmpty() {
+        return !this.userStatements.isEmpty();
     }
 }

@@ -39,4 +39,10 @@ public class Expenses extends ArrayList<Expense> {
             return this.get(0).getSpentOn().getTime();
         return new Date().getTime();
     }
+
+    public void sanitizeData() {
+        for (Expense expense : this) {
+            expense.santiseData();
+        }
+    }
 }

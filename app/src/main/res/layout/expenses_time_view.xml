@@ -1,50 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.nex3z.flowlayout.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/expense"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:orientation="horizontal">
+    android:layout_height="match_parent"
+    android:minHeight="120dp"
+    android:id="@+id/expenseTimeDay"
+    >
 
-    <TextView
-        android:id="@+id/dateWiseString"
-        android:layout_width="60dp"
-        android:layout_height="match_parent"
-        android:layout_marginTop="40dp"
-        android:textAlignment="gravity"
-        android:textColor="@color/primaryLight" />
+    <com.nex3z.flowlayout.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/expense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/totalExpenseDayWise"
-        android:layout_width="60dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="-50dp"
-        android:layout_marginTop="100dp"
-        android:textAlignment="gravity"
-        android:textColor="@color/primaryLight" />
+        <TextView
+            android:id="@+id/dateWiseString"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:textAlignment="gravity"
+            android:textColor="@color/primaryLight" />
 
-    <View
-        android:layout_width="4dp"
-        android:layout_height="match_parent"
-        android:background="@color/primaryLight"></View>
+        <TextView
+            android:id="@+id/totalExpenseDayWise"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="-50dp"
+            android:layout_marginTop="50dp"
+            android:textAlignment="gravity"
+            android:textColor="@color/primaryLight" />
 
-    <ImageButton
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginLeft="-15dp"
-        android:layout_marginTop="40dp"
-        android:background="@mipmap/ic_time_marker" />
 
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        <View
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:background="@color/primaryLight"></View>
 
-        <com.nex3z.flowlayout.FlowLayout
-            android:id="@+id/expensesPerDay"
-            android:layout_width="280dp"
-            android:layout_height="200dp"
-            android:layout_marginLeft="20dp"></com.nex3z.flowlayout.FlowLayout>
-    </ScrollView>
+        <ImageButton
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="-15dp"
+            android:layout_marginTop="40dp"
+            android:background="@mipmap/ic_time_marker" />
 
-</com.nex3z.flowlayout.FlowLayout>
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
+            <com.nex3z.flowlayout.FlowLayout
+                android:id="@+id/expensesPerDay"
+                android:layout_width="280dp"
+                android:layout_height="200dp"
+                android:layout_marginLeft="20dp"></com.nex3z.flowlayout.FlowLayout>
+        </ScrollView>
+
+
+    </com.nex3z.flowlayout.FlowLayout>
+
+</RelativeLayout>

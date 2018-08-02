@@ -33,6 +33,10 @@ public class AmountProcessorTest {
         amount = amountProcessor.extract(expenseStatement);
         assertThat(amount, is(new BigDecimal("200.20")));
         assertFalse(expenseStatement.indexOf("200 rupees 20 paise") > -1);
+
+        expenseStatement = new StringBuilder("nonsense  for Bakery");
+        amount = amountProcessor.extract(expenseStatement);
+        assertThat(amount, is(new BigDecimal("0")));
     }
 
 }

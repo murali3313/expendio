@@ -82,7 +82,7 @@ public class DateProcessor extends Processor {
 
     private Date inferDate(Date resultantDate, String monthSpecified, int dateNumber) {
         if (dateNumber > 0 && dateNumber <= 31) {
-            resultantDate = new Date(today().getYear(), allMonths.indexOf(monthSpecified) + 1, dateNumber);
+            resultantDate = new Date(today().getYear(), allMonths.indexOf(monthSpecified) , dateNumber);
         }
         return resultantDate;
     }
