@@ -22,9 +22,11 @@ import static android.view.View.inflate;
 
 public class HomeScreenView extends LinearLayout implements IDisplayAreaView {
     ObjectMapper obj = new ObjectMapper();
+    private ExpenseListener expenseListener;
 
-    public HomeScreenView(Context context, @Nullable AttributeSet attrs) {
+    public HomeScreenView(Context context, @Nullable AttributeSet attrs, ExpenseListener expenseListener) {
         super(context, attrs);
+        this.expenseListener = expenseListener;
         inflate(context, R.layout.home_screeen, this);
     }
 
@@ -33,7 +35,7 @@ public class HomeScreenView extends LinearLayout implements IDisplayAreaView {
         FlowLayout homeScreenContainer = findViewById(R.id.homeScreen);
         homeScreenContainer.removeAllViews();
         for (Map.Entry<String, MonthWiseExpenses> monthWise : allExpensesMonthWise.entrySet()) {
-            ExpenseMonthWiseBlock expenseMonthWiseBlock = new ExpenseMonthWiseBlock(getContext(), null, monthWise, this);
+            ExpenseMonthWiseBlock expenseMonthWiseBlock = new ExpenseMonthWiseBlock(getContext(), null, monthWise, this, expenseListener);
             homeScreenContainer.addView(expenseMonthWiseBlock);
 
         }

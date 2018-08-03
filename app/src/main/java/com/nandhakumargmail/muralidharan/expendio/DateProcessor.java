@@ -12,7 +12,7 @@ import static java.util.Objects.isNull;
 
 public class DateProcessor extends Processor {
 
-    private List<String> allMonths = asList("january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december");
+    public static List<String> allMonths = asList("january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december");
     private List<String> colloquialDays = asList("today", "yesterday", "tomorrow");
 
     protected Date extract(StringBuilder expenseStatement) {

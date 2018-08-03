@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.exc.IgnoredPropertyException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,6 +30,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.nandhakumargmail.muralidharan.expendio.Utils.isEmpty;
 import static java.util.Objects.isNull;
 
 @NoArgsConstructor
@@ -91,7 +94,18 @@ public class MonthWiseExpenses {
         return "NA";
     }
 
-    public long getLatestDate() {
+    public long getLatestDate(String expenseKey) {
+        if (getSortedKeys().isEmpty()) {
+            String monthAndYear = expenseKey.replace("Expense-", "");
+            int startDayOfMonth = Expense.getStartDayOfMonth();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            try {
+                return simpleDateFormat.parse(String.format("%d-%s", startDayOfMonth, monthAndYear)).getTime();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 0l;
+        }
         return getDayWiseExpenses(getSortedKeys().first()).getValue().getSpentOnDate();
     }
 }

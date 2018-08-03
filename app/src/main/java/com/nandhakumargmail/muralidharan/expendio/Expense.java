@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Set;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import static com.nandhakumargmail.muralidharan.expendio.Utils.isEmpty;
@@ -118,7 +117,7 @@ public class Expense {
 
     @JsonIgnore
     public String getStorageKey() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMMM/yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String formattedString = simpleDateFormat.format(this.getStartDate());
         String month = formattedString.substring(formattedString.indexOf("/") + 1, formattedString.lastIndexOf("/")).toUpperCase();
         return format("Expense-%s-%d", month, this.spentYear());
@@ -194,7 +193,7 @@ public class Expense {
     }
 
     @JsonIgnore
-    private int getStartDayOfMonth() {
+    public static int getStartDayOfMonth() {
         return Utils.getLocalStorageForPreferences().getInt("startDayOfMonth", 1);
     }
 

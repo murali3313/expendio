@@ -148,6 +148,13 @@ public class Utils {
         edit.apply();
     }
 
+    public static void deleteAMonthExpense(String storageKey) {
+        SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
+        SharedPreferences.Editor edit = localStorageForPreferences.edit();
+        edit.remove(storageKey);
+        edit.apply();
+    }
+
     public static void saveDayWiseExpenses(String storageKey, String dateMonth, Expenses expenses) {
         expenses.sanitizeData();
         SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
@@ -161,4 +168,11 @@ public class Utils {
     }
 
 
+    public static String getReadableMonth(String month) {
+        int monthIndex = Integer.parseInt(month);
+        String monthName = DateProcessor.allMonths.get(monthIndex - 1);
+
+
+        return monthName.substring(0,1).toUpperCase()+monthName.substring(1);
+    }
 }

@@ -1,19 +1,13 @@
 package com.nandhakumargmail.muralidharan.expendio;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import java.math.BigDecimal;
-
-import static com.nandhakumargmail.muralidharan.expendio.Utils.getLocalStorageForPreferences;
 import static com.nandhakumargmail.muralidharan.expendio.Utils.loadLocalStorageForPreferences;
 
 public class ExpenseListener extends SpeechActivity {
@@ -59,7 +53,7 @@ public class ExpenseListener extends SpeechActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         loadLocalStorageForPreferences(this.getApplicationContext());
-        homeScreenView = new HomeScreenView(ExpenseListener.this.getApplicationContext(), null);
+        homeScreenView = new HomeScreenView(ExpenseListener.this.getApplicationContext(), null,this);
         analyticsView = new ExpenseTalkView(ExpenseListener.this.getApplicationContext(), null);
         notificationView = new NotificationView(ExpenseListener.this.getApplicationContext(), null);
         loadDisplayArea(homeScreenView);
@@ -67,7 +61,7 @@ public class ExpenseListener extends SpeechActivity {
 
     }
 
-    private void loadDisplayArea(IDisplayAreaView displayAreaView) {
+    public void loadDisplayArea(IDisplayAreaView displayAreaView) {
         LinearLayout displayArea = findViewById(R.id.displayArea);
         displayArea.removeAllViews();
         displayArea.addView((View) displayAreaView);
