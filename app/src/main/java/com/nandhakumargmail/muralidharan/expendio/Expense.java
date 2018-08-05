@@ -20,9 +20,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import static com.nandhakumargmail.muralidharan.expendio.Utils.isEmpty;
+import static com.nandhakumargmail.muralidharan.expendio.Utils.isNull;
 import static java.lang.String.format;
 import static java.lang.String.join;
-import static java.util.Objects.isNull;
 
 @Setter
 @Getter

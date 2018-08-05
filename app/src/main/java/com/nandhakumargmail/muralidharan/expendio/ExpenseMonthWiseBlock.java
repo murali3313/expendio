@@ -18,6 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class ExpenseMonthWiseBlock extends LinearLayout {
     ObjectMapper obj = new ObjectMapper();
 
@@ -37,6 +39,7 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, ExpenseTimelineView.class);
+                i.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 i.putExtra("ExpenseKey", expensesBlock.getKey());
                 ContextCompat.startActivity(context, i, null);
             }
@@ -52,7 +55,7 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
                 @Override
                 public void onClick(View v) {
                     Utils.deleteAMonthExpense(expensesBlock.getKey());
-                    expenseListener.loadDisplayArea(homeScreenView);
+                    expenseListener.loadDisplayArea(homeScreenView, DashboardView.HOME);
                     mBottomSheetDialog.cancel();
                 }
             });

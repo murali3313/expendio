@@ -18,10 +18,7 @@ public class ExpenseAcceptance extends Activity {
     ObjectMapper obj = new ObjectMapper();
 
     public ExpenseAcceptance() {
-
-        String unAcceptedExpenses = Utils.getLocalStorageForPreferences()
-                .getString(UNACCEPTED_EXPENSES, "[]");
-        this.expenses = getDeserializedExpenses(unAcceptedExpenses);
+        this.expenses = Utils.getUnAcceptedExpenses();
 
     }
 
@@ -30,7 +27,7 @@ public class ExpenseAcceptance extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.expense_acceptance);
 
-        ExpensesEditView unapprovedExpenses = findViewById(R.id.unApprovedExpenses);
+        ExpensesEditView unapprovedExpenses = findViewById(R.id.unApprovedExpensesViaVoice);
         unapprovedExpenses.populate(expenses, true, false);
 
         okButton = findViewById(R.id.acceptedExpense);
@@ -39,7 +36,7 @@ public class ExpenseAcceptance extends Activity {
 
         okButton.setOnClickListener(v -> {
             saveExpenses(unapprovedExpenses.getExpenses());
-
+            clearUnAcceptedExpense();
             ExpenseAcceptance.this.finish();
         });
 

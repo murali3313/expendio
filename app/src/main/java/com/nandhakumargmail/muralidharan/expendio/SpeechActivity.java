@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ import static com.nandhakumargmail.muralidharan.expendio.ExpenseAudioStatements.
 import static com.nandhakumargmail.muralidharan.expendio.Utils.UNACCEPTED_EXPENSES;
 import static com.nandhakumargmail.muralidharan.expendio.Utils.getLocalStorageForPreferences;
 
-public class SpeechActivity extends Activity {
+public class SpeechActivity extends AppCompatActivity {
     protected static final int REQ_CODE_SPEECH_INPUT = 55;
     private ExpenseAudioListener expenseAudioListener = null;
     View sheetView;

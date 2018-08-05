@@ -7,4 +7,14 @@
     <string name="listening">Listening....</string>
     <string name="processing">Processing your expense audio...</string>
     <string name="deaf">Hold on</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Expendio Settings</string>
+    <string name="nav_header_subtitle">Audio expense management</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="unacceptedExpenseEmpty">No expenses for approval</string>
+    <string name="audioUnApprovedExpenses">Un approved expenses via Audio</string>
+    <string name="smsUnApprovedExpenses">UnApproved expenses via SMS</string>
+
 </resources>

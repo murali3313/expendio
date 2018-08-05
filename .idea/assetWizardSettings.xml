@@ -84,7 +84,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/av/ic_mic_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/file/ic_file_download_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -95,7 +95,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="iconShape" value="NONE" />
-                                      <entry key="outputName" value="ic_record_expense_white" />
+                                      <entry key="outputName" value="ic_menu_download" />
                                     </map>
                                   </option>
                                 </PersistentState>

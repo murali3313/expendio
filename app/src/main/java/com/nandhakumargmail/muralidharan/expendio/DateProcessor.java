@@ -8,7 +8,6 @@ import java.util.List;
 
 import static com.nandhakumargmail.muralidharan.expendio.Utils.*;
 import static java.util.Arrays.asList;
-import static java.util.Objects.isNull;
 
 public class DateProcessor extends Processor {
 

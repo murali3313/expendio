@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.nandhakumargmail.muralidharan.expendio.Utils.TAGS;
+import static com.nandhakumargmail.muralidharan.expendio.Utils.isNull;
 import static java.util.Arrays.asList;
-import static java.util.Objects.isNull;
 
 public class ReasonProcessor extends Processor {
     private SharedPreferences localStorageForPreferences;

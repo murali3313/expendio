@@ -31,7 +31,7 @@ import lombok.Setter;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.nandhakumargmail.muralidharan.expendio.Utils.isEmpty;
-import static java.util.Objects.isNull;
+import static com.nandhakumargmail.muralidharan.expendio.Utils.isNull;
 
 @NoArgsConstructor
 @Getter

@@ -2,7 +2,6 @@ package com.nandhakumargmail.muralidharan.expendio;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
@@ -22,6 +21,7 @@ import com.nex3z.flowlayout.FlowLayout;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.nandhakumargmail.muralidharan.expendio.Utils.saveDayWiseExpenses;
 
 public class ExpensesTimeView extends LinearLayout {
@@ -65,11 +65,10 @@ public class ExpensesTimeView extends LinearLayout {
             expensesPerDay.addView(expenseTimeView);
         }
 
-        setAllChildWithFollowParentState(this);
-        this.setClickable(true);
 
         inflate.setLongClickable(true);
-        inflate.setOnLongClickListener(v -> {
+        OnLongClickListener onLongClickListener = v -> {
+            isLongPressed = true;
             View sheetView = View.inflate(context, R.layout.bottom_delete_month_confirmation, null);
             BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(parentView);
             mBottomSheetDialog.setContentView(sheetView);
@@ -83,39 +82,52 @@ public class ExpensesTimeView extends LinearLayout {
 
             mBottomSheetDialog.findViewById(R.id.removeCancel).setOnClickListener(v12 -> mBottomSheetDialog.cancel());
             return false;
-        });
+        };
+        inflate.setOnLongClickListener(onLongClickListener);
 
         inflate.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, DayWiseExpenseEdit.class);
+                i.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 i.putExtra("DayWiseExpenses", Utils.getSerializedExpenses(expenses.getValue()));
                 ContextCompat.startActivity(context, i, null);
             }
         });
 
+        setAllChildWithFollowParentState(this, onLongClickListener);
+        inflate.setClickable(true);
+
     }
+
+    boolean isLongPressed = false;
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_UP) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            isLongPressed = false;
+        }
+        if (ev.getAction() == MotionEvent.ACTION_UP && !isLongPressed) {
             Intent i = new Intent(context, DayWiseExpenseEdit.class);
+            i.addFlags(FLAG_ACTIVITY_NEW_TASK);
             i.putExtra("DayWiseExpenses", Utils.getSerializedExpenses(expenses.getValue()));
             ContextCompat.startActivity(context, i, null);
         }
         return super.onInterceptTouchEvent(ev);
     }
 
-    private void setAllChildWithFollowParentState(View view) {
+    private void setAllChildWithFollowParentState(View view, OnLongClickListener longClickListener) {
 
         if (view instanceof ViewGroup) {
             ViewGroup group = (ViewGroup) view;
             int childCount = group.getChildCount();
             for (int i = 0; i < childCount; i++) {
-                setAllChildWithFollowParentState(group.getChildAt(i));
+                setAllChildWithFollowParentState(group.getChildAt(i), longClickListener);
             }
             group.setDuplicateParentStateEnabled(true);
             group.setClickable(false);
+            group.setLongClickable(true);
+            group.setOnLongClickListener(longClickListener);
 
         } else {
             view.setDuplicateParentStateEnabled(true);

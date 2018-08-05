@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import static android.content.Context.MODE_PRIVATE;
-import static java.util.Objects.isNull;
 
 public class Utils {
 
@@ -173,6 +172,25 @@ public class Utils {
         String monthName = DateProcessor.allMonths.get(monthIndex - 1);
 
 
-        return monthName.substring(0,1).toUpperCase()+monthName.substring(1);
+        return monthName.substring(0, 1).toUpperCase() + monthName.substring(1);
     }
+
+    public static boolean isNull(Object o) {
+        return o == null;
+    }
+
+    public static Expenses getUnAcceptedExpenses() {
+        String unAcceptedExpenses = Utils.getLocalStorageForPreferences()
+                .getString(UNACCEPTED_EXPENSES, "[]");
+        return getDeserializedExpenses(unAcceptedExpenses);
+    }
+
+    public static Expenses getUnAcceptedExpensesViaSMS() {
+        return new Expenses();
+    }
+
+    public static void clearUnAcceptedExpense() {
+        getLocalStorageForPreferences().edit().putString(UNACCEPTED_EXPENSES, "[]").apply();
+    }
+
 }

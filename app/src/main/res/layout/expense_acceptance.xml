@@ -14,7 +14,7 @@
             android:layout_height="wrap_content">
 
             <com.nandhakumargmail.muralidharan.expendio.ExpensesEditView
-                android:id="@+id/unApprovedExpenses"
+                android:id="@+id/unApprovedExpensesViaVoice"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical" />

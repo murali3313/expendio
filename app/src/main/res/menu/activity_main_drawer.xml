@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_tags"
+            android:icon="@mipmap/ic_menu_tags"
+            android:title="Tags" />
+        <item
+            android:id="@+id/nav_sms_keywords"
+            android:icon="@mipmap/ic_menu_sms"
+            android:title="Key words" />
+        <item
+            android:id="@+id/nav_download"
+            android:icon="@mipmap/ic_menu_download"
+            android:title="Download Expenses" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_accept_expenses"
+                android:icon="@mipmap/ic_menu_accept_expense"
+                android:title="Accept Expense" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@mipmap/ic_menu_send_expense"
+                android:title="Send Expense" />
+            <item
+                android:id="@+id/nav_feedback"
+                android:icon="@mipmap/ic_menu_app_feedback"
+                android:title="App Feedback" />
+        </menu>
+    </item>
+
+</menu>
