@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.nex3z.flowlayout.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Edit - Expense tags"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="25sp" />
+
+        <ImageButton
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="40dp"
+            android:layout_alignParentRight="true"
+            android:background="@mipmap/ic_menu_tags"
+            android:id="@+id/createNewTag"/>
+
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:background="@mipmap/ic_tag_save"
+            android:id="@+id/saveTags"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="450dp">
+
+        <LinearLayout
+            android:id="@+id/tagsEditContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
+    </ScrollView>
+
+</com.nex3z.flowlayout.FlowLayout>
+

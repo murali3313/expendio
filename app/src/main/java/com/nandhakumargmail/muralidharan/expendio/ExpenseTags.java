@@ -8,59 +8,56 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static com.nandhakumargmail.muralidharan.expendio.Utils.*;
 import static java.util.Arrays.asList;
 
 public class ExpenseTags {
-    ExpenseTag defaultTags = new ExpenseTag();
-    private SharedPreferences localStorageForPreferences;
-    ObjectMapper objectMapper = new ObjectMapper();
+    static ExpenseTag defaultTags = new ExpenseTag();
+    private static SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
+    static ObjectMapper objectMapper = new ObjectMapper();
+    private ExpenseTag tags;
 
-    public ExpenseTags(SharedPreferences localStorageForPreferences) {
-        this.localStorageForPreferences = localStorageForPreferences;
-        objectMapper = new ObjectMapper();
-        defaultTags.put("eat", asList("Food"));
-        defaultTags.put("hotel", asList("Food"));
-        defaultTags.put("restaurant", asList("Food"));
-        defaultTags.put("food", asList("Food"));
-        defaultTags.put("bakery", asList("Food"));
-        defaultTags.put("grocery", asList("Food"));
-        defaultTags.put("groceries", asList("Food"));
-        defaultTags.put("hospital", asList("Health"));
-        defaultTags.put("meat", asList("Food"));
-        defaultTags.put("medicine", asList("Health"));
-        defaultTags.put("pharmacy", asList("Health"));
-        defaultTags.put("bus", asList("Travel"));
-        defaultTags.put("travel", asList("Travel"));
-        defaultTags.put("miscellaneous", asList("Misc."));
-        loadDefaultExpenseTagsIfNotInitialized();
-
+    public ExpenseTags(ExpenseTag tags) {
+        this.tags = tags;
     }
 
 
-    public void loadDefaultExpenseTagsIfNotInitialized() {
-        ExpenseTag tags = getSavedExpenseTags();
+    public static void loadDefaultExpenseTagsIfNotInitialized() {
+        ExpenseTags tags = getSavedExpenseTags();
         if (isNull(tags) || tags.isEmpty()) {
-            SharedPreferences.Editor edit = localStorageForPreferences.edit();
-            String defaultExpenseTagsAsString = null;
-            try {
-                defaultExpenseTagsAsString = objectMapper.writeValueAsString(defaultTags);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-            edit.putString(TAGS, defaultExpenseTagsAsString);
-            edit.apply();
+            objectMapper = new ObjectMapper();
+            defaultTags.put("eat", asList("Food"));
+            defaultTags.put("hotel", asList("Food"));
+            defaultTags.put("restaurant", asList("Food"));
+            defaultTags.put("food", asList("Food"));
+            defaultTags.put("bakery", asList("Food"));
+            defaultTags.put("grocery", asList("Food"));
+            defaultTags.put("groceries", asList("Food"));
+            defaultTags.put("hospital", asList("Health"));
+            defaultTags.put("meat", asList("Food"));
+            defaultTags.put("medicine", asList("Health"));
+            defaultTags.put("pharmacy", asList("Health"));
+            defaultTags.put("bus", asList("Travel"));
+            defaultTags.put("travel", asList("Travel"));
+            defaultTags.put("miscellaneous", asList("Misc."));
+            writeToPersistence(defaultTags);
         }
     }
 
-    public Set<String> getAssociatedExpenseTags(List<String> words) {
-        ExpenseTag tags = getSavedExpenseTags();
+    private boolean isEmpty() {
+        return this.tags.isEmpty();
+    }
+
+    public static Set<String> getAssociatedExpenseTags(List<String> words) {
+        ExpenseTags tags = getSavedExpenseTags();
         Set<String> tagWords = new ArraySet<>();
         for (String word : words) {
-            List<String> t = tags.get(word.toLowerCase());
+            List<String> t = tags.tags.get(word.toLowerCase());
             if (!isNull(t)) {
                 tagWords.addAll(t);
             }
@@ -68,12 +65,62 @@ public class ExpenseTags {
         return tagWords;
     }
 
-    private ExpenseTag getSavedExpenseTags() {
+    public static ExpenseTags getSavedExpenseTags() {
         try {
-            return objectMapper.readValue(localStorageForPreferences.getString(TAGS, "{}"), ExpenseTag.class);
+            ExpenseTag expenseTag = objectMapper.readValue(localStorageForPreferences.getString(TAGS, "{}"), ExpenseTag.class);
+            return new ExpenseTags(expenseTag);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public HashMap<String, List<String>> getTags() {
+        return this.tags.getTags();
+    }
+
+    public Set<Map.Entry<String, List<String>>> getTagAndWordsAssociated() {
+        HashMap<String, List<String>> tagAndWords = new HashMap<>();
+        for (Map.Entry<String, List<String>> wordAndTag : this.getTags().entrySet()) {
+            List<String> tags = wordAndTag.getValue();
+            for (String tag : tags) {
+                if (isNull(tagAndWords.get(tag))) {
+                    tagAndWords.put(tag, new ArrayList<String>() {{
+                        add(wordAndTag.getKey());
+                    }});
+                } else {
+                    tagAndWords.get(tag).add(wordAndTag.getKey());
+                }
+            }
+        }
+        return tagAndWords.entrySet();
+    }
+
+    public static void saveExpenseTags(HashMap<String, List<String>> allTagAndWords) {
+        HashMap<String, List<String>> wordAndTags = new HashMap<>();
+        for (Map.Entry<String, List<String>> tagAndWords : allTagAndWords.entrySet()) {
+            for (String word : tagAndWords.getValue()) {
+                if (isNull(wordAndTags.get(word))) {
+                    wordAndTags.put(word, new ArrayList<String>() {{
+                        add(tagAndWords.getKey());
+                    }});
+                } else {
+                    wordAndTags.get(word).add(tagAndWords.getKey());
+                }
+            }
+        }
+        writeToPersistence(new ExpenseTag(wordAndTags));
+    }
+
+    private static void writeToPersistence(Object wordAndTags) {
+        String expenseTagsAsString = null;
+        SharedPreferences.Editor edit = localStorageForPreferences.edit();
+        try {
+            expenseTagsAsString = objectMapper.writeValueAsString(wordAndTags);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        edit.putString(TAGS, expenseTagsAsString);
+        edit.apply();
     }
 }

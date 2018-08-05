@@ -28,8 +28,6 @@ import static java.lang.String.join;
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Expense {
-    @JsonIgnore
-    private ExpenseTags expenseTags;
     private BigDecimal amountSpent;
     private Date spentOn;
     private List<String> spentFor = new ArrayList<>();
@@ -40,7 +38,6 @@ public class Expense {
         this.spentOn = new Date();
         this.amountSpent = new BigDecimal("0");
         this.expenseStatement = "";
-        this.expenseTags = new ExpenseTags(Utils.getLocalStorageForPreferences());
     }
 
     public Expense(BigDecimal amountSpent, Date spentOn, List<String> spentFor, String expenseStatement) {
@@ -48,7 +45,6 @@ public class Expense {
         this.spentOn = spentOn;
         this.spentFor = spentFor;
         this.expenseStatement = expenseStatement;
-        this.expenseTags = new ExpenseTags(Utils.getLocalStorageForPreferences());
         addTags();
     }
 
@@ -105,9 +101,9 @@ public class Expense {
 
     @JsonIgnore
     public void addTags() {
-        if (!isNull(expenseTags) && !isNull(spentFor) && !spentFor.isEmpty())
+        if (!isNull(spentFor) && !spentFor.isEmpty())
 
-            this.associatedExpenseTags = expenseTags.getAssociatedExpenseTags(spentFor);
+            this.associatedExpenseTags = ExpenseTags.getAssociatedExpenseTags(spentFor);
     }
 
     public void setSpentFor(List<String> words) {

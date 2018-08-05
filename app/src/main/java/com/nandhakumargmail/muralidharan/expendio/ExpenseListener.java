@@ -22,6 +22,7 @@ public class ExpenseListener extends SpeechActivity implements NavigationView.On
     HomeScreenView homeScreenView;
     ExpenseTalkView analyticsView;
     NotificationView notificationView;
+    ExpenseTagsEditView tagEditView;
     DashboardView selectedDashboardView;
 
 
@@ -86,9 +87,14 @@ public class ExpenseListener extends SpeechActivity implements NavigationView.On
         homeScreenView = new HomeScreenView(ExpenseListener.this.getApplicationContext(), null, this);
         analyticsView = new ExpenseTalkView(ExpenseListener.this.getApplicationContext(), null);
         notificationView = new NotificationView(ExpenseListener.this.getApplicationContext(), null);
+        tagEditView = new ExpenseTagsEditView(ExpenseListener.this.getApplicationContext(), null, this);
         loadDisplayArea(homeScreenView, DashboardView.HOME);
         super.onCreate(savedInstanceState);
 
+    }
+
+    public void loadDisplayAreaWithHomeScreen() {
+        loadDisplayArea(homeScreenView, DashboardView.HOME);
     }
 
     public void loadDisplayArea(IDisplayAreaView displayAreaView, DashboardView dashboardView) {
@@ -158,7 +164,8 @@ public class ExpenseListener extends SpeechActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_tags) {
-            // Handle the camera action
+            loadDisplayArea(tagEditView, DashboardView.TAG_EDIT);
+
         } else if (id == R.id.nav_sms_keywords) {
 
         } else if (id == R.id.nav_download) {

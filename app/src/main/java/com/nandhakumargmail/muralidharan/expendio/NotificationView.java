@@ -18,6 +18,7 @@ public class NotificationView extends LinearLayout implements IDisplayAreaView {
     public void load() {
         Expenses allUnAcceptedExpenses = new Expenses();
         RelativeLayout container = findViewById(R.id.unAcceptedExpensesContainer);
+        container.removeAllViews();
         Expenses unAcceptedExpenses = Utils.getUnAcceptedExpenses();
         allUnAcceptedExpenses.addAll(unAcceptedExpenses);
         if (!unAcceptedExpenses.isEmpty()) {

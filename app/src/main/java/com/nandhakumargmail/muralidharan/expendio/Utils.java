@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.nandhakumargmail.muralidharan.expendio.ExpenseTags.loadDefaultExpenseTagsIfNotInitialized;
 
 public class Utils {
 
@@ -55,6 +56,7 @@ public class Utils {
 
     public static void loadLocalStorageForPreferences(Context c) {
         globalAccessibleSharedPreferences = c.getSharedPreferences(DAILY_EXPENSER, MODE_PRIVATE);
+        loadDefaultExpenseTagsIfNotInitialized();
     }
 
     public static SharedPreferences getLocalStorageForPreferences() {

@@ -14,6 +14,10 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ExpenseTag {
+    public ExpenseTag(HashMap<String, List<String>> tags) {
+        this.tags = tags;
+    }
+
     private HashMap<String, List<String>> tags = new HashMap<>();
 
     public void put(String word, List<String> tagWords) {
