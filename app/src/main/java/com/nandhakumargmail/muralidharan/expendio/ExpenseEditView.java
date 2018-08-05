@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nex3z.flowlayout.FlowLayout;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
