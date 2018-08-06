@@ -54,7 +54,7 @@
             android:layout_gravity="bottom"
             android:orientation="vertical">
 
-            <com.nandhakumargmail.muralidharan.expendio.SwipeButton
+            <com.thriwin.expendio.SwipeButton
                 android:id="@+id/clear_last_statement"
                 android:layout_width="210dp"
                 android:layout_height="30dp"
@@ -78,9 +78,9 @@
                 app:inner_text_bottom_padding="1dp"
                 app:inner_text_color="@android:color/holo_blue_light"
                 app:inner_text_size="10sp"
-                app:inner_text_top_padding="2dp"></com.nandhakumargmail.muralidharan.expendio.SwipeButton>
+                app:inner_text_top_padding="2dp"></com.thriwin.expendio.SwipeButton>
 
-            <com.nandhakumargmail.muralidharan.expendio.SwipeButton
+            <com.thriwin.expendio.SwipeButton
                 android:id="@+id/stop_listening"
                 android:layout_width="210dp"
                 android:layout_height="30dp"
@@ -104,7 +104,7 @@
                 app:inner_text_bottom_padding="1dp"
                 app:inner_text_color="@android:color/holo_blue_light"
                 app:inner_text_size="10sp"
-                app:inner_text_top_padding="2dp"></com.nandhakumargmail.muralidharan.expendio.SwipeButton>
+                app:inner_text_top_padding="2dp"></com.thriwin.expendio.SwipeButton>
         </LinearLayout>
 
     </LinearLayout>

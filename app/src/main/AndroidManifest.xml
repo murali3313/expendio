@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nandhakumargmail.muralidharan.expendio">
+    package="com.thriwin.expendio">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -42,10 +42,13 @@
         <activity
             android:name=".MonthWiseExpenseAdd"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
+        <activity
+            android:name=".FileListActivity"
+            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
 
         <provider
             android:name=".GenericFileProvider"
-            android:authorities="com.nandhakumargmail.muralidharan.expendio.GenericFileProvider"
+            android:authorities="com.thriwin.expendio.GenericFileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

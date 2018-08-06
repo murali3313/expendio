@@ -8,7 +8,7 @@
     android:background="@drawable/expense_border"
     android:orientation="vertical"
     android:paddingRight="10dp"
-    tools:context=".ExpenseEditView">
+    tools:context="com.thriwin.expendio.ExpenseEditView">
 
     <LinearLayout
         android:layout_width="match_parent"
