@@ -18,5 +18,6 @@
     <string name="smsUnApprovedExpenses">UnApproved expenses via SMS</string>
     <string name="newTagDescriptionWord">Enter word under this tag:</string>
     <string name="tagSavedSuccessfully">Tags saved successfully</string>
+    <string name="downloadOptionIsNotEnabled">Please provide access for storage</string>
 
 </resources>

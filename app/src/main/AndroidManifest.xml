@@ -3,6 +3,8 @@
     package="com.nandhakumargmail.muralidharan.expendio">
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -38,8 +40,18 @@
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
 
         <activity
-            android:name=".MonthWiseExpenseEdit"
+            android:name=".MonthWiseExpenseAdd"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
+
+        <provider
+            android:name=".GenericFileProvider"
+            android:authorities="com.nandhakumargmail.muralidharan.expendio.GenericFileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 
 </manifest>

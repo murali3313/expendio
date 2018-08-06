@@ -6,6 +6,8 @@ import android.util.ArraySet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import org.apache.poi.util.StringUtil;
+
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,6 +25,7 @@ import static com.nandhakumargmail.muralidharan.expendio.Utils.isEmpty;
 import static com.nandhakumargmail.muralidharan.expendio.Utils.isNull;
 import static java.lang.String.format;
 import static java.lang.String.join;
+import static java.util.Arrays.asList;
 
 @Setter
 @Getter
@@ -33,6 +36,7 @@ public class Expense {
     private List<String> spentFor = new ArrayList<>();
     private String expenseStatement;
     private Set<String> associatedExpenseTags = new ArraySet<>();
+    public static List<String> headerColumns = asList("Spent On", "Amount", "Reason", "Tags", "Total");
 
     public Expense() {
         this.spentOn = new Date();
@@ -121,7 +125,6 @@ public class Expense {
 
 
     public String getAmountSpent() {
-
         return isNull(this.amountSpent) || this.amountSpent.equals(new BigDecimal(0)) ? "" : this.amountSpent.toString();
     }
 
@@ -142,6 +145,18 @@ public class Expense {
         } else {
             return this.associatedExpenseTags;
         }
+    }
+
+    @JsonIgnore
+    public String getConcatenatedTags() {
+        String tags = "";
+        Set<String> associatedExpenseTags = this.getAssociatedExpenseTags();
+        if (isNull(associatedExpenseTags) || associatedExpenseTags.isEmpty()) {
+            tags = "";
+        } else {
+            tags = StringUtil.join(associatedExpenseTags.toArray(), ", ");
+        }
+        return tags;
     }
 
     @JsonIgnore
@@ -201,5 +216,30 @@ public class Expense {
         if (isEmpty(expenseStatement.trim()))
             this.expenseStatement = "Miscellaneous";
 
+    }
+
+    public String getMonthYearHumanReadable() {
+        return new SimpleDateFormat("MMM-yyyy").format(this.spentOn);
+    }
+
+    public String getValue(String headerColumn) {
+        String value = "";
+        switch (headerColumn) {
+            case "Spent On":
+                value = getDateMonthHumanReadable();
+                break;
+            case "Reason":
+                value = getExpenseStatement();
+                break;
+            case "Amount":
+                value = getAmountSpent();
+                break;
+            case "Tags":
+                value = getConcatenatedTags();
+                break;
+            default:
+                break;
+        }
+        return value;
     }
 }

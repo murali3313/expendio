@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.nex3z.flowlayout.FlowLayout;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.nandhakumargmail.muralidharan.expendio.Utils.isEmpty;
@@ -38,7 +41,7 @@ public class ExpenseTimeView extends LinearLayout {
         tagsContainer = findViewById(R.id.tags);
         amount = findViewById(R.id.amount);
         for (String tag : expense.getAssociatedExpenseTags()) {
-            if(isEmpty(tag.trim())){
+            if (isEmpty(tag.trim())) {
                 continue;
             }
             TextView textView = new TextView(this.getContext(), null);

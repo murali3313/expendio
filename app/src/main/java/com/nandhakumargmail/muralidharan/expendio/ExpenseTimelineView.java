@@ -1,8 +1,14 @@
 package com.nandhakumargmail.muralidharan.expendio;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,18 +19,20 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
 import java.util.Map;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.nandhakumargmail.muralidharan.expendio.Utils.getDeserializedMonthWiseExpenses;
 import static com.nandhakumargmail.muralidharan.expendio.Utils.getLocalStorageForPreferences;
+import static com.nandhakumargmail.muralidharan.expendio.Utils.isExternalStorageAvailable;
+import static com.nandhakumargmail.muralidharan.expendio.Utils.isExternalStorageReadOnly;
 
-public class ExpenseTimelineView extends SpeechActivity implements  NavigationView.OnNavigationItemSelectedListener  {
+public class ExpenseTimelineView extends CommonActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     Button okButton, cancelButton;
     MonthWiseExpenses monthWiseExpenses;
@@ -49,7 +57,7 @@ public class ExpenseTimelineView extends SpeechActivity implements  NavigationVi
         ImageButton addExpenseInCurrentMonth = findViewById(R.id.addExpenseInCurrentMonth);
         expenseKey = this.getIntent().getStringExtra("ExpenseKey");
         addExpenseInCurrentMonth.setOnClickListener(v -> {
-            Intent i = new Intent(getApplicationContext(), MonthWiseExpenseEdit.class);
+            Intent i = new Intent(getApplicationContext(), MonthWiseExpenseAdd.class);
             i.addFlags(FLAG_ACTIVITY_NEW_TASK);
             i.putExtra("LatestDate", getDeserializedMonthWiseExpenseslocal(expenseKey).getLatestDate(expenseKey));
             ContextCompat.startActivity(getApplicationContext(), i, null);
@@ -87,7 +95,6 @@ public class ExpenseTimelineView extends SpeechActivity implements  NavigationVi
         super.onPostResume();
         loadTimeLineView(expenseKey);
     }
-
 
 
     @Override
@@ -128,22 +135,54 @@ public class ExpenseTimelineView extends SpeechActivity implements  NavigationVi
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_tags) {
-            // Handle the camera action
-        } else if (id == R.id.nav_sms_keywords) {
+        if (id == R.id.nav_download) {
+            downloadMonthWiseExpense();
 
-        } else if (id == R.id.nav_download) {
+        } else if (id == R.id.nav_expense_limit) {
 
-        } else if (id == R.id.nav_accept_expenses) {
-
-        } else if (id == R.id.nav_send) {
-
-        } else if (id == R.id.nav_feedback) {
-
+        } else if (id == R.id.nav_open_generated_excel) {
+            openFolder();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void downloadMonthWiseExpense() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQ_CODE_DOWNLOAD);
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQ_CODE_DOWNLOAD: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (!isExternalStorageAvailable() || isExternalStorageReadOnly()) {
+                        showToast(R.string.downloadOptionIsNotEnabled);
+                        return;
+                    }
+
+                    writeAndPresentTheFile();
+
+                } else {
+
+                    showToast(R.string.downloadOptionIsNotEnabled);
+                }
+                return;
+            }
+        }
+    }
+
+    private void writeAndPresentTheFile() {
+        MonthWiseExpenses monthWiseExpenses = getDeserializedMonthWiseExpenseslocal(expenseKey);
+        File file = generator.genarateExcelForMonthExpenses(getBaseContext(), monthWiseExpenses, monthWiseExpenses.getMonthYearHumanReadable());
+        presentTheFileToTheUser(file);
+    }
+
+
 }

@@ -14,9 +14,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import java.io.File;
+
+import static com.nandhakumargmail.muralidharan.expendio.Utils.getAllExpensesMonthWise;
 import static com.nandhakumargmail.muralidharan.expendio.Utils.loadLocalStorageForPreferences;
 
-public class ExpenseListener extends SpeechActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ExpenseListener extends CommonActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     HomeScreenView homeScreenView;
@@ -169,6 +172,7 @@ public class ExpenseListener extends SpeechActivity implements NavigationView.On
         } else if (id == R.id.nav_sms_keywords) {
 
         } else if (id == R.id.nav_download) {
+            downloadAllExpenses();
 
         } else if (id == R.id.nav_accept_expenses) {
 
@@ -176,10 +180,17 @@ public class ExpenseListener extends SpeechActivity implements NavigationView.On
 
         } else if (id == R.id.nav_feedback) {
 
+        } else if (id == R.id.nav_open_generated_excel) {
+            openFolder();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void downloadAllExpenses() {
+        File all_expenses = generator.genarateExcelForAllMonths(getBaseContext(), getAllExpensesMonthWise(), "All_Expenses");
+        presentTheFileToTheUser(all_expenses);
     }
 }

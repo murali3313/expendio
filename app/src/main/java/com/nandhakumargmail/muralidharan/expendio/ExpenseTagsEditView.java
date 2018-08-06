@@ -32,7 +32,7 @@ public class ExpenseTagsEditView extends FlowLayout implements IDisplayAreaView 
         LinearLayout tagContainer = findViewById(R.id.tagsEditContainer);
         tagContainer.removeAllViews();
         for (Map.Entry<String, List<String>> tags : expenseTags.getTagAndWordsAssociated()) {
-            ExpenseTagEditView tagEditView = new ExpenseTagEditView(getContext(), null, tags.getKey(), tags.getValue());
+            ExpenseTagEditView tagEditView = new ExpenseTagEditView(getContext(), null, tags.getKey(), tags.getValue(), tagContainer);
             tagContainer.addView(tagEditView);
 
         }
@@ -40,7 +40,7 @@ public class ExpenseTagsEditView extends FlowLayout implements IDisplayAreaView 
         View createTag = findViewById(R.id.createNewTag);
 
         createTag.setOnClickListener(v -> {
-            ExpenseTagEditView tagEditView = new ExpenseTagEditView(getContext(), null, "", new ArrayList<>());
+            ExpenseTagEditView tagEditView = new ExpenseTagEditView(getContext(), null, "", new ArrayList<>(), tagContainer);
             tagContainer.addView(tagEditView, 0);
         });
 

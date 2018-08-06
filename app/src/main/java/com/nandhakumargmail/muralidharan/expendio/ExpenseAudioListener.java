@@ -24,12 +24,12 @@ public class ExpenseAudioListener
     private SpeechRecognizer speech = null;
     private Intent recognizerIntent;
     private SharedPreferences localStorageForPreferences;
-    private SpeechActivity expenseMain;
+    private CommonActivity expenseMain;
     private static ExpenseAudioStatements expenseAudioStatements;
     boolean userStopped;
 
 
-    public ExpenseAudioListener(SharedPreferences localStorageForPreferences, SpeechActivity expenseMain) {
+    public ExpenseAudioListener(SharedPreferences localStorageForPreferences, CommonActivity expenseMain) {
         this.localStorageForPreferences = localStorageForPreferences;
         this.expenseMain = expenseMain;
         speech = SpeechRecognizer.createSpeechRecognizer(expenseMain);

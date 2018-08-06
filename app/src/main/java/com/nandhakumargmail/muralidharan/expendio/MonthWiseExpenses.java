@@ -108,4 +108,19 @@ public class MonthWiseExpenses {
         }
         return getDayWiseExpenses(getSortedKeys().first()).getValue().getSpentOnDate();
     }
+
+    public String getMonthYearHumanReadable() {
+        if (!this.dayWiseExpenses.isEmpty()) {
+            return this.dayWiseExpenses.get(getSortedKeys().first()).getMonthYearHumanReadable();
+        }
+        return "NA";
+    }
+
+    public List<Expenses> getSortedDayWiseExpenses() {
+        List<Expenses> expenses = new ArrayList<>();
+        for (String dateMonth : getSortedKeys()) {
+            expenses.add(this.dayWiseExpenses.get(dateMonth));
+        }
+        return expenses;
+    }
 }

@@ -13,14 +13,13 @@ import com.nex3z.flowlayout.FlowLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.nandhakumargmail.muralidharan.expendio.Utils.isEmpty;
 
 public class ExpenseTagEditView extends FlowLayout {
     FlowLayout taggedWordsContainer;
 
-    public ExpenseTagEditView(Context context, @Nullable AttributeSet attrs, String tagKey, List<String> tagWords) {
+    public ExpenseTagEditView(Context context, @Nullable AttributeSet attrs, String tagKey, List<String> tagWords, LinearLayout parentContainer) {
         super(context, attrs);
         inflate(context, R.layout.tag_edit_view, this);
         TextView tagHeader = findViewById(R.id.tagHeader);
@@ -39,6 +38,13 @@ public class ExpenseTagEditView extends FlowLayout {
             }
 
             newTagWord.setText("");
+        });
+
+        findViewById(R.id.tagRemove).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                parentContainer.removeView(ExpenseTagEditView.this);
+            }
         });
     }
 

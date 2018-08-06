@@ -14,6 +14,12 @@ public class Expenses extends ArrayList<Expense> {
         return "NA";
     }
 
+    public String getMonthYearHumanReadable() {
+        if (!this.isEmpty())
+            return this.get(0).getMonthYearHumanReadable();
+        return "NA";
+    }
+
     public String getDateMonth() {
         if (!this.isEmpty())
             return this.get(0).getDateMonth();
@@ -23,7 +29,8 @@ public class Expenses extends ArrayList<Expense> {
     public String getTotalExpenditure() {
         BigDecimal totalExpenditure = new BigDecimal("0");
         for (Expense expense : this) {
-            totalExpenditure = totalExpenditure.add(new BigDecimal(expense.getAmountSpent()));
+            String amountSpent = expense.getAmountSpent();
+            totalExpenditure = totalExpenditure.add(new BigDecimal(Utils.isEmpty(amountSpent) ? "0" : amountSpent));
         }
         return totalExpenditure.toString();
     }

@@ -38,7 +38,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.16.0'
     annotationProcessor 'org.projectlombok:lombok:1.16.0'
     compile 'com.nex3z:flow-layout:1.2.2'
-    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
-
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
+    implementation group: 'org.apache.poi', name: 'poi', version: '3.15'
 }
 

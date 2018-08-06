@@ -2,6 +2,7 @@ package com.nandhakumargmail.muralidharan.expendio;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -18,6 +19,7 @@ import java.util.regex.Pattern;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.nandhakumargmail.muralidharan.expendio.ExpenseTags.loadDefaultExpenseTagsIfNotInitialized;
+import static com.nandhakumargmail.muralidharan.expendio.ExpenseTags.objectMapper;
 
 public class Utils {
 
@@ -193,6 +195,39 @@ public class Utils {
 
     public static void clearUnAcceptedExpense() {
         getLocalStorageForPreferences().edit().putString(UNACCEPTED_EXPENSES, "[]").apply();
+    }
+
+    public static boolean isExternalStorageReadOnly() {
+        String extStorageState = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(extStorageState)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isExternalStorageAvailable() {
+        String extStorageState = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(extStorageState)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static  HashMap<String, MonthWiseExpenses> getAllExpensesMonthWise() {
+        HashMap<String, MonthWiseExpenses> allExpenses = new HashMap<>();
+        Map<String, ?> all = Utils.getLocalStorageForPreferences().getAll();
+        for (Map.Entry<String, ?> entry : all.entrySet()) {
+            if (entry.getKey().startsWith("Expense-")) {
+                try {
+                    MonthWiseExpenses expenses = objectMapper.readValue(all.get(entry.getKey()).toString(), new TypeReference<MonthWiseExpenses>() {
+                    });
+                    allExpenses.put(entry.getKey(), expenses);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return allExpenses;
     }
 
 }
