@@ -20,7 +20,7 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
 
 
     HomeScreenView homeScreenView;
-    ExpenseTalkView analyticsView;
+    ExpenseAnalyticsView analyticsView;
     NotificationView notificationView;
     ExpenseTagsEditView tagEditView;
     DashboardView selectedDashboardView;
@@ -85,7 +85,7 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         Utils.loadLocalStorageForPreferences(this.getApplicationContext());
         homeScreenView = new HomeScreenView(ExpenseListener.this.getApplicationContext(), null, this);
-        analyticsView = new ExpenseTalkView(ExpenseListener.this.getApplicationContext(), null);
+        analyticsView = new ExpenseAnalyticsView(ExpenseListener.this.getApplicationContext(), null);
         notificationView = new NotificationView(ExpenseListener.this.getApplicationContext(), null);
         tagEditView = new ExpenseTagsEditView(ExpenseListener.this.getApplicationContext(), null, this);
         loadDisplayArea(homeScreenView, DashboardView.HOME);
@@ -101,14 +101,17 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
         LinearLayout displayArea = findViewById(R.id.displayArea);
         displayArea.removeAllViews();
         displayArea.addView((View) displayAreaView);
-        displayAreaView.load();
+        displayAreaView.load(this);
         selectedDashboardView = dashboardView;
         BottomNavigationView bottomNavigation = findViewById(R.id.navigation);
+        View barChart = findViewById(R.id.bar_chart);
+        barChart.setVisibility(View.GONE);
         switch (dashboardView) {
             case HOME:
                 bottomNavigation.getMenu().findItem(R.id.navigation_home).setChecked(true);
                 break;
             case ANALYTICS:
+                barChart.setVisibility(View.VISIBLE);
                 bottomNavigation.getMenu().findItem(R.id.navigation_analytics).setChecked(true);
                 break;
             case NOTIFICATION:

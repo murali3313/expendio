@@ -24,6 +24,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="0f4257" />
+                                                <entry key="paddingPercent" value="-5" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -34,7 +35,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/file/ic_folder_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/editor/ic_pie_chart_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -45,7 +46,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="iconShape" value="NONE" />
-                                      <entry key="outputName" value="ic_menu_view_excel" />
+                                      <entry key="outputName" value="ic_pie_chart" />
                                     </map>
                                   </option>
                                 </PersistentState>

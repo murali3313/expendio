@@ -17,6 +17,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static com.thriwin.expendio.Utils.isNull;
+
 @NoArgsConstructor
 @Getter
 @Setter
@@ -34,7 +36,7 @@ public class MonthWiseExpenses {
     }
 
     public void addExpense(Expense expens) {
-        if (Utils.isNull(this.dayWiseExpenses.get(expens.getDateMonth()))) {
+        if (isNull(this.dayWiseExpenses.get(expens.getDateMonth()))) {
             Expenses expenses = new Expenses();
             expenses.add(expens);
             this.dayWiseExpenses.put(expens.getDateMonth(), expenses);
@@ -51,7 +53,7 @@ public class MonthWiseExpenses {
         }
         for (Expense expense : expensesList) {
             Expenses expenses = this.dayWiseExpenses.get(expense.getDateMonth());
-            if (!Utils.isNull(expenses))
+            if (!isNull(expenses))
                 expenses.clear();
         }
         for (Expense expens : expensesList) {
@@ -104,6 +106,31 @@ public class MonthWiseExpenses {
         List<Expenses> expenses = new ArrayList<>();
         for (String dateMonth : getSortedKeys()) {
             expenses.add(this.dayWiseExpenses.get(dateMonth));
+        }
+        return expenses;
+    }
+
+    public Map<String, Expenses> getTagBasedExpenses() {
+        HashMap<String, Expenses> tagBasedExpenses = new HashMap<>();
+        Expenses allExpenses = getAllExpenses();
+        for (Expense expense : allExpenses) {
+
+            String tag = expense.getFirstAssociatedExpenseTag();
+            Expenses taggedExpenses = tagBasedExpenses.get(tag);
+            if (isNull(taggedExpenses)) {
+                tagBasedExpenses.put(tag, new Expenses(expense));
+            } else {
+                taggedExpenses.add(expense);
+            }
+
+        }
+        return tagBasedExpenses;
+    }
+
+    private Expenses getAllExpenses() {
+        Expenses expenses = new Expenses();
+        for (Map.Entry<String, Expenses> dayWiseExpense : dayWiseExpenses.entrySet()) {
+            expenses.addAll(dayWiseExpense.getValue());
         }
         return expenses;
     }

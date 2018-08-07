@@ -59,7 +59,7 @@ public class ExpenseEditView extends LinearLayout {
             TextView textView = new TextView(this.getContext(), null);
             textView.setText(tag);
             textView.setPadding(15, 5, 15, 5);
-            textView.setBackgroundResource(R.drawable.tag_border);
+            textView.setBackgroundResource(R.drawable.item_border);
             tagsContainer.addView(textView);
         }
 

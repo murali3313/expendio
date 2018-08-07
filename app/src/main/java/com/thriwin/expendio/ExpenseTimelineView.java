@@ -53,7 +53,7 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
         addExpenseInCurrentMonth.setOnClickListener(v -> {
             Intent i = new Intent(getApplicationContext(), MonthWiseExpenseAdd.class);
             i.addFlags(FLAG_ACTIVITY_NEW_TASK);
-            i.putExtra("LatestDate", getDeserializedMonthWiseExpenseslocal(expenseKey).getLatestDate(expenseKey));
+            i.putExtra("LatestDate", Utils.getDeserializedMonthWiseExpenses(expenseKey).getLatestDate(expenseKey));
             ContextCompat.startActivity(getApplicationContext(), i, null);
         });
 
@@ -64,7 +64,7 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
     }
 
     public void loadTimeLineView(String expenseKey) {
-        this.monthWiseExpenses = getDeserializedMonthWiseExpenseslocal(expenseKey);
+        this.monthWiseExpenses = Utils.getDeserializedMonthWiseExpenses(expenseKey);
 
         TextView monthWiseTotalExpenditure = findViewById(R.id.monthWiseTotalExpenditure);
         monthWiseTotalExpenditure.setText("Total expense : " + monthWiseExpenses.getTotalExpenditure());
@@ -78,10 +78,6 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
             timeMarker.addView(expensesTimeView);
             i++;
         }
-    }
-
-    private MonthWiseExpenses getDeserializedMonthWiseExpenseslocal(String expenseKey) {
-        return Utils.getDeserializedMonthWiseExpenses(Utils.getLocalStorageForPreferences().getString(expenseKey, "[]"));
     }
 
     @Override
@@ -173,7 +169,7 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
     }
 
     private void writeAndPresentTheFile() {
-        MonthWiseExpenses monthWiseExpenses = getDeserializedMonthWiseExpenseslocal(expenseKey);
+        MonthWiseExpenses monthWiseExpenses = Utils.getDeserializedMonthWiseExpenses(expenseKey);
         File file = generator.genarateExcelForMonthExpenses(getBaseContext(), monthWiseExpenses, monthWiseExpenses.getMonthYearHumanReadable());
         presentTheFileToTheUser(file);
     }

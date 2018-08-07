@@ -24,6 +24,7 @@ import lombok.Setter;
 import static java.lang.String.format;
 import static java.lang.String.join;
 import static java.util.Arrays.asList;
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
 @Setter
 @Getter
@@ -118,7 +119,7 @@ public class Expense {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String formattedString = simpleDateFormat.format(this.getStartDate());
         String month = formattedString.substring(formattedString.indexOf("/") + 1, formattedString.lastIndexOf("/")).toUpperCase();
-        return format("Expense-%s-%d", month, this.spentYear());
+        return format("Expense-%d-%s", this.spentYear(), month);
     }
 
 
@@ -143,6 +144,15 @@ public class Expense {
         } else {
             return this.associatedExpenseTags;
         }
+    }
+
+    @JsonIgnore
+    public String getFirstAssociatedExpenseTag() {
+        Set<String> associatedExpenseTags = this.getAssociatedExpenseTags();
+        if (!isEmpty(associatedExpenseTags)) {
+            return associatedExpenseTags.iterator().next();
+        }
+        return ExpenseTags.MISCELLANEOUS_TAG;
     }
 
     @JsonIgnore
@@ -209,7 +219,7 @@ public class Expense {
     public void santiseData() {
         if (spentFor.isEmpty() || Utils.isEmpty(spentFor.get(0))) {
             spentFor.clear();
-            spentFor.add("Miscellaneous");
+            spentFor.add(ExpenseTags.MISCELLANEOUS_TAG);
         }
         if (Utils.isEmpty(expenseStatement.trim()))
             this.expenseStatement = "Miscellaneous";

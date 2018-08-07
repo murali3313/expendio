@@ -67,7 +67,7 @@ public class ExpenseTagEditView extends FlowLayout {
         params.setMargins(10, 10, 10, 10);
         tagWord.setLayoutParams(params);
         tagWord.setPadding(20, 10, 20, 10);
-        tagWord.setBackgroundResource(R.drawable.tag_border);
+        tagWord.setBackgroundResource(R.drawable.item_border);
         tagWord.setOnClickListener(v -> {
             ((EditText) findViewById(R.id.tagWord)).setText(((TextView) v).getText().toString());
             taggedWordsContainer.removeView(v);

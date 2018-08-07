@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class Expenses extends ArrayList<Expense> {
+
+    public Expenses(Expense e){
+        this.add(e);
+    }
     public String getDateMonthHumanReadable() {
         if (!this.isEmpty())
             return this.get(0).getDateMonthHumanReadable();

@@ -25,11 +25,8 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
 
 
         TextView blockName = findViewById(R.id.expenseBlockName);
-        String monthAndYear = expensesBlock.getKey().replace("Expense-", "");
-        String month = monthAndYear.substring(0, monthAndYear.indexOf("-"));
-        String year = monthAndYear.substring(monthAndYear.indexOf("-") + 1);
-
-        blockName.setText(Utils.getReadableMonth(month) + "\n" + year + "\n$$: " + expensesBlock.getValue().getTotalExpenditure());
+        String[] readableMonthAndYear = Utils.getReadableMonthAndYear(expensesBlock.getKey());
+        blockName.setText(readableMonthAndYear[0] + "\n" + readableMonthAndYear[1] + "\n$$: " + expensesBlock.getValue().getTotalExpenditure());
         blockName.setTextAlignment(TEXT_ALIGNMENT_CENTER);
         blockName.setOnClickListener(new OnClickListener() {
             @Override

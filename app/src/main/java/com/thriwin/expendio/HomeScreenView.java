@@ -8,8 +8,8 @@ import android.widget.LinearLayout;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nex3z.flowlayout.FlowLayout;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedMap;
 
 public class HomeScreenView extends LinearLayout implements IDisplayAreaView {
     ObjectMapper obj = new ObjectMapper();
@@ -21,12 +21,12 @@ public class HomeScreenView extends LinearLayout implements IDisplayAreaView {
         inflate(context, R.layout.home_screeen, this);
     }
 
-    public void load() {
-        HashMap<String, MonthWiseExpenses> allExpensesMonthWise = Utils.getAllExpensesMonthWise();
+    public void load(ExpenseListener expenseListener) {
+        SortedMap<String, MonthWiseExpenses> allExpensesMonthWise = Utils.getAllExpensesMonthWise();
         FlowLayout homeScreenContainer = findViewById(R.id.homeScreen);
         homeScreenContainer.removeAllViews();
         for (Map.Entry<String, MonthWiseExpenses> monthWise : allExpensesMonthWise.entrySet()) {
-            ExpenseMonthWiseBlock expenseMonthWiseBlock = new ExpenseMonthWiseBlock(getContext(), null, monthWise, this, expenseListener);
+            ExpenseMonthWiseBlock expenseMonthWiseBlock = new ExpenseMonthWiseBlock(getContext(), null, monthWise, this, this.expenseListener);
             homeScreenContainer.addView(expenseMonthWiseBlock);
 
         }

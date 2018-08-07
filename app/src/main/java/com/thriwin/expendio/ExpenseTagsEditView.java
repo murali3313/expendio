@@ -27,7 +27,7 @@ public class ExpenseTagsEditView extends FlowLayout implements IDisplayAreaView 
     }
 
     @Override
-    public void load() {
+    public void load(ExpenseListener expenseListener) {
         ExpenseTags expenseTags = ExpenseTags.getSavedExpenseTags();
         LinearLayout tagContainer = findViewById(R.id.tagsEditContainer);
         tagContainer.removeAllViews();
@@ -54,7 +54,7 @@ public class ExpenseTagsEditView extends FlowLayout implements IDisplayAreaView 
             }
             ExpenseTags.saveExpenseTags(allTagAndWords);
             showToast(R.string.tagSavedSuccessfully);
-            expenseListener.loadDisplayAreaWithHomeScreen();
+            this.expenseListener.loadDisplayAreaWithHomeScreen();
         });
     }
 

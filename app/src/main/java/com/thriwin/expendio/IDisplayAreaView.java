@@ -1,5 +1,5 @@
 package com.thriwin.expendio;
 
 interface IDisplayAreaView {
-    void load();
+    void load(ExpenseListener expenseListener);
 }

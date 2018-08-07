@@ -20,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedMap;
 
 import static java.lang.String.format;
 
@@ -33,7 +34,7 @@ public class ExcelGenerator {
         return file;
     }
 
-    public File genarateExcelForAllMonths(Context context, HashMap<String, MonthWiseExpenses> allmonthWiseExpenses, String fileName) {
+    public File genarateExcelForAllMonths(Context context, SortedMap<String, MonthWiseExpenses> allmonthWiseExpenses, String fileName) {
         Workbook wb = new HSSFWorkbook();
         for (Map.Entry<String, MonthWiseExpenses> monthWiseExpenses : allmonthWiseExpenses.entrySet()) {
             createMonthWiseExpenseSheet(monthWiseExpenses.getValue(), wb);

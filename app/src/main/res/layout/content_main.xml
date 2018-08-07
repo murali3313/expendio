@@ -12,7 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:orientation="horizontal">
-
+        <ImageButton
+            android:layout_width="35dp"
+            android:id="@+id/bar_chart"
+            android:layout_height="35dp"
+            android:paddingTop="10dp"
+            android:layout_marginRight="70dp"
+            android:layout_alignParentRight="true" />
         <ImageButton
             android:layout_width="35dp"
             android:layout_height="35dp"
@@ -31,20 +37,30 @@
 
     </RelativeLayout>
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="45dp">
+        android:layout_marginTop="40dp">
 
-
-        <LinearLayout
-            android:id="@+id/displayArea"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-        </LinearLayout>
-    </android.support.v7.widget.LinearLayoutCompat>
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <LinearLayout
+                    android:id="@+id/displayArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+            </android.support.v7.widget.LinearLayoutCompat>
+        </ScrollView>
+    </LinearLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

@@ -17,6 +17,7 @@ import static com.thriwin.expendio.Utils.*;
 import static java.util.Arrays.asList;
 
 public class ExpenseTags {
+    public static final String MISCELLANEOUS_TAG = "Miscellaneous";
     static ExpenseTag defaultTags = new ExpenseTag();
     private static SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
     static ObjectMapper objectMapper = new ObjectMapper();

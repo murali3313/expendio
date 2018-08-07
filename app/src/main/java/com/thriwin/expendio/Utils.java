@@ -11,10 +11,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableSet;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -75,11 +81,12 @@ public class Utils {
         return expenses;
     }
 
-    public static MonthWiseExpenses getDeserializedMonthWiseExpenses(String expensesString) {
+    public static MonthWiseExpenses getDeserializedMonthWiseExpenses(String expenseKey) {
+        String deserializedMonthWiseExpenses = Utils.getLocalStorageForPreferences().getString(expenseKey, "[]");
         MonthWiseExpenses expenses = new MonthWiseExpenses();
         try {
             ObjectMapper obj = new ObjectMapper();
-            expenses = obj.readValue(expensesString, new TypeReference<MonthWiseExpenses>() {
+            expenses = obj.readValue(deserializedMonthWiseExpenses, new TypeReference<MonthWiseExpenses>() {
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -133,7 +140,7 @@ public class Utils {
         for (Expense expens : expenses) {
             MonthWiseExpenses storedExpenses;
             if (isNull(allMonthWiseExpenses.get(expens.getStorageKey()))) {
-                storedExpenses = getDeserializedMonthWiseExpenses(localStorageForPreferences.getString(expens.getStorageKey(), "[]"));
+                storedExpenses = getDeserializedMonthWiseExpenses(expens.getStorageKey());
                 allMonthWiseExpenses.put(expens.getStorageKey(), storedExpenses);
             } else {
                 storedExpenses = allMonthWiseExpenses.get(expens.getStorageKey());
@@ -159,7 +166,7 @@ public class Utils {
     public static void saveDayWiseExpenses(String storageKey, String dateMonth, Expenses expenses) {
         expenses.sanitizeData();
         SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
-        MonthWiseExpenses storedExpenses = getDeserializedMonthWiseExpenses(localStorageForPreferences.getString(storageKey, "[]"));
+        MonthWiseExpenses storedExpenses = getDeserializedMonthWiseExpenses(storageKey);
         storedExpenses.updateExpenses(dateMonth, expenses);
 
         SharedPreferences.Editor edit = localStorageForPreferences.edit();
@@ -211,8 +218,8 @@ public class Utils {
         return false;
     }
 
-    public static  HashMap<String, MonthWiseExpenses> getAllExpensesMonthWise() {
-        HashMap<String, MonthWiseExpenses> allExpenses = new HashMap<>();
+    public static SortedMap<String, MonthWiseExpenses> getAllExpensesMonthWise() {
+        SortedMap<String, MonthWiseExpenses> allExpenses = new TreeMap<>(Collections.reverseOrder());
         Map<String, ?> all = Utils.getLocalStorageForPreferences().getAll();
         for (Map.Entry<String, ?> entry : all.entrySet()) {
             if (entry.getKey().startsWith("Expense-")) {
@@ -226,6 +233,27 @@ public class Utils {
             }
         }
         return allExpenses;
+    }
+
+    public static List<String> getAllExpensesMonths() {
+        List<String> allExpenseMonths = new ArrayList<>();
+        Map<String, ?> all = Utils.getLocalStorageForPreferences().getAll();
+        for (Map.Entry<String, ?> entry : all.entrySet()) {
+            if (entry.getKey().startsWith("Expense-")) {
+                allExpenseMonths.add(entry.getKey());
+            }
+        }
+        return new ArrayList<>(new TreeSet<>(allExpenseMonths));
+    }
+
+    public static String[] getReadableMonthAndYear(String storageKey) {
+        String[] monthAndYearAsArray = new String[2];
+        String monthAndYear = storageKey.replace("Expense-", "");
+        String year = monthAndYear.substring(0, monthAndYear.indexOf("-"));
+        String month = monthAndYear.substring(monthAndYear.indexOf("-") + 1);
+        monthAndYearAsArray[0] = Utils.getReadableMonth(month);
+        monthAndYearAsArray[1] = year;
+        return monthAndYearAsArray;
     }
 
 }
