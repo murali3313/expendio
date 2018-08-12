@@ -2,6 +2,7 @@ package com.thriwin.expendio;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -57,7 +58,6 @@ public class ExpenseEditView extends LinearLayout {
         reason.setText(expense.getSpentForDisplayText());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.select_dialog_singlechoice, ExpenseTags.getSavedExpenseTags().getWords());
-        //Find TextView control
 
         reason.setThreshold(1);
         //Set the adapter

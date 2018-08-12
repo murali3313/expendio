@@ -34,6 +34,7 @@ public class MonthWiseExpenseAdd extends Activity {
         cancelButton = (Button) findViewById(R.id.discardExpenses);
 
         okButton.setOnClickListener(v -> {
+            ExpenseTimelineView.glowFor = expenses.getDateMonth();
             Utils.saveExpenses(monthWiseExpensesEdit.getExpenses());
             MonthWiseExpenseAdd.this.finish();
         });

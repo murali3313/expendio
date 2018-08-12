@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="180dp"
     android:layout_height="180dp"
     android:layout_centerVertical="true"
-    xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.thriwin.expendio.ExpenseMonthWiseBlock">
 
     <TextView
+        android:id="@+id/expenseBlockName"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
-        android:paddingTop="40dp"
         android:background="@drawable/expenses_block_border"
-        android:textColor="@color/primaryText"
         android:fontFamily="sans-serif"
-        android:textScaleX="1.5"
+        android:paddingTop="40dp"
         android:textAlignment="center"
-        android:id="@+id/expenseBlockName"/>
+        android:textColor="@color/primaryText"
+        android:textScaleX="1.5" />
 
 </LinearLayout>
 

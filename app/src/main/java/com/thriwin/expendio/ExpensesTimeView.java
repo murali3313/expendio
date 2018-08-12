@@ -37,7 +37,7 @@ public class ExpensesTimeView extends LinearLayout {
     LinearLayout tagsContainer;
     private Context context;
     private ExpenseTimelineView parentView;
-    Map.Entry<String, Expenses> expenses;
+    public Map.Entry<String, Expenses> expenses;
     List<String> timeLineColors = asList("#D8FFE1","#C39EBA","#FF83E1","#FFCECE","#F0DEFF");
 
     public ExpensesTimeView(Context context, @Nullable AttributeSet attrs, Map.Entry<String, Expenses> expenses,

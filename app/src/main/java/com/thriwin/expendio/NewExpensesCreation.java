@@ -40,8 +40,10 @@ public class NewExpensesCreation extends Activity {
         cancelButton = findViewById(R.id.discardExpenses);
 
         okButton.setOnClickListener(v -> {
+            ExpenseListener.glowFor = this.expenses.getStorageKey();
             saveExpenses(expenses.getExpenses());
             NewExpensesCreation.this.finish();
+
         });
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +59,6 @@ public class NewExpensesCreation extends Activity {
                 expenses.addNewExpense();
             }
         });
-
 
 
     }

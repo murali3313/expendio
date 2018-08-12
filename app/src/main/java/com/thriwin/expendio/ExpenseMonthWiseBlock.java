@@ -18,9 +18,11 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class ExpenseMonthWiseBlock extends LinearLayout {
     ObjectMapper obj = new ObjectMapper();
+    public Map.Entry<String, MonthWiseExpenses> expensesBlock;
 
     public ExpenseMonthWiseBlock(Context context, @Nullable AttributeSet attrs, Map.Entry<String, MonthWiseExpenses> expensesBlock, HomeScreenView homeScreenView, ExpenseListener expenseListener) {
         super(context, attrs);
+        this.expensesBlock = expensesBlock;
         inflate(context, R.layout.expense_month_block, this);
 
 

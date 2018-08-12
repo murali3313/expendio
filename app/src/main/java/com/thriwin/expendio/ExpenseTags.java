@@ -130,8 +130,6 @@ public class ExpenseTags {
                 wordAndTags.put(tagKey, new ArrayList<String>() {{
                     add(tagKey);
                 }});
-            } else {
-                wordAndTags.get(tagKey).add(tagKey);
             }
         }
         writeToPersistence(new ExpenseTag(wordAndTags));

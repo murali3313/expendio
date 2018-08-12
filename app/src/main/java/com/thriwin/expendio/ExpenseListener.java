@@ -19,6 +19,7 @@ import static com.thriwin.expendio.Utils.isNull;
 
 public class ExpenseListener extends CommonActivity implements NavigationView.OnNavigationItemSelectedListener {
     ExpenseTagsEditView tagEditView;
+    static String glowFor;
 
     @Override
     protected void onPostResume() {
@@ -140,6 +141,12 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
         BottomNavigationView bottomNavigation = findViewById(R.id.navigation);
         View barChart = findViewById(R.id.bar_chart);
         barChart.setVisibility(View.GONE);
+
+        if (!isNull(glowFor) && selectedDashboardView.equals(DashboardView.HOME)) {
+            homeScreenView.glow(glowFor);
+            glowFor = null;
+        }
+
         switch (dashboardView) {
             case HOME:
                 bottomNavigation.getMenu().findItem(R.id.navigation_home).setChecked(true);
@@ -180,7 +187,6 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
     public void loadDisplayAreaWithHomeScreen() {
         loadDisplayArea(DashboardView.HOME, getIntent());
     }
-
 
 
 }
