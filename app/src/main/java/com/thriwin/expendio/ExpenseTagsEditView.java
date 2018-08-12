@@ -1,6 +1,7 @@
 package com.thriwin.expendio;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -27,7 +28,7 @@ public class ExpenseTagsEditView extends FlowLayout implements IDisplayAreaView 
     }
 
     @Override
-    public void load(ExpenseListener expenseListener) {
+    public void load(CommonActivity expenseListener, Intent intent) {
         ExpenseTags expenseTags = ExpenseTags.getSavedExpenseTags();
         LinearLayout tagContainer = findViewById(R.id.tagsEditContainer);
         tagContainer.removeAllViews();

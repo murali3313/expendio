@@ -2,6 +2,7 @@ package com.thriwin.expendio;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,5 +31,9 @@ public class ExpenseTag {
     @JsonIgnore
     public boolean isEmpty() {
         return tags.isEmpty();
+    }
+
+    public List<String> getWords() {
+        return new ArrayList<>(this.tags.keySet());
     }
 }

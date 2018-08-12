@@ -3,16 +3,44 @@
     android:layout_width="395dp"
     android:layout_height="match_parent"
     android:gravity="top"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/bgColor">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Expense"/>
+        android:layout_height="35dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textSize="25sp"
+            android:text="Expense" />
+
+        <ImageButton
+            android:id="@+id/addExpense"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="35dp"
+            android:background="@mipmap/ic_add_expense" />
+
+        <ImageButton
+            android:id="@+id/addExpenseVoice"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="0dp"
+            android:background="@mipmap/ic_record_expense_white" />
+
+    </RelativeLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="350dp">
+
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">

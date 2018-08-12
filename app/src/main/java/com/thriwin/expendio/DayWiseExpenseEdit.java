@@ -2,8 +2,10 @@ package com.thriwin.expendio;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -30,9 +32,10 @@ public class DayWiseExpenseEdit extends Activity {
         this.expenses = Utils.getDeserializedExpenses(dayWiseExpenses);
 
         ExpensesEditView dayWiseExpensesEdit = findViewById(R.id.dayWiseExpensesEdit);
-        dayWiseExpensesEdit.populate(expenses, false, true);
+        dayWiseExpensesEdit.populate(expenses, false, true,this);
 
         okButton = findViewById(R.id.acceptedExpense);
+        ImageButton addExpense = findViewById(R.id.addExpense);
         cancelButton = (Button) findViewById(R.id.discardExpenses);
 
         okButton.setOnClickListener(v -> {
@@ -42,6 +45,13 @@ public class DayWiseExpenseEdit extends Activity {
         });
 
         cancelButton.setOnClickListener(v -> DayWiseExpenseEdit.this.finish());
+
+        addExpense.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dayWiseExpensesEdit.addNewExpense();
+            }
+        });
 
 
     }

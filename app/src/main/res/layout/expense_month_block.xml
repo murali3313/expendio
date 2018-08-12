@@ -4,7 +4,6 @@
     android:layout_height="180dp"
     android:layout_centerVertical="true"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/expense_border"
     tools:context="com.thriwin.expendio.ExpenseMonthWiseBlock">
 
     <TextView

@@ -48,7 +48,7 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
                 @Override
                 public void onClick(View v) {
                     Utils.deleteAMonthExpense(expensesBlock.getKey());
-                    expenseListener.loadDisplayArea(homeScreenView, DashboardView.HOME);
+                    expenseListener.loadDisplayArea(DashboardView.HOME, null);
                     mBottomSheetDialog.cancel();
                 }
             });

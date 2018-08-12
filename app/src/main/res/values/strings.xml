@@ -21,5 +21,6 @@
     <string name="downloadOptionIsNotEnabled">Please provide access for storage</string>
     <string name="selectFileToView">Touch any file to view</string>
     <string name="noteOnChartData">Please note: If an expense is under multiple tags then the expense will be counted under first tag in which it is associated. Eg say if pizza is tagged under food and party then it will be displayed under food section only.</string>
+    <string name="reason">Desc.</string>
 
 </resources>

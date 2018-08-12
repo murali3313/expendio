@@ -1,6 +1,7 @@
 package com.thriwin.expendio;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
@@ -21,7 +22,7 @@ public class HomeScreenView extends LinearLayout implements IDisplayAreaView {
         inflate(context, R.layout.home_screeen, this);
     }
 
-    public void load(ExpenseListener expenseListener) {
+    public void load(CommonActivity expenseListener, Intent intent) {
         SortedMap<String, MonthWiseExpenses> allExpensesMonthWise = Utils.getAllExpensesMonthWise();
         FlowLayout homeScreenContainer = findViewById(R.id.homeScreen);
         homeScreenContainer.removeAllViews();

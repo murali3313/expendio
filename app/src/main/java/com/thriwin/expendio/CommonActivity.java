@@ -1,6 +1,8 @@
 package com.thriwin.expendio;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,12 +12,19 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +38,7 @@ import java.util.List;
 
 import pl.droidsonroids.gif.GifImageButton;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.thriwin.expendio.ExpenseAudioStatements.CLEAR;
 import static com.thriwin.expendio.ExpenseAudioStatements.defaultEndOfStatement;
 
@@ -43,6 +53,13 @@ public class CommonActivity extends AppCompatActivity {
     private static TextView indicatorText;
     SwipeButton clearLastStatementSlider;
     SwipeButton stopStatementSlider;
+
+    HomeScreenView homeScreenView;
+    ExpenseAnalyticsView analyticsView;
+    NotificationView notificationView;
+
+    DashboardView selectedDashboardView;
+
 
     protected ExcelGenerator generator = new ExcelGenerator();
 
@@ -106,7 +123,7 @@ public class CommonActivity extends AppCompatActivity {
 
     }
 
-    private void listenExpense() {
+    private void listenExpense(View v) {
         sheetView = View.inflate(CommonActivity.this, R.layout.bottom_listening_indicator, null);
         mBottomSheetDialog = new BottomSheetDialog(CommonActivity.this);
         mBottomSheetDialog.setContentView(sheetView);
@@ -151,8 +168,12 @@ public class CommonActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View listenButton = this.findViewById(R.id.addExpenseVoice);
-        listenButton.setOnClickListener(v -> listenExpense());
+        listenButton.setOnClickListener(v -> listenExpense(v));
         expenseAudioListener = new ExpenseAudioListener(Utils.getLocalStorageForPreferences(), this);
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
     }
 
     protected void presentTheFileToTheUser(File file) {
@@ -202,4 +223,90 @@ public class CommonActivity extends AppCompatActivity {
         }
     }
 
+
+    static String itemSelected = "Home";
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Intent i = new Intent(getApplicationContext(), ExpenseListener.class);
+            i.addFlags(FLAG_ACTIVITY_NEW_TASK);
+            if (itemSelected.equalsIgnoreCase(item.getTitle().toString())) {
+                return true;
+            }
+
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    itemSelected = getResources().getString(R.string.title_home);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    i.putExtra("DISPLAY_VIEW", DashboardView.HOME.toString());
+                    ContextCompat.startActivity(getApplicationContext(), i, null);
+                    return true;
+                case R.id.navigation_analytics:
+                    itemSelected = getResources().getString(R.string.title_expense_analysis);
+                    i.putExtra("DISPLAY_VIEW", DashboardView.ANALYTICS.toString());
+                    i.putExtra("ANALYTICS_MONTH", getMonthForAnalytics());
+                    ContextCompat.startActivity(getApplicationContext(), i, null);
+                    return true;
+                case R.id.navigation_notifications:
+                    itemSelected = getResources().getString(R.string.title_notifications);
+                    i.putExtra("DISPLAY_VIEW", DashboardView.NOTIFICATION.toString());
+                    ContextCompat.startActivity(getApplicationContext(), i, null);
+                    return true;
+            }
+            return false;
+        }
+    };
+
+    protected String getMonthForAnalytics() {
+        return null;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (this instanceof ExpenseListener && itemSelected.equalsIgnoreCase("Home")) {
+            createDialog();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private void createDialog() {
+
+        AlertDialog.Builder alertDlg = new AlertDialog.Builder(this);
+        alertDlg.setMessage("Are you sure you want to exit?");
+        alertDlg.setCancelable(false); // We avoid that the dialong can be cancelled, forcing the user to choose one of the options
+        alertDlg.setPositiveButton("Yes", (dialog, id) -> CommonActivity.super.onBackPressed());
+
+        alertDlg.setNegativeButton("No", (dialog, which) -> {
+        });
+
+        alertDlg.create().show();
+    }
+
+    public static void setupParent(View view, Activity activity) {
+        //Set up touch listener for non-text box views to hide keyboard.
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard(activity);
+                    return false;
+                }
+            });
+        }
+        //If a layout container, iterate over children
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupParent(innerView, activity);
+            }
+        }
+    }
+
+    private static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
 }

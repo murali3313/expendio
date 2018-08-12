@@ -33,7 +33,7 @@
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="0dp"
-            android:background="@mipmap/ic_record_expense_white" />
+            android:background="@mipmap/ic_record_expense" />
 
     </RelativeLayout>
 
@@ -48,13 +48,15 @@
 
             <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingBottom="50dp">
 
 
                 <LinearLayout
                     android:id="@+id/displayArea"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                 </LinearLayout>

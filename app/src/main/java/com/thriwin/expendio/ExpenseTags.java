@@ -21,6 +21,7 @@ public class ExpenseTags {
     static ExpenseTag defaultTags = new ExpenseTag();
     private static SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
     static ObjectMapper objectMapper = new ObjectMapper();
+    private static ExpenseTags savedExpenseTags = null;
     private ExpenseTag tags;
 
     public ExpenseTags(ExpenseTag tags) {
@@ -56,24 +57,38 @@ public class ExpenseTags {
 
     public static Set<String> getAssociatedExpenseTags(List<String> words) {
         ExpenseTags tags = getSavedExpenseTags();
+        ArrayList<String> lowerCase = getLowerCase(words);
         Set<String> tagWords = new ArraySet<>();
-        for (String word : words) {
-            List<String> t = tags.tags.get(word.toLowerCase());
-            if (!isNull(t)) {
-                tagWords.addAll(t);
+        for (Map.Entry<String, List<String>> tagWord : tags.getTags().entrySet()) {
+            if (lowerCase.contains(tagWord.getKey().toLowerCase())) {
+                tagWords.addAll(tagWord.getValue());
             }
+        }
+
+        if (tagWords.isEmpty()) {
+            tagWords.add("Misc.");
         }
         return tagWords;
     }
 
-    public static ExpenseTags getSavedExpenseTags() {
-        try {
-            ExpenseTag expenseTag = objectMapper.readValue(localStorageForPreferences.getString(TAGS, "{}"), ExpenseTag.class);
-            return new ExpenseTags(expenseTag);
-        } catch (IOException e) {
-            e.printStackTrace();
+    private static ArrayList<String> getLowerCase(List<String> words) {
+        ArrayList<String> lowerCaseWords = new ArrayList<>();
+        for (String word : words) {
+            lowerCaseWords.add(word.toLowerCase());
         }
-        return null;
+        return lowerCaseWords;
+    }
+
+    public static ExpenseTags getSavedExpenseTags() {
+        if (isNull(savedExpenseTags)) {
+            try {
+                ExpenseTag expenseTag = objectMapper.readValue(localStorageForPreferences.getString(TAGS, "{}"), ExpenseTag.class);
+                savedExpenseTags = new ExpenseTags(expenseTag);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return savedExpenseTags;
     }
 
     public HashMap<String, List<String>> getTags() {
@@ -110,7 +125,17 @@ public class ExpenseTags {
                 }
             }
         }
+        for (String tagKey : allTagAndWords.keySet()) {
+            if (isNull(wordAndTags.get(tagKey))) {
+                wordAndTags.put(tagKey, new ArrayList<String>() {{
+                    add(tagKey);
+                }});
+            } else {
+                wordAndTags.get(tagKey).add(tagKey);
+            }
+        }
         writeToPersistence(new ExpenseTag(wordAndTags));
+        savedExpenseTags = null;
     }
 
     private static void writeToPersistence(Object wordAndTags) {
@@ -123,5 +148,9 @@ public class ExpenseTags {
         }
         edit.putString(TAGS, expenseTagsAsString);
         edit.apply();
+    }
+
+    public List<String> getWords() {
+        return this.tags.getWords();
     }
 }

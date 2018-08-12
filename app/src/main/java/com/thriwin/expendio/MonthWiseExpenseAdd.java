@@ -28,7 +28,7 @@ public class MonthWiseExpenseAdd extends Activity {
         this.expenses.add(new Expense(latestDate));
 
         ExpensesEditView monthWiseExpensesEdit = findViewById(R.id.monthWiseExpensesEdit);
-        monthWiseExpensesEdit.populate(expenses, true, true);
+        monthWiseExpensesEdit.populate(expenses, true, true, this);
 
         okButton = findViewById(R.id.acceptedExpense);
         cancelButton = (Button) findViewById(R.id.discardExpenses);

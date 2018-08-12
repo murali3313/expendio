@@ -1,5 +1,7 @@
 package com.thriwin.expendio;
 
+import android.content.Intent;
+
 interface IDisplayAreaView {
-    void load(ExpenseListener expenseListener);
+    void load(CommonActivity commonActivity, Intent intent);
 }

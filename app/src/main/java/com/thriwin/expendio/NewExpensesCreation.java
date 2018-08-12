@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,16 +16,15 @@ import java.util.List;
 
 import static com.thriwin.expendio.Utils.saveExpenses;
 import static com.thriwin.expendio.Utils.today;
-import static java.util.Arrays.asList;
 
 public class NewExpensesCreation extends Activity {
 
     Button okButton, cancelButton;
-    List<Expense> expenses;
+    Expenses expenses;
     ObjectMapper obj = new ObjectMapper();
 
     public NewExpensesCreation() {
-        this.expenses = asList(new Expense(new BigDecimal(0), today(), new ArrayList<>(), ""));
+        this.expenses = new Expenses(new Expense(new BigDecimal(0), today(), new ArrayList<>(), ""));
 
     }
 
@@ -34,7 +34,7 @@ public class NewExpensesCreation extends Activity {
         setContentView(R.layout.new_expenses);
 
         ExpensesEditView expenses = findViewById(R.id.newExpenses);
-        expenses.populate(this.expenses, true, false);
+        expenses.populate(this.expenses, true, false, this);
 
         okButton = findViewById(R.id.acceptedExpense);
         cancelButton = findViewById(R.id.discardExpenses);
@@ -48,6 +48,13 @@ public class NewExpensesCreation extends Activity {
             @Override
             public void onClick(View v) {
                 NewExpensesCreation.this.finish();
+            }
+        });
+        ImageButton addExpense = findViewById(R.id.addExpense);
+        addExpense.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expenses.addNewExpense();
             }
         });
 

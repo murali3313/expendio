@@ -2,7 +2,6 @@ package com.thriwin.expendio;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,53 +15,15 @@ import android.widget.LinearLayout;
 
 import java.io.File;
 
+import static com.thriwin.expendio.Utils.isNull;
+
 public class ExpenseListener extends CommonActivity implements NavigationView.OnNavigationItemSelectedListener {
-
-
-    HomeScreenView homeScreenView;
-    ExpenseAnalyticsView analyticsView;
-    NotificationView notificationView;
     ExpenseTagsEditView tagEditView;
-    DashboardView selectedDashboardView;
-
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    loadDisplayArea(homeScreenView, DashboardView.HOME);
-                    return true;
-                case R.id.navigation_analytics:
-                    loadDisplayArea(analyticsView, DashboardView.ANALYTICS);
-                    return true;
-                case R.id.navigation_notifications:
-                    loadDisplayArea(notificationView, DashboardView.NOTIFICATION);
-                    return true;
-            }
-            return false;
-        }
-    };
-
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        IDisplayAreaView dashboardView = this.homeScreenView;
-        switch (selectedDashboardView) {
-            case HOME:
-                dashboardView = homeScreenView;
-                break;
-            case ANALYTICS:
-                dashboardView = analyticsView;
-                break;
-            case NOTIFICATION:
-                dashboardView = notificationView;
-                break;
-        }
-        loadDisplayArea(dashboardView, selectedDashboardView);
+        loadDisplayArea(selectedDashboardView, getIntent());
     }
 
     @Override
@@ -81,43 +42,18 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         Utils.loadLocalStorageForPreferences(this.getApplicationContext());
-        homeScreenView = new HomeScreenView(ExpenseListener.this.getApplicationContext(), null, this);
-        analyticsView = new ExpenseAnalyticsView(ExpenseListener.this.getApplicationContext(), null);
-        notificationView = new NotificationView(ExpenseListener.this.getApplicationContext(), null);
-        tagEditView = new ExpenseTagsEditView(ExpenseListener.this.getApplicationContext(), null, this);
-        loadDisplayArea(homeScreenView, DashboardView.HOME);
+        homeScreenView = new HomeScreenView(getApplicationContext(), null, this);
+        analyticsView = new ExpenseAnalyticsView(getApplicationContext(), null);
+        notificationView = new NotificationView(getApplicationContext(), null);
+        tagEditView = new ExpenseTagsEditView(getApplicationContext(), null, this);
+
         super.onCreate(savedInstanceState);
-
-    }
-
-    public void loadDisplayAreaWithHomeScreen() {
-        loadDisplayArea(homeScreenView, DashboardView.HOME);
-    }
-
-    public void loadDisplayArea(IDisplayAreaView displayAreaView, DashboardView dashboardView) {
-        LinearLayout displayArea = findViewById(R.id.displayArea);
-        displayArea.removeAllViews();
-        displayArea.addView((View) displayAreaView);
-        displayAreaView.load(this);
-        selectedDashboardView = dashboardView;
-        BottomNavigationView bottomNavigation = findViewById(R.id.navigation);
-        View barChart = findViewById(R.id.bar_chart);
-        barChart.setVisibility(View.GONE);
-        switch (dashboardView) {
-            case HOME:
-                bottomNavigation.getMenu().findItem(R.id.navigation_home).setChecked(true);
-                break;
-            case ANALYTICS:
-                barChart.setVisibility(View.VISIBLE);
-                bottomNavigation.getMenu().findItem(R.id.navigation_analytics).setChecked(true);
-                break;
-            case NOTIFICATION:
-                bottomNavigation.getMenu().findItem(R.id.navigation_notifications).setChecked(true);
-                break;
-
+        String displayView = getIntent().getStringExtra("DISPLAY_VIEW");
+        if (isNull(displayView)) {
+            loadDisplayArea(DashboardView.HOME, getIntent());
+        } else {
+            loadDisplayArea(DashboardView.valueOf(displayView), getIntent());
         }
     }
 
@@ -167,7 +103,7 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_tags) {
-            loadDisplayArea(tagEditView, DashboardView.TAG_EDIT);
+            loadDisplayArea(DashboardView.TAG_EDIT, getIntent());
 
         } else if (id == R.id.nav_sms_keywords) {
 
@@ -193,4 +129,58 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
         File all_expenses = generator.genarateExcelForAllMonths(getBaseContext(), Utils.getAllExpensesMonthWise(), "All_Expenses");
         presentTheFileToTheUser(all_expenses);
     }
+
+    public void loadDisplayArea(DashboardView dashboardView, Intent intent) {
+        LinearLayout displayArea = findViewById(R.id.displayArea);
+        displayArea.removeAllViews();
+        IDisplayAreaView displayAreaView = getAppropriateView(dashboardView);
+        displayArea.addView((View) displayAreaView);
+        displayAreaView.load(this, intent);
+        selectedDashboardView = dashboardView;
+        BottomNavigationView bottomNavigation = findViewById(R.id.navigation);
+        View barChart = findViewById(R.id.bar_chart);
+        barChart.setVisibility(View.GONE);
+        switch (dashboardView) {
+            case HOME:
+                bottomNavigation.getMenu().findItem(R.id.navigation_home).setChecked(true);
+                itemSelected = getResources().getString(R.string.title_home);
+                break;
+            case ANALYTICS:
+                barChart.setVisibility(View.VISIBLE);
+                itemSelected = getResources().getString(R.string.title_expense_analysis);
+                bottomNavigation.getMenu().findItem(R.id.navigation_analytics).setChecked(true);
+                break;
+            case NOTIFICATION:
+                itemSelected = getResources().getString(R.string.title_notifications);
+                bottomNavigation.getMenu().findItem(R.id.navigation_notifications).setChecked(true);
+                break;
+
+        }
+    }
+
+    private IDisplayAreaView getAppropriateView(DashboardView dashboardView) {
+        IDisplayAreaView displayAreaView = homeScreenView;
+        switch (dashboardView) {
+            case HOME:
+                displayAreaView = homeScreenView;
+                break;
+            case ANALYTICS:
+                displayAreaView = analyticsView;
+                break;
+            case NOTIFICATION:
+                displayAreaView = notificationView;
+                break;
+            case TAG_EDIT:
+                displayAreaView = tagEditView;
+                break;
+        }
+        return displayAreaView;
+    }
+
+    public void loadDisplayAreaWithHomeScreen() {
+        loadDisplayArea(DashboardView.HOME, getIntent());
+    }
+
+
+
 }

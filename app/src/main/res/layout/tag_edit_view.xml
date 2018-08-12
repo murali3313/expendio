@@ -47,7 +47,7 @@
             android:id="@+id/tagWord"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:minWidth="200dp"
+            android:minWidth="150dp"
             android:maxLength="22"
              />
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -26,7 +27,7 @@ public class ExpenseAcceptance extends Activity {
         setContentView(R.layout.expense_acceptance);
 
         ExpensesEditView unapprovedExpenses = findViewById(R.id.unApprovedExpensesViaVoice);
-        unapprovedExpenses.populate(expenses, true, false);
+        unapprovedExpenses.populate(expenses, true, false, this);
 
         okButton = findViewById(R.id.acceptedExpense);
         cancelButton = findViewById(R.id.discardExpenses);
@@ -49,6 +50,14 @@ public class ExpenseAcceptance extends Activity {
             @Override
             public void onClick(View v) {
                 ExpenseAcceptance.this.finish();
+            }
+        });
+
+        ImageButton addExpense = findViewById(R.id.addExpense);
+        addExpense.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unapprovedExpenses.addNewExpense();
             }
         });
 

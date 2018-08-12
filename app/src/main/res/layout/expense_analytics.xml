@@ -1,47 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/expenseAnalytics"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
 
     <LinearLayout
-        android:id="@+id/pieChartContainer"
+        android:id="@+id/expenseAnalytics"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/monthSelector"
+            android:id="@+id/pieChartContainer"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:background="@drawable/item_border"
-            android:gravity="center"
-            android:orientation="horizontal"></LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/chart"
-            android:layout_width="400dp"
-            android:layout_height="400dp" />
+            <LinearLayout
+                android:id="@+id/monthSelector"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:orientation="horizontal"></LinearLayout>
 
-        <TextView
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/chart"
+                android:layout_width="360dp"
+                android:layout_height="400dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/noteOnChartData"
+                android:textStyle="italic" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/barChartContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/noteOnChartData"
-            android:textStyle="italic" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/primary_month_selector">
+
+                    <Spinner
+                        android:id="@+id/primaryMonth"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"></Spinner>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/comparing_month_selector">
+
+                    <Spinner
+                        android:id="@+id/comparingMonth"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"></Spinner>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tagSelector"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/groupedBarChart"
+                android:layout_width="400dp"
+                android:layout_height="350dp"
+                android:layout_marginTop="10dp" />
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/barChartContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/groupedBarChart"
-            android:layout_width="400dp"
-            android:layout_height="400dp" />
-    </LinearLayout>
-</LinearLayout>
-
+</ScrollView>

@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +34,7 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
     MonthWiseExpenses monthWiseExpenses;
     ObjectMapper obj = new ObjectMapper();
     String expenseKey;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +63,6 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
         loadTimeLineView(expenseKey);
         super.onCreate(savedInstanceState);
 
-
     }
 
     public void loadTimeLineView(String expenseKey) {
@@ -69,14 +71,14 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
         TextView monthWiseTotalExpenditure = findViewById(R.id.monthWiseTotalExpenditure);
         monthWiseTotalExpenditure.setText("Total expense : " + monthWiseExpenses.getTotalExpenditure());
 
-        LinearLayout timeMarker = findViewById(R.id.timeMarker);
+        LinearLayoutCompat timeMarker = findViewById(R.id.timeMarker);
         timeMarker.removeAllViews();
-        int i = 0;
+        int index = 0;
         for (String key : monthWiseExpenses.getSortedKeys()) {
             Map.Entry<String, Expenses> dayWiseExpense = monthWiseExpenses.getDayWiseExpenses(key);
-            ExpensesTimeView expensesTimeView = new ExpensesTimeView(getBaseContext(), null, dayWiseExpense, this, i % 2 == 0);
+            ExpensesTimeView expensesTimeView = new ExpensesTimeView(getBaseContext(), null, dayWiseExpense, this, index);
             timeMarker.addView(expensesTimeView);
-            i++;
+            index++;
         }
     }
 
@@ -84,6 +86,10 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
     protected void onPostResume() {
         super.onPostResume();
         loadTimeLineView(expenseKey);
+        BottomNavigationView bottomNavigation = findViewById(R.id.navigation);
+        bottomNavigation.getMenu().findItem(R.id.navigation_home).setChecked(false);
+        bottomNavigation.getMenu().findItem(R.id.navigation_analytics).setChecked(false);
+        bottomNavigation.getMenu().findItem(R.id.navigation_notifications).setChecked(false);
     }
 
 
@@ -174,5 +180,8 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
         presentTheFileToTheUser(file);
     }
 
-
+    @Override
+    protected String getMonthForAnalytics() {
+        return expenseKey;
+    }
 }

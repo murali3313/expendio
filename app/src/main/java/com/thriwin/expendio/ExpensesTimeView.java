@@ -2,6 +2,7 @@ package com.thriwin.expendio;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
@@ -18,11 +19,13 @@ import android.widget.TextView;
 
 import com.nex3z.flowlayout.FlowLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.thriwin.expendio.Utils.saveDayWiseExpenses;
+import static java.util.Arrays.asList;
 
 public class ExpensesTimeView extends LinearLayout {
 
@@ -35,10 +38,10 @@ public class ExpensesTimeView extends LinearLayout {
     private Context context;
     private ExpenseTimelineView parentView;
     Map.Entry<String, Expenses> expenses;
-
+    List<String> timeLineColors = asList("#D8FFE1","#C39EBA","#FF83E1","#FFCECE","#F0DEFF");
 
     public ExpensesTimeView(Context context, @Nullable AttributeSet attrs, Map.Entry<String, Expenses> expenses,
-                            ExpenseTimelineView parentView, boolean isEven) {
+                            ExpenseTimelineView parentView, int index) {
         super(context, attrs);
         this.context = context;
         this.parentView = parentView;
@@ -47,11 +50,10 @@ public class ExpensesTimeView extends LinearLayout {
         View inflate = inflater.inflate(R.layout.expenses_time_view, this);
         this.expenses = expenses;
         RelativeLayout timeMarkerContainer = findViewById(R.id.expenseTimeDay);
-        if (isEven) {
-            timeMarkerContainer.setBackgroundResource(R.color.colorAlternateDark1);
-        } else {
-            timeMarkerContainer.setBackgroundResource(R.color.colorAlternateDark2);
-        }
+
+        int colourIndex = index % timeLineColors.size();
+        timeMarkerContainer.setBackgroundColor(Color.parseColor(timeLineColors.get(colourIndex)));
+
         TextView totalExpenseView = findViewById(R.id.totalExpenseDayWise);
         totalExpenseView.setText(expenses.getValue().getTotalExpenditure());
 

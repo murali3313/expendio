@@ -1,6 +1,7 @@
 package com.thriwin.expendio;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -15,7 +16,7 @@ public class NotificationView extends LinearLayout implements IDisplayAreaView {
     }
 
     @Override
-    public void load(ExpenseListener expenseListener) {
+    public void load(CommonActivity expenseListener, Intent intent) {
         Expenses allUnAcceptedExpenses = new Expenses();
         RelativeLayout container = findViewById(R.id.unAcceptedExpensesContainer);
         container.removeAllViews();

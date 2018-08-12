@@ -247,6 +247,8 @@ public class Utils {
     }
 
     public static String[] getReadableMonthAndYear(String storageKey) {
+        if (isNull(storageKey))
+            return new String[]{"NA", "NA"};
         String[] monthAndYearAsArray = new String[2];
         String monthAndYear = storageKey.replace("Expense-", "");
         String year = monthAndYear.substring(0, monthAndYear.indexOf("-"));
@@ -256,4 +258,12 @@ public class Utils {
         return monthAndYearAsArray;
     }
 
+    public static String getStorageKeyFromText(String humanReadableText) {
+        String[] monthAndYear = humanReadableText.split("-");
+        if (monthAndYear.length != 2) {
+            return null;
+        }
+        int monthIndex = DateProcessor.allMonths.indexOf(monthAndYear[0].trim().toLowerCase());
+        return String.format("Expense-%s-%02d", monthAndYear[1].trim(), monthIndex + 1);
+    }
 }

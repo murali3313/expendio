@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:textAlignment="gravity"
-            android:textColor="@color/primaryLight" />
+            android:textColor="@color/primaryText" />
 
         <TextView
             android:id="@+id/totalExpenseDayWise"
@@ -27,13 +27,13 @@
             android:layout_marginLeft="-50dp"
             android:layout_marginTop="50dp"
             android:textAlignment="gravity"
-            android:textColor="@color/primaryLight" />
+            android:textColor="@color/primaryText" />
 
 
         <View
             android:layout_width="4dp"
             android:layout_height="match_parent"
-            android:background="@color/primaryLight"></View>
+            android:background="@color/line_color"></View>
 
         <ImageButton
             android:layout_width="25dp"
