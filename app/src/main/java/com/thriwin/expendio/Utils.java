@@ -25,10 +25,14 @@ import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 import static android.content.Context.MODE_PRIVATE;
+import static java.util.Arrays.asList;
 
 public class Utils {
 
     private static String defaultExpense = "DEFAULT_EXPENSE";
+    public static List<String> timeLineColors = asList("#D8FFE1","#C39EBA","#FF83E1","#FFCECE",
+            "#F0DEFF","#BAC39E","#BF97AB","#FF83A3",
+            "#E1FF83","#FFB5B5","#E0DEFF","#BF97AB");
 
     @NonNull
     public static String[] splitStatementBy(String expenseStatement, String delimiter) {

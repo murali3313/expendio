@@ -25,6 +25,7 @@ import java.util.Map;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.thriwin.expendio.Utils.saveDayWiseExpenses;
+import static com.thriwin.expendio.Utils.timeLineColors;
 import static java.util.Arrays.asList;
 
 public class ExpensesTimeView extends LinearLayout {
@@ -38,7 +39,6 @@ public class ExpensesTimeView extends LinearLayout {
     private Context context;
     private ExpenseTimelineView parentView;
     public Map.Entry<String, Expenses> expenses;
-    List<String> timeLineColors = asList("#D8FFE1","#C39EBA","#FF83E1","#FFCECE","#F0DEFF");
 
     public ExpensesTimeView(Context context, @Nullable AttributeSet attrs, Map.Entry<String, Expenses> expenses,
                             ExpenseTimelineView parentView, int index) {

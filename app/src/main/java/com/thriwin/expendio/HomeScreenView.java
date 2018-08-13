@@ -11,6 +11,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nex3z.flowlayout.FlowLayout;
@@ -31,31 +33,43 @@ public class HomeScreenView extends LinearLayout implements IDisplayAreaView {
 
     public void load(CommonActivity expenseListener, Intent intent) {
         allExpensesMonthWise = Utils.getAllExpensesMonthWise();
-        FlowLayout homeScreenContainer = findViewById(R.id.homeScreen);
+        TableLayout homeScreenContainer = findViewById(R.id.homeScreen);
         homeScreenContainer.removeAllViews();
-        for (Map.Entry<String, MonthWiseExpense> monthWise : allExpensesMonthWise.entrySet()) {
-            ExpenseMonthWiseBlock expenseMonthWiseBlock = new ExpenseMonthWiseBlock(getContext(), null, monthWise, this, this.expenseListener);
-            homeScreenContainer.addView(expenseMonthWiseBlock);
+        int i = 0;
+        TableRow tableRow = null;
 
+        for (Map.Entry<String, MonthWiseExpense> monthWise : allExpensesMonthWise.entrySet()) {
+            boolean isNewLayoutStarted = i % 2 == 0;
+            if (isNewLayoutStarted) {
+                tableRow = new TableRow(getContext(), null);
+                homeScreenContainer.addView(tableRow);
+            }
+            ExpenseMonthWiseBlock expenseMonthWiseBlock = new ExpenseMonthWiseBlock(getContext(), null, monthWise, this, this.expenseListener, i);
+            tableRow.addView(expenseMonthWiseBlock, isNewLayoutStarted ? 0 : 1);
+            i++;
         }
     }
 
 
     public void glow(String glowFor) {
-        FlowLayout homeScreenContainer = findViewById(R.id.homeScreen);
+        TableLayout homeScreenContainer = findViewById(R.id.homeScreen);
         Integer blockHeight = 180;
         for (int i = 0; i < homeScreenContainer.getChildCount(); i++) {
-            ExpenseMonthWiseBlock childAt = (ExpenseMonthWiseBlock) homeScreenContainer.getChildAt(i);
-            if (childAt.expensesBlock.getKey().equals(glowFor)) {
-                ScrollView scrollView = this.getRootView().findViewById(R.id.scrollParent);
-                ObjectAnimator.ofInt(scrollView, "scrollY", i / 2 * blockHeight).setDuration(2000).start();
-                AppCompatResources.getDrawable(getContext(), R.drawable.expense_border);
-                Drawable[] color = {AppCompatResources.getDrawable(getContext(), R.drawable.expenses_block_border_transition), AppCompatResources.getDrawable(getContext(), R.drawable.expenses_block_border)};
-                TransitionDrawable trans = new TransitionDrawable(color);
-                View viewById = childAt.findViewById(R.id.expenseBlockName);
-                viewById.setBackground(trans);
-                trans.startTransition(3500);
-                break;
+            TableRow tableRow = (TableRow) homeScreenContainer.getChildAt(i);
+            for (int j = 0; j < tableRow.getChildCount(); j++) {
+                ExpenseMonthWiseBlock childAt = (ExpenseMonthWiseBlock) tableRow.getChildAt(j);
+                if (childAt.expensesBlock.getKey().equals(glowFor)) {
+                    ScrollView scrollView = this.getRootView().findViewById(R.id.scrollParent);
+                    ObjectAnimator.ofInt(scrollView, "scrollY", i * blockHeight).setDuration(2000).start();
+                    AppCompatResources.getDrawable(getContext(), R.drawable.expense_border);
+                    View viewById = childAt.findViewById(R.id.expenseBlockName);
+                    Drawable[] color = {AppCompatResources.getDrawable(getContext(), R.drawable.expenses_day_block_border_transition),
+                            viewById.getBackground()};
+                    TransitionDrawable trans = new TransitionDrawable(color);
+                    viewById.setBackground(trans);
+                    trans.startTransition(4000);
+                    break;
+                }
             }
         }
     }
