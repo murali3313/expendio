@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.thriwin.expendio.Utils.showToast;
+
 public class ExpenseTagsEditView extends FlowLayout implements IDisplayAreaView {
     ObjectMapper obj = new ObjectMapper();
     private ExpenseListener expenseListener;
@@ -54,14 +56,10 @@ public class ExpenseTagsEditView extends FlowLayout implements IDisplayAreaView 
                 allTagAndWords.putAll(tagAndWords);
             }
             ExpenseTags.saveExpenseTags(allTagAndWords);
-            showToast(R.string.tagSavedSuccessfully);
+            showToast(expenseListener, R.string.tagSavedSuccessfully);
             this.expenseListener.loadDisplayAreaWithHomeScreen();
         });
     }
 
-    protected void showToast(int resourceId) {
-        Toast toast = Toast.makeText(expenseListener, resourceId, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.BOTTOM, 0, 500);
-        toast.show();
-    }
+
 }

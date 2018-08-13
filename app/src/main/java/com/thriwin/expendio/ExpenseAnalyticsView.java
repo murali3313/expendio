@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.thriwin.expendio.Utils.getAllExpensesMonths;
 import static com.thriwin.expendio.Utils.getReadableMonthAndYear;
 import static com.thriwin.expendio.Utils.isNull;
@@ -52,6 +54,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
     private long comparingMonthIndex = 0l;
     private Integer tagBatchSize = 3;
     private Integer selectedTagBatch = 1;
+    Map<String, Expenses> tagBasedExpenses;
 
     public ExpenseAnalyticsView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -112,7 +115,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
     }
 
     private Map<String, Expenses> getTagBasedExpenseFor(String primaryMonth) {
-        MonthWiseExpenses primaryMonthExpenses = Utils.getDeserializedMonthWiseExpenses(primaryMonth);
+        MonthWiseExpense primaryMonthExpenses = Utils.getDeserializedMonthWiseExpenses(primaryMonth);
         return primaryMonthExpenses.getTagBasedExpenses();
     }
 
@@ -311,9 +314,9 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
 
     private String loadCurrentMonthPieChart(String storageKeyForCurrentMonth) {
 
-        MonthWiseExpenses monthExpenses = Utils.getDeserializedMonthWiseExpenses(storageKeyForCurrentMonth);
+        MonthWiseExpense monthExpenses = Utils.getDeserializedMonthWiseExpenses(storageKeyForCurrentMonth);
 
-        Map<String, Expenses> tagBasedExpenses = monthExpenses.getTagBasedExpenses();
+        tagBasedExpenses = monthExpenses.getTagBasedExpenses();
         PieChart pieChart = findViewById(R.id.chart);
         List<PieEntry> entries = new ArrayList<>();
 
@@ -353,7 +356,11 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-
+        Intent i = new Intent(getContext(), DayWiseExpenseEdit.class);
+        i.addFlags(FLAG_ACTIVITY_NEW_TASK);
+        i.putExtra("DayWiseExpenses", Utils.getSerializedExpenses(tagBasedExpenses.get(((PieEntry) e).getLabel())));
+        i.putExtra("MakeDateEditable", true);
+        ContextCompat.startActivity(getContext(), i, null);
     }
 
     @Override

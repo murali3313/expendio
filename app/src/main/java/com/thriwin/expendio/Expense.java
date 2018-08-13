@@ -6,6 +6,7 @@ import android.util.ArraySet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import org.apache.commons.codec.binary.StringUtils;
 import org.apache.poi.util.StringUtil;
 
 import java.math.BigDecimal;
@@ -227,7 +228,7 @@ public class Expense {
     }
 
     public String getMonthYearHumanReadable() {
-        return new SimpleDateFormat("MMM-yyyy").format(this.spentOn);
+        return new SimpleDateFormat("MMM - yyyy").format(this.spentOn);
     }
 
     public String getValue(String headerColumn) {
@@ -240,7 +241,8 @@ public class Expense {
                 value = getExpenseStatement();
                 break;
             case "Amount":
-                value = getAmountSpent();
+                String amountSpent = getAmountSpent();
+                value = Utils.isEmpty(amountSpent) ? "0" : amountSpent;
                 break;
             case "Tags":
                 value = getConcatenatedTags();

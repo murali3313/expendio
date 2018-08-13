@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -24,7 +23,6 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -34,12 +32,12 @@ import java.io.File;
 import java.util.Map;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.thriwin.expendio.Utils.isNull;
+import static java.lang.String.format;
 
 public class ExpenseTimelineView extends CommonActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     Button okButton, cancelButton;
-    MonthWiseExpenses monthWiseExpenses;
+    MonthWiseExpense monthWiseExpense;
     ObjectMapper obj = new ObjectMapper();
     String expenseKey;
     static String glowFor;
@@ -50,6 +48,7 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
         setContentView(R.layout.expense_visualization_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -75,16 +74,25 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
     }
 
     public void loadTimeLineView(String expenseKey) {
-        this.monthWiseExpenses = Utils.getDeserializedMonthWiseExpenses(expenseKey);
+        this.monthWiseExpense = Utils.getDeserializedMonthWiseExpenses(expenseKey);
 
         TextView monthWiseTotalExpenditure = findViewById(R.id.monthWiseTotalExpenditure);
-        monthWiseTotalExpenditure.setText("Total expense : " + monthWiseExpenses.getTotalExpenditure());
+        monthWiseTotalExpenditure.setText("Total Spent \n" + monthWiseExpense.getTotalExpenditure());
+
+        TextView monthWiseExpenseLimitExceeded = findViewById(R.id.monthWiseExpenseLimitExceeded);
+        monthWiseExpenseLimitExceeded.setText(monthWiseExpense.monthlyLimitExceededDetails());
+
+        TextView monthWiseExpenseLimit = findViewById(R.id.monthWiseExpenseLimit);
+        monthWiseExpenseLimit.setText(format("Monthly Limit \n%s", monthWiseExpense.getMonthWiseExpenseLimit().toString()));
+
+        TextView monthDetails = findViewById(R.id.monthDetails);
+        monthDetails.setText(monthWiseExpense.getMonthYearHumanReadable());
 
         LinearLayoutCompat timeMarker = findViewById(R.id.timeMarker);
         timeMarker.removeAllViews();
         int index = 0;
-        for (String key : monthWiseExpenses.getSortedKeys()) {
-            Map.Entry<String, Expenses> dayWiseExpense = monthWiseExpenses.getDayWiseExpenses(key);
+        for (String key : monthWiseExpense.getSortedKeys()) {
+            Map.Entry<String, Expenses> dayWiseExpense = monthWiseExpense.getDayWiseExpenses(key);
             ExpensesTimeView expensesTimeView = new ExpensesTimeView(getBaseContext(), null, dayWiseExpense, this, index);
             timeMarker.addView(expensesTimeView);
             index++;
@@ -97,7 +105,7 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
             public void onGlobalLayout() {
                 timeMarker.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                for (int i = 0; i < monthWiseExpenses.getSortedKeys().size(); i++) {
+                for (int i = 0; i < monthWiseExpense.getSortedKeys().size(); i++) {
                     ExpensesTimeView childAt = (ExpensesTimeView) timeMarker.getChildAt(i);
                     if (childAt.expenses.getKey().equals(glowFor)) {
                         ScrollView scrollView = findViewById(R.id.scrollParent);
@@ -109,7 +117,6 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
                         TransitionDrawable trans = new TransitionDrawable(color);
                         viewById.setBackground(trans);
                         trans.startTransition(3500);
-
                         break;
                     }
                 }
@@ -122,10 +129,7 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
     protected void onPostResume() {
         super.onPostResume();
         loadTimeLineView(expenseKey);
-        BottomNavigationView bottomNavigation = findViewById(R.id.navigation);
-        bottomNavigation.getMenu().findItem(R.id.navigation_home).setChecked(false);
-        bottomNavigation.getMenu().findItem(R.id.navigation_analytics).setChecked(false);
-        bottomNavigation.getMenu().findItem(R.id.navigation_notifications).setChecked(false);
+
     }
 
 
@@ -171,6 +175,10 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
             downloadMonthWiseExpense();
 
         } else if (id == R.id.nav_expense_limit) {
+            Intent i = new Intent(ExpenseTimelineView.this, ExpenseMonthWiseLimit.class);
+            i.putExtra(ExpenseMonthWiseLimit.EXPENSE_STORAGE_KEY, expenseKey);
+            startActivity(i);
+
 
         } else if (id == R.id.nav_open_generated_excel) {
             openFolder();
@@ -183,8 +191,6 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
 
     private void downloadMonthWiseExpense() {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQ_CODE_DOWNLOAD);
-
-
     }
 
     @Override
@@ -211,8 +217,8 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
     }
 
     private void writeAndPresentTheFile() {
-        MonthWiseExpenses monthWiseExpenses = Utils.getDeserializedMonthWiseExpenses(expenseKey);
-        File file = generator.genarateExcelForMonthExpenses(getBaseContext(), monthWiseExpenses, monthWiseExpenses.getMonthYearHumanReadable());
+        MonthWiseExpense monthWiseExpense = Utils.getDeserializedMonthWiseExpenses(expenseKey);
+        File file = generator.genarateExcelForMonthExpenses(getBaseContext(), monthWiseExpense, monthWiseExpense.getMonthYearHumanReadable());
         presentTheFileToTheUser(file);
     }
 

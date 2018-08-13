@@ -17,15 +17,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static com.thriwin.expendio.Utils.getDefaultExpenseLimit;
 import static com.thriwin.expendio.Utils.isNull;
+import static java.lang.String.format;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MonthWiseExpenses {
+public class MonthWiseExpense {
 
     private HashMap<String, Expenses> dayWiseExpenses = new HashMap<>();
+    private BigDecimal monthWiseExpenseLimit;
 
     public Map.Entry<String, Expenses> getDayWiseExpenses(String key) {
         for (Map.Entry<String, Expenses> expensesEntry : dayWiseExpenses.entrySet()) {
@@ -86,7 +89,7 @@ public class MonthWiseExpenses {
             int startDayOfMonth = Expense.getStartDayOfMonth();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
             try {
-                return simpleDateFormat.parse(String.format("%d-%s", startDayOfMonth, monthAndYear)).getTime();
+                return simpleDateFormat.parse(format("%d-%s", startDayOfMonth, monthAndYear)).getTime();
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -133,5 +136,29 @@ public class MonthWiseExpenses {
             expenses.addAll(dayWiseExpense.getValue());
         }
         return expenses;
+    }
+
+    public BigDecimal getMonthWiseExpenseLimit() {
+        return isNull(this.monthWiseExpenseLimit) ? getDefaultExpenseLimit() : this.monthWiseExpenseLimit;
+    }
+
+    public String monthlyLimitExceededDetails() {
+        String limitDetails = "NA";
+        BigDecimal actualSpent = new BigDecimal(this.getTotalExpenditure());
+        BigDecimal monthWiseExpenseLimit = this.getMonthWiseExpenseLimit();
+        switch (actualSpent.compareTo(monthWiseExpenseLimit)) {
+            case 0:
+                limitDetails = "Limit reached";
+                break;
+            case -1:
+                limitDetails = format("Under limit by \n%s", monthWiseExpenseLimit.subtract(actualSpent).toString());
+                break;
+
+            case 1:
+                limitDetails = format("Above limit by \n%s", actualSpent.subtract(monthWiseExpenseLimit).toString());
+                break;
+
+        }
+        return limitDetails;
     }
 }

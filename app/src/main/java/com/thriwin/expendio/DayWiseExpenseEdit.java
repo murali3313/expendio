@@ -29,13 +29,13 @@ public class DayWiseExpenseEdit extends Activity {
         setContentView(R.layout.day_wise_expense_edit);
 
         String dayWiseExpenses = this.getIntent().getStringExtra("DayWiseExpenses");
+        boolean makeDateEditable = this.getIntent().getBooleanExtra("MakeDateEditable", false);
         this.expenses = Utils.getDeserializedExpenses(dayWiseExpenses);
 
         ExpensesEditView dayWiseExpensesEdit = findViewById(R.id.dayWiseExpensesEdit);
-        dayWiseExpensesEdit.populate(expenses, false, true,this);
+        dayWiseExpensesEdit.populate(expenses, makeDateEditable, true,this);
 
         okButton = findViewById(R.id.acceptedExpense);
-        ImageButton addExpense = findViewById(R.id.addExpense);
         cancelButton = (Button) findViewById(R.id.discardExpenses);
 
         okButton.setOnClickListener(v -> {
@@ -47,6 +47,7 @@ public class DayWiseExpenseEdit extends Activity {
 
         cancelButton.setOnClickListener(v -> DayWiseExpenseEdit.this.finish());
 
+        ImageButton addExpense = findViewById(R.id.addExpense);
         addExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

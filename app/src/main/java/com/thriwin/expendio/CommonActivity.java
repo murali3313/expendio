@@ -224,7 +224,7 @@ public class CommonActivity extends AppCompatActivity {
     }
 
 
-    static String itemSelected = "Home";
+    public static String itemSelected = "Home";
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -233,7 +233,7 @@ public class CommonActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Intent i = new Intent(getApplicationContext(), ExpenseListener.class);
             i.addFlags(FLAG_ACTIVITY_NEW_TASK);
-            if (itemSelected.equalsIgnoreCase(item.getTitle().toString())) {
+            if (!shouldRedirectToNewActivity(item)) {
                 return true;
             }
 
@@ -259,6 +259,10 @@ public class CommonActivity extends AppCompatActivity {
             return false;
         }
     };
+
+    public boolean shouldRedirectToNewActivity(@NonNull MenuItem item) {
+        return !itemSelected.equalsIgnoreCase(item.getTitle().toString()) || (!(CommonActivity.this instanceof ExpenseListener) && item.getTitle().toString().equals("Home"));
+    }
 
     protected String getMonthForAnalytics() {
         return null;
@@ -306,8 +310,12 @@ public class CommonActivity extends AppCompatActivity {
     }
 
     private static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        try {
+            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        } catch (Exception e) {
+
+        }
     }
 
 

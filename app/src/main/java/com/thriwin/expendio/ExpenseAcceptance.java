@@ -34,6 +34,7 @@ public class ExpenseAcceptance extends Activity {
         notNowButton = findViewById(R.id.notNowExpense);
 
         okButton.setOnClickListener(v -> {
+            ExpenseListener.glowFor = unapprovedExpenses.getExpenses().getStorageKey();
             Utils.saveExpenses(unapprovedExpenses.getExpenses());
             Utils.clearUnAcceptedExpense();
             ExpenseAcceptance.this.finish();
@@ -62,7 +63,6 @@ public class ExpenseAcceptance extends Activity {
         });
 
     }
-
 
 
 }

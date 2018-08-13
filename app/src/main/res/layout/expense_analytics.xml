@@ -14,7 +14,8 @@
             android:id="@+id/pieChartContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_gravity="center">
 
             <LinearLayout
                 android:id="@+id/monthSelector"
@@ -25,6 +26,7 @@
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/chart"
+                android:layout_gravity="center_horizontal"
                 android:layout_width="360dp"
                 android:layout_height="400dp" />
 
@@ -91,6 +93,7 @@
                 android:id="@+id/groupedBarChart"
                 android:layout_width="400dp"
                 android:layout_height="350dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp" />
         </LinearLayout>
     </LinearLayout>

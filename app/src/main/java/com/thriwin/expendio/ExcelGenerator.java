@@ -18,7 +18,6 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 
@@ -27,16 +26,16 @@ import static java.lang.String.format;
 public class ExcelGenerator {
 
 
-    public File genarateExcelForMonthExpenses(Context context, MonthWiseExpenses monthWiseExpenses, String fileName) {
+    public File genarateExcelForMonthExpenses(Context context, MonthWiseExpense monthWiseExpense, String fileName) {
         Workbook wb = new HSSFWorkbook();
-        createMonthWiseExpenseSheet(monthWiseExpenses, wb);
+        createMonthWiseExpenseSheet(monthWiseExpense, wb);
         File file = saveFile(context, fileName, wb);
         return file;
     }
 
-    public File genarateExcelForAllMonths(Context context, SortedMap<String, MonthWiseExpenses> allmonthWiseExpenses, String fileName) {
+    public File genarateExcelForAllMonths(Context context, SortedMap<String, MonthWiseExpense> allmonthWiseExpenses, String fileName) {
         Workbook wb = new HSSFWorkbook();
-        for (Map.Entry<String, MonthWiseExpenses> monthWiseExpenses : allmonthWiseExpenses.entrySet()) {
+        for (Map.Entry<String, MonthWiseExpense> monthWiseExpenses : allmonthWiseExpenses.entrySet()) {
             createMonthWiseExpenseSheet(monthWiseExpenses.getValue(), wb);
         }
 
@@ -44,10 +43,10 @@ public class ExcelGenerator {
         return file;
     }
 
-    private void createMonthWiseExpenseSheet(MonthWiseExpenses monthWiseExpenses, Workbook wb) {
-        Sheet sheet = wb.createSheet(monthWiseExpenses.getMonthYearHumanReadable());
-        createHeaderRow(wb, sheet, monthWiseExpenses.getTotalExpenditure());
-        createDataRows(wb, sheet, monthWiseExpenses);
+    private void createMonthWiseExpenseSheet(MonthWiseExpense monthWiseExpense, Workbook wb) {
+        Sheet sheet = wb.createSheet(monthWiseExpense.getMonthYearHumanReadable());
+        createHeaderRow(wb, sheet, monthWiseExpense.getTotalExpenditure());
+        createDataRows(wb, sheet, monthWiseExpense);
     }
 
     @NonNull
@@ -70,9 +69,9 @@ public class ExcelGenerator {
         return file;
     }
 
-    private void createDataRows(Workbook wb, Sheet sheet, MonthWiseExpenses monthWiseExpenses) {
+    private void createDataRows(Workbook wb, Sheet sheet, MonthWiseExpense monthWiseExpense) {
         Integer initialRows = 1;
-        for (Expenses dayWiseExpenses : monthWiseExpenses.getSortedDayWiseExpenses()) {
+        for (Expenses dayWiseExpenses : monthWiseExpense.getSortedDayWiseExpenses()) {
             for (int i = 0; i < dayWiseExpenses.size(); i++) {
                 Row row = sheet.createRow(i + initialRows);
                 Expense expense = dayWiseExpenses.get(i);

@@ -18,9 +18,9 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class ExpenseMonthWiseBlock extends LinearLayout {
     ObjectMapper obj = new ObjectMapper();
-    public Map.Entry<String, MonthWiseExpenses> expensesBlock;
+    public Map.Entry<String, MonthWiseExpense> expensesBlock;
 
-    public ExpenseMonthWiseBlock(Context context, @Nullable AttributeSet attrs, Map.Entry<String, MonthWiseExpenses> expensesBlock, HomeScreenView homeScreenView, ExpenseListener expenseListener) {
+    public ExpenseMonthWiseBlock(Context context, @Nullable AttributeSet attrs, Map.Entry<String, MonthWiseExpense> expensesBlock, HomeScreenView homeScreenView, ExpenseListener expenseListener) {
         super(context, attrs);
         this.expensesBlock = expensesBlock;
         inflate(context, R.layout.expense_month_block, this);
@@ -28,16 +28,15 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
 
         TextView blockName = findViewById(R.id.expenseBlockName);
         String[] readableMonthAndYear = Utils.getReadableMonthAndYear(expensesBlock.getKey());
-        blockName.setText(readableMonthAndYear[0] + "\n" + readableMonthAndYear[1] + "\n$$: " + expensesBlock.getValue().getTotalExpenditure());
+        String expenseLimit = String.format("\n %s", expensesBlock.getValue().monthlyLimitExceededDetails());
+        blockName.setText(readableMonthAndYear[0] + "\n" + readableMonthAndYear[1] + "\n$$: "
+                + expensesBlock.getValue().getTotalExpenditure() + expenseLimit);
         blockName.setTextAlignment(TEXT_ALIGNMENT_CENTER);
-        blockName.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context, ExpenseTimelineView.class);
-                i.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                i.putExtra("ExpenseKey", expensesBlock.getKey());
-                ContextCompat.startActivity(context, i, null);
-            }
+        blockName.setOnClickListener(v -> {
+            Intent i = new Intent(context, ExpenseTimelineView.class);
+            i.addFlags(FLAG_ACTIVITY_NEW_TASK);
+            i.putExtra("ExpenseKey", expensesBlock.getKey());
+            ContextCompat.startActivity(context, i, null);
         });
         blockName.setLongClickable(true);
         blockName.setOnLongClickListener(v -> {

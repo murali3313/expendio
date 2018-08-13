@@ -3,9 +3,7 @@ package com.thriwin.expendio;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Drawable.Callback;
 import android.graphics.drawable.TransitionDrawable;
 import android.support.annotation.Nullable;
 import android.support.v7.content.res.AppCompatResources;
@@ -23,7 +21,7 @@ import java.util.SortedMap;
 public class HomeScreenView extends LinearLayout implements IDisplayAreaView {
     ObjectMapper obj = new ObjectMapper();
     private ExpenseListener expenseListener;
-    SortedMap<String, MonthWiseExpenses> allExpensesMonthWise;
+    SortedMap<String, MonthWiseExpense> allExpensesMonthWise;
 
     public HomeScreenView(Context context, @Nullable AttributeSet attrs, ExpenseListener expenseListener) {
         super(context, attrs);
@@ -35,7 +33,7 @@ public class HomeScreenView extends LinearLayout implements IDisplayAreaView {
         allExpensesMonthWise = Utils.getAllExpensesMonthWise();
         FlowLayout homeScreenContainer = findViewById(R.id.homeScreen);
         homeScreenContainer.removeAllViews();
-        for (Map.Entry<String, MonthWiseExpenses> monthWise : allExpensesMonthWise.entrySet()) {
+        for (Map.Entry<String, MonthWiseExpense> monthWise : allExpensesMonthWise.entrySet()) {
             ExpenseMonthWiseBlock expenseMonthWiseBlock = new ExpenseMonthWiseBlock(getContext(), null, monthWise, this, this.expenseListener);
             homeScreenContainer.addView(expenseMonthWiseBlock);
 

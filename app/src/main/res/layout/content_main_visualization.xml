@@ -19,15 +19,15 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/monthWiseTotalExpenditure"
+                android:id="@+id/monthDetails"
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="0dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/total_expenses"
+                android:layout_marginLeft="10dp"
                 android:paddingLeft="20dp"
-                android:paddingTop="3dp"
-                android:textColor="@color/primaryLight" />
+                android:paddingTop="10dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <ImageButton
                 android:id="@+id/addExpenseInCurrentMonth"
@@ -48,19 +48,72 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/monthWiseTotalExpenditure"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/total_expenses"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="3dp"
+                android:textAlignment="center"
+                android:textColor="@color/primaryLight" />
+
+            <TextView
+                android:id="@+id/monthWiseExpenseLimit"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/total_expenses"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="3dp"
+                android:textAlignment="center"
+
+                android:textColor="@color/primaryLight" />
+
+            <TextView
+                android:id="@+id/monthWiseExpenseLimitExceeded"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/total_expenses"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="3dp"
+                android:textAlignment="center"
+
+                android:textColor="@color/primaryLight" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ScrollView
+                android:id="@+id/scrollParent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/scrollParent">
+                android:layout_height="match_parent">
 
                 <android.support.v7.widget.LinearLayoutCompat
                     android:id="@+id/timeMarker"
-                    android:paddingBottom="50dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingBottom="50dp">
 
                 </android.support.v7.widget.LinearLayoutCompat>
 

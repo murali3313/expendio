@@ -2,7 +2,9 @@ package com.thriwin.expendio;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -40,7 +42,13 @@ public class MonthWiseExpenseAdd extends Activity {
         });
 
         cancelButton.setOnClickListener(v -> MonthWiseExpenseAdd.this.finish());
-
+        ImageButton addExpense = findViewById(R.id.addExpense);
+        addExpense.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                monthWiseExpensesEdit.addNewExpense();
+            }
+        });
 
     }
 

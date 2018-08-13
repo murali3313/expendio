@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -16,8 +19,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NavigableSet;
-import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -26,6 +27,8 @@ import java.util.regex.Pattern;
 import static android.content.Context.MODE_PRIVATE;
 
 public class Utils {
+
+    private static String defaultExpense = "DEFAULT_EXPENSE";
 
     @NonNull
     public static String[] splitStatementBy(String expenseStatement, String delimiter) {
@@ -81,12 +84,12 @@ public class Utils {
         return expenses;
     }
 
-    public static MonthWiseExpenses getDeserializedMonthWiseExpenses(String expenseKey) {
+    public static MonthWiseExpense getDeserializedMonthWiseExpenses(String expenseKey) {
         String deserializedMonthWiseExpenses = Utils.getLocalStorageForPreferences().getString(expenseKey, "[]");
-        MonthWiseExpenses expenses = new MonthWiseExpenses();
+        MonthWiseExpense expenses = new MonthWiseExpense();
         try {
             ObjectMapper obj = new ObjectMapper();
-            expenses = obj.readValue(deserializedMonthWiseExpenses, new TypeReference<MonthWiseExpenses>() {
+            expenses = obj.readValue(deserializedMonthWiseExpenses, new TypeReference<MonthWiseExpense>() {
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -105,11 +108,11 @@ public class Utils {
         return expensesString;
     }
 
-    public static String getSerializedExpenses(MonthWiseExpenses monthWiseExpenses) {
+    public static String getSerializedExpenses(MonthWiseExpense monthWiseExpense) {
         String expensesString = null;
         try {
             ObjectMapper obj = new ObjectMapper();
-            expensesString = obj.writeValueAsString(monthWiseExpenses);
+            expensesString = obj.writeValueAsString(monthWiseExpense);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -135,10 +138,10 @@ public class Utils {
 
     public static void saveExpenses(Expenses expenses) {
         SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
-        Map<String, MonthWiseExpenses> allMonthWiseExpenses = new HashMap<>();
+        Map<String, MonthWiseExpense> allMonthWiseExpenses = new HashMap<>();
         expenses.sanitizeData();
         for (Expense expens : expenses) {
-            MonthWiseExpenses storedExpenses;
+            MonthWiseExpense storedExpenses;
             if (isNull(allMonthWiseExpenses.get(expens.getStorageKey()))) {
                 storedExpenses = getDeserializedMonthWiseExpenses(expens.getStorageKey());
                 allMonthWiseExpenses.put(expens.getStorageKey(), storedExpenses);
@@ -150,7 +153,7 @@ public class Utils {
         }
         SharedPreferences.Editor edit = localStorageForPreferences.edit();
 
-        for (Map.Entry<String, MonthWiseExpenses> allEditedExpense : allMonthWiseExpenses.entrySet()) {
+        for (Map.Entry<String, MonthWiseExpense> allEditedExpense : allMonthWiseExpenses.entrySet()) {
             edit.putString(allEditedExpense.getKey(), getSerializedExpenses(allEditedExpense.getValue()));
         }
         edit.apply();
@@ -166,7 +169,7 @@ public class Utils {
     public static void saveDayWiseExpenses(String storageKey, String dateMonth, Expenses expenses) {
         expenses.sanitizeData();
         SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
-        MonthWiseExpenses storedExpenses = getDeserializedMonthWiseExpenses(storageKey);
+        MonthWiseExpense storedExpenses = getDeserializedMonthWiseExpenses(storageKey);
         storedExpenses.updateExpenses(dateMonth, expenses);
 
         SharedPreferences.Editor edit = localStorageForPreferences.edit();
@@ -218,13 +221,13 @@ public class Utils {
         return false;
     }
 
-    public static SortedMap<String, MonthWiseExpenses> getAllExpensesMonthWise() {
-        SortedMap<String, MonthWiseExpenses> allExpenses = new TreeMap<>(Collections.reverseOrder());
+    public static SortedMap<String, MonthWiseExpense> getAllExpensesMonthWise() {
+        SortedMap<String, MonthWiseExpense> allExpenses = new TreeMap<>(Collections.reverseOrder());
         Map<String, ?> all = Utils.getLocalStorageForPreferences().getAll();
         for (Map.Entry<String, ?> entry : all.entrySet()) {
             if (entry.getKey().startsWith("Expense-")) {
                 try {
-                    MonthWiseExpenses expenses = ExpenseTags.objectMapper.readValue(all.get(entry.getKey()).toString(), new TypeReference<MonthWiseExpenses>() {
+                    MonthWiseExpense expenses = ExpenseTags.objectMapper.readValue(all.get(entry.getKey()).toString(), new TypeReference<MonthWiseExpense>() {
                     });
                     allExpenses.put(entry.getKey(), expenses);
                 } catch (IOException e) {
@@ -265,5 +268,37 @@ public class Utils {
         }
         int monthIndex = DateProcessor.allMonths.indexOf(monthAndYear[0].trim().toLowerCase());
         return String.format("Expense-%s-%02d", monthAndYear[1].trim(), monthIndex + 1);
+    }
+
+    public static BigDecimal getDefaultExpenseLimit() {
+        String defaultExpense = getLocalStorageForPreferences().getString(Utils.defaultExpense, "5000");
+        return new BigDecimal(defaultExpense);
+    }
+
+    public static void saveDefaultExpenseLimit(String defaultExpenseLimit) {
+        BigDecimal expenseLimit = new BigDecimal(isEmpty(defaultExpenseLimit.trim()) ? "0" : defaultExpenseLimit);
+        SharedPreferences.Editor edit = getLocalStorageForPreferences().edit();
+        edit.putString(defaultExpense, expenseLimit.toString());
+        edit.commit();
+
+    }
+
+    public static void showToast(Context cx, int resourceId) {
+        Toast toast = Toast.makeText(cx, resourceId, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.BOTTOM, 0, 500);
+        toast.show();
+    }
+
+    public static BigDecimal getMonthWiseExpenseLimit(String expenseStorageKey) {
+        return getDeserializedMonthWiseExpenses(expenseStorageKey).getMonthWiseExpenseLimit();
+    }
+
+    public static void saveExpenseLimit(String expenseStorageKey, String expenseLimit) {
+        MonthWiseExpense deserializedMonthWiseExpense = getDeserializedMonthWiseExpenses(expenseStorageKey);
+        deserializedMonthWiseExpense.setMonthWiseExpenseLimit(new BigDecimal(expenseLimit));
+        SharedPreferences.Editor edit = getLocalStorageForPreferences().edit();
+
+        edit.putString(expenseStorageKey, getSerializedExpenses(deserializedMonthWiseExpense));
+        edit.commit();
     }
 }

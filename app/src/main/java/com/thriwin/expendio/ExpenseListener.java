@@ -111,11 +111,20 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
         } else if (id == R.id.nav_download) {
             downloadAllExpenses();
 
-        } else if (id == R.id.nav_accept_expenses) {
+        } else if (id == R.id.nav_general_expense_limit) {
+            Intent i = new Intent(ExpenseListener.this, ExpenseDefaultLimit.class);
+            startActivity(i);
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_expendio_settings) {
 
-        } else if (id == R.id.nav_feedback) {
+
+        }
+//        else if (id == R.id.nav_accept_expenses) {
+//
+//        } else if (id == R.id.nav_send) {
+
+//        }
+        else if (id == R.id.nav_feedback) {
 
         } else if (id == R.id.nav_open_generated_excel) {
             openFolder();

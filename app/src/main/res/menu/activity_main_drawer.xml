@@ -9,6 +9,15 @@
             android:icon="@mipmap/ic_menu_tags"
             android:title="Tags" />
         <item
+            android:id="@+id/nav_general_expense_limit"
+            android:icon="@mipmap/ic_expense_limit"
+            android:title="Set default expense limit" />
+        <item
+            android:id="@+id/nav_expendio_settings"
+            android:icon="@mipmap/ic_expendio_settings"
+            android:title="Expendio Settings" />
+
+        <item
             android:id="@+id/nav_sms_keywords"
             android:icon="@mipmap/ic_menu_sms"
             android:title="SMS Keywords" />
@@ -25,14 +34,14 @@
 
     <item android:title="Communicate">
         <menu>
-            <item
-                android:id="@+id/nav_accept_expenses"
-                android:icon="@mipmap/ic_menu_accept_expense"
-                android:title="Accept Expense" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@mipmap/ic_menu_send_expense"
-                android:title="Send Expense" />
+            <!--<item-->
+            <!--android:id="@+id/nav_accept_expenses"-->
+            <!--android:icon="@mipmap/ic_menu_accept_expense"-->
+            <!--android:title="Accept Expense" />-->
+            <!--<item-->
+            <!--android:id="@+id/nav_send"-->
+            <!--android:icon="@mipmap/ic_menu_send_expense"-->
+            <!--android:title="Send Expense" />-->
             <item
                 android:id="@+id/nav_feedback"
                 android:icon="@mipmap/ic_menu_app_feedback"
