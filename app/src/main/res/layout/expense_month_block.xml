@@ -3,19 +3,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/monthBlockContainer"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="180dp"
     tools:context="com.thriwin.expendio.ExpenseMonthWiseBlock">
 
     <TextView
         android:id="@+id/expenseBlockName"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
+        android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
-        android:paddingTop="40dp"
+        android:paddingTop="20dp"
         android:textAlignment="center"
         android:textColor="@color/primaryText"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/expenseSpentValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="serifs"
+        android:textAlignment="center"
+        android:textStyle="bold|italic"
+        android:textColor="@color/primaryText"
         android:textScaleX="1.5" />
+
+    <TextView
+        android:id="@+id/expenseLimitValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:textAlignment="center"
+        android:textColor="@color/primaryText"
+        android:textStyle="italic"
+        android:textSize="15sp"/>
 
 </LinearLayout>
 
