@@ -9,9 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Expenses extends ArrayList<Expense> {
 
-    public Expenses(Expense e){
+    public Expenses(Expense e) {
         this.add(e);
     }
+
     public String getDateMonthHumanReadable() {
         if (!this.isEmpty())
             return this.get(0).getDateMonthHumanReadable();
@@ -54,6 +55,19 @@ public class Expenses extends ArrayList<Expense> {
     public void sanitizeData() {
         for (Expense expense : this) {
             expense.santiseData();
+        }
+    }
+
+    public void removeExpenseBasedOnTag(String tag) {
+        Expenses markForRemoval = new Expenses();
+        for (Expense expense : this) {
+            if (expense.getFirstAssociatedExpenseTag().equalsIgnoreCase(tag)) {
+                markForRemoval.add(expense);
+            }
+        }
+
+        for (Expense expense : markForRemoval) {
+            this.remove(expense);
         }
     }
 }

@@ -61,6 +61,10 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
 
     public void addExpense(View view) {
         Intent i = new Intent(ExpenseListener.this, NewExpensesCreation.class);
+        if (itemSelected.equalsIgnoreCase(getResources().getString(R.string.title_expense_analysis))) {
+            i.putExtra("SELECTED_STORAGE_KEY", analyticsView.selectedMonthStorageKey);
+
+        }
         startActivity(i);
     }
 
@@ -78,7 +82,7 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+//        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -106,7 +110,9 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
         if (id == R.id.nav_tags) {
             loadDisplayArea(DashboardView.TAG_EDIT, getIntent());
 
-        } else if (id == R.id.nav_sms_keywords) {
+        } else if (id == R.id.nav_usual_expenses) {
+            Intent i = new Intent(ExpenseListener.this, RecurringExpensesView.class);
+            startActivity(i);
 
         } else if (id == R.id.nav_download) {
             downloadAllExpenses();

@@ -24,5 +24,7 @@
     <string name="reason">Desc.</string>
     <string name="defaultExpenseLimit">Expense Limit:</string>
     <string name="expenseDefaultSuccessfully">Expense limit saved successfully</string>
+    <string name="recurring_expenses_title">Recurring expenses</string>
+    <string name="recurringExpenseNote">These expenses will not be automatically added, this will popup as a notification for you to review or discard.</string>
 
 </resources>

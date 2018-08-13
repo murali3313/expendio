@@ -36,7 +36,16 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
+            android:name=".RecurringExpensesView"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
             android:name=".DayWiseExpenseEdit"
+            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
+
+        <activity
+            android:name=".TagWiseExpenseEdit"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
 
         <activity
@@ -47,7 +56,7 @@
             android:name=".ExpenseDefaultLimit"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
 
-  <activity
+        <activity
             android:name=".ExpenseMonthWiseLimit"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
 

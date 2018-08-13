@@ -19,6 +19,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -48,7 +49,7 @@ import static java.util.Arrays.asList;
 public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaView, OnChartValueSelectedListener, AdapterView.OnItemSelectedListener {
     List<String> allExpensesMonths;
     boolean isDisplayingPieChart = true;
-    private String selectedMonthStorageKey;
+    public String selectedMonthStorageKey;
     private String comparingMonthStorageKey;
     private long selectedMonthIndex = 0l;
     private long comparingMonthIndex = 0l;
@@ -67,10 +68,8 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         selectedTagBatch = 1;
         allExpensesMonths = getAllExpensesMonths();
 
-        Expense expense = new Expense();
-        expense.setSpentOn(new Date());
         String storageKeyForCurrentMonth = !isNull(intent) && !isNull(intent.getStringExtra("ANALYTICS_MONTH")) ?
-                intent.getStringExtra("ANALYTICS_MONTH") : expense.getStorageKey();
+                intent.getStringExtra("ANALYTICS_MONTH") : isNull(selectedMonthStorageKey) ? allExpensesMonths.get(allExpensesMonths.size() - 1) : selectedMonthStorageKey;
 
         String currentMonth = loadCurrentMonthPieChart(storageKeyForCurrentMonth);
         loadMonthSelector(currentMonth);
@@ -211,11 +210,12 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
 
         set1.setColors(getResources().getColor(R.color.colorPrimary));
         set2.setColors(getResources().getColor(R.color.colorAlternateDark1));
+        set1.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        set2.setAxisDependency(YAxis.AxisDependency.RIGHT);
 
 
         barChart.getAxisLeft().setDrawGridLines(false);
         barChart.getXAxis().setDrawGridLines(false);
-
         barChart.groupBars(0f, groupSpace, barSpace);
         barChart.invalidate();
     }
@@ -356,9 +356,11 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-        Intent i = new Intent(getContext(), DayWiseExpenseEdit.class);
+        Intent i = new Intent(getContext(), TagWiseExpenseEdit.class);
         i.addFlags(FLAG_ACTIVITY_NEW_TASK);
-        i.putExtra("DayWiseExpenses", Utils.getSerializedExpenses(tagBasedExpenses.get(((PieEntry) e).getLabel())));
+        String label = ((PieEntry) e).getLabel();
+        i.putExtra("TagWiseExpenses", Utils.getSerializedExpenses(tagBasedExpenses.get(label)));
+        i.putExtra("TagKey", label);
         i.putExtra("MakeDateEditable", true);
         ContextCompat.startActivity(getContext(), i, null);
     }

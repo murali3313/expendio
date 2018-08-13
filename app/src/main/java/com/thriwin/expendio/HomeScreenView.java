@@ -62,7 +62,7 @@ public class HomeScreenView extends LinearLayout implements IDisplayAreaView {
                     ScrollView scrollView = this.getRootView().findViewById(R.id.scrollParent);
                     ObjectAnimator.ofInt(scrollView, "scrollY", i * blockHeight).setDuration(2000).start();
                     AppCompatResources.getDrawable(getContext(), R.drawable.expense_border);
-                    View viewById = childAt.findViewById(R.id.expenseBlockName);
+                    View viewById = childAt.findViewById(R.id.monthBlockContainer);
                     Drawable[] color = {AppCompatResources.getDrawable(getContext(), R.drawable.expenses_day_block_border_transition),
                             viewById.getBackground()};
                     TransitionDrawable trans = new TransitionDrawable(color);

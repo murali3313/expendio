@@ -27,7 +27,7 @@ public class ExpenseAcceptance extends Activity {
         setContentView(R.layout.expense_acceptance);
 
         ExpensesEditView unapprovedExpenses = findViewById(R.id.unApprovedExpensesViaVoice);
-        unapprovedExpenses.populate(expenses, true, false, this);
+        unapprovedExpenses.populate(expenses, true, false, this, false, null);
 
         okButton = findViewById(R.id.acceptedExpense);
         cancelButton = findViewById(R.id.discardExpenses);

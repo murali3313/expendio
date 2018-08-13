@@ -100,7 +100,7 @@ public class Expense {
         for (String s : spentFor) {
             spentForDisplayableText += s + " ";
         }
-        return spentForDisplayableText;
+        return Utils.isNull(spentForDisplayableText.trim()) ? getFirstAssociatedExpenseTag() : spentForDisplayableText;
     }
 
     @JsonIgnore

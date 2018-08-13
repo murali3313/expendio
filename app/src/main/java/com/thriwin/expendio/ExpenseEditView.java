@@ -33,7 +33,7 @@ public class ExpenseEditView extends LinearLayout {
     private boolean makeDatePermissibleWithinMonthLimit;
 
 
-    public ExpenseEditView(Context context, @Nullable AttributeSet attrs, Expense expens, ExpensesEditView parentView, boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit) {
+    public ExpenseEditView(Context context, @Nullable AttributeSet attrs, Expense expens, ExpensesEditView parentView, boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, boolean isTagEditDisabled, String tagText) {
         super(context, attrs);
         this.parentView = parentView;
         this.makeDatePermissibleWithinMonthLimit = makeDatePermissibleWithinMonthLimit;
@@ -48,14 +48,19 @@ public class ExpenseEditView extends LinearLayout {
         remove = findViewById(R.id.remove);
         tagsContainer = findViewById(R.id.tags);
 
+        spentOn.setText(expense.getSpentOnDisplayText());
+        amount.setText(expense.getAmountSpent().toString());
+        reason.setText(expense.getSpentForDisplayText());
 
+        if (isTagEditDisabled) {
+            reason.setText(tagText);
+            reason.setEnabled(false);
+            reason.setBackgroundResource(R.drawable.disabled);
+        }
         populateData();
     }
 
     private void populateData() {
-        spentOn.setText(expense.getSpentOnDisplayText());
-        amount.setText(expense.getAmountSpent().toString());
-        reason.setText(expense.getSpentForDisplayText());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.select_dialog_singlechoice, ExpenseTags.getSavedExpenseTags().getWords());
 

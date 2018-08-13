@@ -47,6 +47,16 @@ public class MonthWiseExpense {
             this.dayWiseExpenses.get(expens.getDateMonth()).add(expens);
         }
 
+        List<String> markForRemoval = new ArrayList<>();
+        for (Map.Entry<String, Expenses> expensesEntry : dayWiseExpenses.entrySet()) {
+            if (expensesEntry.getValue().size() == 0) {
+                markForRemoval.add(expensesEntry.getKey());
+            }
+        }
+
+        for (String s : markForRemoval) {
+            this.dayWiseExpenses.remove(s);
+        }
     }
 
     public void updateExpenses(String dateMonth, Expenses expensesList) {
@@ -61,6 +71,15 @@ public class MonthWiseExpense {
         }
         for (Expense expens : expensesList) {
             addExpense(expens);
+        }
+    }
+
+    public void updateTagWiseExpenses(String tag, Expenses expensesList) {
+        for (Map.Entry<String, Expenses> dayWiseExpenses : dayWiseExpenses.entrySet()) {
+            dayWiseExpenses.getValue().removeExpenseBasedOnTag(tag);
+        }
+        for (Expense expense : expensesList) {
+            addExpense(expense);
         }
     }
 
@@ -83,9 +102,9 @@ public class MonthWiseExpense {
         return "NA";
     }
 
-    public long getLatestDate(String expenseKey) {
+    public long getLatestDate() {
         if (getSortedKeys().isEmpty()) {
-            String monthAndYear = expenseKey.replace("Expense-", "");
+            String monthAndYear = getStorageKey().replace("Expense-", "");
             int startDayOfMonth = Expense.getStartDayOfMonth();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
             try {
@@ -151,11 +170,11 @@ public class MonthWiseExpense {
                 limitDetails = "Limit reached";
                 break;
             case -1:
-                limitDetails = format("Under limit by \n%s", monthWiseExpenseLimit.subtract(actualSpent).toString());
+                limitDetails = format("Below the Expense limit \n%s", monthWiseExpenseLimit.subtract(actualSpent).toString());
                 break;
 
             case 1:
-                limitDetails = format("Above limit by \n%s", actualSpent.subtract(monthWiseExpenseLimit).toString());
+                limitDetails = format("Above the Expense limit \n%s", actualSpent.subtract(monthWiseExpenseLimit).toString());
                 break;
 
         }

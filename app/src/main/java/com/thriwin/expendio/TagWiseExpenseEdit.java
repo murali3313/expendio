@@ -9,16 +9,14 @@ import android.widget.ImageButton;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static com.thriwin.expendio.Utils.getSerializedExpenses;
-
-public class DayWiseExpenseEdit extends Activity {
+public class TagWiseExpenseEdit extends Activity {
 
     EditText editText;
     Button okButton, cancelButton, notNowButton;
     Expenses expenses;
     ObjectMapper obj = new ObjectMapper();
 
-    public DayWiseExpenseEdit() {
+    public TagWiseExpenseEdit() {
 
 
     }
@@ -28,32 +26,28 @@ public class DayWiseExpenseEdit extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.day_wise_expense_edit);
 
-        String dayWiseExpenses = this.getIntent().getStringExtra("DayWiseExpenses");
+        String dayWiseExpenses = this.getIntent().getStringExtra("TagWiseExpenses");
+        String tagKey = this.getIntent().getStringExtra("TagKey");
         boolean makeDateEditable = this.getIntent().getBooleanExtra("MakeDateEditable", false);
         this.expenses = Utils.getDeserializedExpenses(dayWiseExpenses);
 
         ExpensesEditView dayWiseExpensesEdit = findViewById(R.id.dayWiseExpensesEdit);
-        dayWiseExpensesEdit.populate(expenses, makeDateEditable, true,this, false, null);
+        dayWiseExpensesEdit.populate(expenses, makeDateEditable, true, this, true, tagKey);
 
         okButton = findViewById(R.id.acceptedExpense);
         cancelButton = (Button) findViewById(R.id.discardExpenses);
 
         okButton.setOnClickListener(v -> {
             ExpenseTimelineView.glowFor = expenses.getDateMonth();
-            Utils.saveDayWiseExpenses(this.expenses.getStorageKey(),this.expenses.getDateMonth(), dayWiseExpensesEdit.getExpenses());
+            Utils.saveTagWiseExpenses(this.expenses.getStorageKey(), tagKey, dayWiseExpensesEdit.getExpenses());
 
-            DayWiseExpenseEdit.this.finish();
+            TagWiseExpenseEdit.this.finish();
         });
 
-        cancelButton.setOnClickListener(v -> DayWiseExpenseEdit.this.finish());
+        cancelButton.setOnClickListener(v -> TagWiseExpenseEdit.this.finish());
 
         ImageButton addExpense = findViewById(R.id.addExpense);
-        addExpense.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dayWiseExpensesEdit.addNewExpense();
-            }
-        });
+        addExpense.setOnClickListener(v -> dayWiseExpensesEdit.addNewExpense(true, tagKey));
 
 
     }

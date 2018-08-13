@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="5dp"
+    tools:context="com.thriwin.expendio.RecurringExpenseEditView">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/recurrence_expense_item_border"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/recurringTypeSelection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp">
+
+            <RadioButton
+                android:id="@+id/daily"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="Daily"
+                android:textSize="15dp" />
+
+            <RadioButton
+                android:id="@+id/specificDayOfWeek"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:checked="false"
+                android:text="Day of week"
+                android:textSize="15dp" />
+
+            <RadioButton
+                android:id="@+id/specificDayOfMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:checked="false"
+                android:text="Day of month"
+                android:textSize="15dp" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/dailyExpenseContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.thriwin.expendio.RecurringExpenseEditView
+                android:id="@+id/dailyExpenseData"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp">
+
+            </com.thriwin.expendio.RecurringExpenseEditView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dayOfWeekExpenseContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/daySelection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/circle"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="Sun"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/circle"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="Mon"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/circle"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="Tue"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/circle"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="Wed"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/circle"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="Thu"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/circle"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="Fri"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/circle"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="Sat"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <com.thriwin.expendio.RecurringExpenseEditView
+                android:id="@+id/dayOfWeekExpenseData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+            </com.thriwin.expendio.RecurringExpenseEditView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dayOfMonthExpenseContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <com.thriwin.expendio.RecurringExpenseEditView
+                android:id="@+id/dayOfMonthData"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp">
+
+            </com.thriwin.expendio.RecurringExpenseEditView>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

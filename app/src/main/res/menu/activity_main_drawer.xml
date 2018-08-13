@@ -18,9 +18,9 @@
             android:title="Expendio Settings" />
 
         <item
-            android:id="@+id/nav_sms_keywords"
+            android:id="@+id/nav_usual_expenses"
             android:icon="@mipmap/ic_menu_sms"
-            android:title="SMS Keywords" />
+            android:title="Recurring expenses" />
         <item
             android:id="@+id/nav_download"
             android:icon="@mipmap/ic_menu_excel"

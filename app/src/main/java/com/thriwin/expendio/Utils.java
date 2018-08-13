@@ -305,4 +305,20 @@ public class Utils {
         edit.putString(expenseStorageKey, getSerializedExpenses(deserializedMonthWiseExpense));
         edit.commit();
     }
+
+    public static RecurringExpenses getAllRecurringExpenses() {
+        return null;
+    }
+
+    public static void saveTagWiseExpenses(String storageKey, String tag, Expenses expenses) {
+        expenses.sanitizeData();
+        SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
+        MonthWiseExpense storedExpenses = getDeserializedMonthWiseExpenses(storageKey);
+        storedExpenses.updateTagWiseExpenses(tag, expenses);
+
+        SharedPreferences.Editor edit = localStorageForPreferences.edit();
+
+        edit.putString(storageKey, getSerializedExpenses(storedExpenses));
+        edit.apply();
+    }
 }

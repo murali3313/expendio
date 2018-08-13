@@ -64,7 +64,7 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
         addExpenseInCurrentMonth.setOnClickListener(v -> {
             Intent i = new Intent(getApplicationContext(), MonthWiseExpenseAdd.class);
             i.addFlags(FLAG_ACTIVITY_NEW_TASK);
-            i.putExtra("LatestDate", Utils.getDeserializedMonthWiseExpenses(expenseKey).getLatestDate(expenseKey));
+            i.putExtra("LatestDate", Utils.getDeserializedMonthWiseExpenses(expenseKey).getLatestDate());
             ContextCompat.startActivity(getApplicationContext(), i, null);
         });
 
@@ -146,7 +146,7 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+//        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 

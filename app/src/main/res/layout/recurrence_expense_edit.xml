@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" $$ " />
+
+    <EditText
+        android:id="@+id/amount"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="35dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/edit_outline"
+        android:inputType="numberDecimal"
+        android:maxLength="7"
+        android:paddingLeft="5dp"
+        android:textColor="@color/primaryText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:text="For: " />
+
+    <AutoCompleteTextView
+        android:id="@+id/reason"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="35dp"
+        android:layout_marginLeft="5dp"
+        android:height="25dp"
+        android:maxLines="1"
+        android:background="@drawable/edit_outline"
+        android:cursorVisible="true"
+        android:maxLength="40"
+        android:paddingLeft="5dp"
+        android:popupTheme="@android:style/ThemeOverlay.Material.Light"
+        android:textColor="@color/primaryText"
+        android:textColorHint="@color/colorPrimary"></AutoCompleteTextView>
+
+    <ImageButton
+        android:id="@+id/remove"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/ic_remove" />
+</LinearLayout>

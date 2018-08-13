@@ -5,7 +5,6 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -27,21 +26,21 @@ public class ExpensesEditView extends LinearLayout {
         this.context = context;
     }
 
-    public void populate(Expenses expenses, boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, Activity activity) {
+    public void populate(Expenses expenses, boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, Activity activity, boolean isTagEditDisabled, String tagText) {
         this.expenses = expenses;
         this.makeDateEditable = makeDateEditable;
         this.makeDatePermissibleWithinMonthLimit = makeDatePermissibleWithinMonthLimit;
         inflate(context, R.layout.expenses_edit, this);
         expenseEditViews = new ArrayList<>();
         for (Expense expens : expenses) {
-            addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, expens);
+            addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, expens,isTagEditDisabled, tagText);
         }
 
         setupParent(this.getRootView(), activity);
     }
 
-    private void addExpense(boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, Expense expens) {
-        ExpenseEditView expenseEditView = new ExpenseEditView(this.context, null, expens, this, makeDateEditable, makeDatePermissibleWithinMonthLimit);
+    private void addExpense(boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, Expense expens, boolean isTagEditDisabled, String tagText) {
+        ExpenseEditView expenseEditView = new ExpenseEditView(this.context, null, expens, this, makeDateEditable, makeDatePermissibleWithinMonthLimit,isTagEditDisabled,tagText);
         expenseEditViews.add(expenseEditView);
         addView(expenseEditView);
     }
@@ -59,6 +58,9 @@ public class ExpensesEditView extends LinearLayout {
     }
 
     public void addNewExpense() {
-        addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, new Expense(new Date(expenses.getSpentOnDate())));
+        addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, new Expense(new Date(expenses.getSpentOnDate())), false, null);
+    }
+    public void addNewExpense(boolean  isTagEditDisabled, String tagText) {
+        addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, new Expense(new Date(expenses.getSpentOnDate())), isTagEditDisabled, tagText);
     }
 }

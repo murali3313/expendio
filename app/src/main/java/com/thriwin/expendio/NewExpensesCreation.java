@@ -12,8 +12,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import static com.thriwin.expendio.Utils.isNull;
 import static com.thriwin.expendio.Utils.saveExpenses;
 import static com.thriwin.expendio.Utils.today;
 
@@ -23,18 +25,20 @@ public class NewExpensesCreation extends Activity {
     Expenses expenses;
     ObjectMapper obj = new ObjectMapper();
 
-    public NewExpensesCreation() {
-        this.expenses = new Expenses(new Expense(new BigDecimal(0), today(), new ArrayList<>(), ""));
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_expenses);
 
+        String selectedMonthKey = getIntent().getStringExtra("SELECTED_STORAGE_KEY");
+        Date selectedDate = today();
+        if (!isNull(selectedMonthKey)) {
+            selectedDate= new Date(Utils.getDeserializedMonthWiseExpenses(selectedMonthKey).getLatestDate());
+        }
+        this.expenses = new Expenses(new Expense(new BigDecimal(0), selectedDate, new ArrayList<>(), ""));
         ExpensesEditView expenses = findViewById(R.id.newExpenses);
-        expenses.populate(this.expenses, true, false, this);
+        expenses.populate(this.expenses, true, false, this, false, null);
 
         okButton = findViewById(R.id.acceptedExpense);
         cancelButton = findViewById(R.id.discardExpenses);
