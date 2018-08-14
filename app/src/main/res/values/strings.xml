@@ -26,5 +26,8 @@
     <string name="expenseDefaultSuccessfully">Expense limit saved successfully</string>
     <string name="recurring_expenses_title">Recurring expenses</string>
     <string name="recurringExpenseNote">These expenses will not be automatically added, this will popup as a notification for you to review or discard.</string>
+    <string name="daySelection">Select a day</string>
+    <string name="recurringExpensesSavedSuccessfully">Recurring expenses saved successfully</string>
+    <string name="mandatory">Mandatory</string>
 
 </resources>

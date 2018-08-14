@@ -3,18 +3,17 @@ package com.thriwin.expendio;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static com.thriwin.expendio.Utils.getReadableMonthAndYear;
-import static com.thriwin.expendio.Utils.showToast;
-
 public class RecurringExpensesView extends Activity {
     ObjectMapper obj = new ObjectMapper();
+    RecurringExpenseEditView dailyRecurringExpenseEditView;
+    RecurringExpenseEditView dayOfWeekRecurringExpenseEditView;
+    RecurringExpenseEditView dayOfMonthRecurringExpenseEditView;
+    LinearLayout recurringExpensesContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,15 +23,49 @@ public class RecurringExpensesView extends Activity {
     }
 
     public void load() {
-        Utils.getAllRecurringExpenses();
+
+
         ImageButton addRecurringExpenseButton = findViewById(R.id.addRecurringExpenses);
+        recurringExpensesContainer = findViewById(R.id.recurringExpenses);
         addRecurringExpenseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LinearLayout recurringExpensesContainer = findViewById(R.id.recurringExpenses);
-                RecurringExpenseView recurringExpenseView = new RecurringExpenseView(getApplicationContext(), null,RecurringExpensesView.this);
+                RecurringExpenseView recurringExpenseView = new RecurringExpenseView(getApplicationContext(), null, RecurringExpensesView.this, new RecurringExpense());
                 recurringExpensesContainer.addView(recurringExpenseView);
             }
         });
+        ImageButton saveRecurringExpenseButton = findViewById(R.id.saveRecurringExpenses);
+        saveRecurringExpenseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecurringExpenses recurringExpenses = new RecurringExpenses();
+                for (int i = 0; i < recurringExpensesContainer.getChildCount(); i++) {
+                    RecurringExpenseView recurringExpenseView = (RecurringExpenseView) recurringExpensesContainer.getChildAt(i);
+                    RecurringExpense recurringExpense = recurringExpenseView.getRecurringExpense();
+                    if (!Utils.isNull(recurringExpense)) {
+                        recurringExpenses.add(recurringExpense);
+                    }
+                }
+                Utils.saveRecurrigExpenses(recurringExpenses);
+                Utils.showToast(getApplicationContext(), R.string.recurringExpensesSavedSuccessfully);
+                loadRecurringExpenses();
+
+            }
+        });
+
+        loadRecurringExpenses();
+    }
+
+    private void loadRecurringExpenses() {
+        RecurringExpenses allRecurringExpenses = Utils.getAllRecurringExpenses();
+        recurringExpensesContainer.removeAllViews();
+        for (RecurringExpense recurringExpense : allRecurringExpenses) {
+            RecurringExpenseView recurringExpenseView = new RecurringExpenseView(getApplicationContext(), null, RecurringExpensesView.this, recurringExpense);
+            recurringExpensesContainer.addView(recurringExpenseView);
+        }
+    }
+
+    public void removeChild(View view) {
+        recurringExpensesContainer.removeView(view);
     }
 }

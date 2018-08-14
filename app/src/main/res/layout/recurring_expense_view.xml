@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_margin="5dp"
+    android:orientation="vertical"
     tools:context="com.thriwin.expendio.RecurringExpenseEditView">
 
     <LinearLayout
@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
                     android:layout_weight="1"
-                    android:background="@drawable/circle"
+                    android:background="@drawable/circle_selected"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:text="Sun"
@@ -172,6 +172,28 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textColor="@color/primaryText"
+                    android:text="@string/daySelection" />
+
+                <Spinner
+                    android:id="@+id/dayOfMonthSelection"
+                    android:layout_width="100dp"
+                    android:gravity="left"
+                    android:layout_height="wrap_content">
+
+                </Spinner>
+            </LinearLayout>
 
             <com.thriwin.expendio.RecurringExpenseEditView
                 android:id="@+id/dayOfMonthData"

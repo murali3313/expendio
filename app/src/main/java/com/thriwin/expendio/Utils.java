@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -306,10 +307,6 @@ public class Utils {
         edit.commit();
     }
 
-    public static RecurringExpenses getAllRecurringExpenses() {
-        return null;
-    }
-
     public static void saveTagWiseExpenses(String storageKey, String tag, Expenses expenses) {
         expenses.sanitizeData();
         SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
@@ -321,4 +318,29 @@ public class Utils {
         edit.putString(storageKey, getSerializedExpenses(storedExpenses));
         edit.apply();
     }
+
+    public static RecurringExpenses getAllRecurringExpenses() {
+        RecurringExpenses recurringExpenses = new RecurringExpenses();
+        try {
+            String recurringExpensesString = Utils.getLocalStorageForPreferences().getString("RECURRING_EXPENSES", "[]");
+            ObjectMapper obj = new ObjectMapper();
+            recurringExpenses = obj.readValue(recurringExpensesString, new TypeReference<RecurringExpenses>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return recurringExpenses;
+    }
+
+    public static void saveRecurrigExpenses(RecurringExpenses recurringExpenses) {
+
+        try {
+            ObjectMapper obj = new ObjectMapper();
+            String recurringExpenseString = obj.writeValueAsString(recurringExpenses);
+            getLocalStorageForPreferences().edit().putString("RECURRING_EXPENSES", recurringExpenseString).commit();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
