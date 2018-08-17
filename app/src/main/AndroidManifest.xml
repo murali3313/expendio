@@ -38,16 +38,13 @@
 
         <activity
             android:name=".RecurringExpensesView"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ExpendioSettingsView"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ExpenseTagsEditView"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".DayWiseExpenseEdit"
