@@ -107,6 +107,6 @@ public class ExpenseEditView extends LinearLayout {
         String amount = this.amount.getText().toString();
         expense.setExpenseStatement(reason.getText().toString());
         expense.setAmountSpent(new BigDecimal(Utils.isEmpty(amount) ? "0" : amount));
-        return expense;
+        return expense.isValid() ? expense : null;
     }
 }

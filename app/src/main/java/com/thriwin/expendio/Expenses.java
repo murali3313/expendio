@@ -70,4 +70,14 @@ public class Expenses extends ArrayList<Expense> {
             this.remove(expense);
         }
     }
+
+    public String getKeyForUnApprovedDailyExpense() {
+        return "DAILY_EXPENSES-" + this.getDateMonth();
+    }
+
+    public String getFirstAssociatedTag() {
+        if (!this.isEmpty())
+            return this.get(0).getFirstAssociatedExpenseTag();
+        return "NA";
+    }
 }

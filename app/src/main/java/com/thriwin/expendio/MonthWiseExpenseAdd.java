@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -49,7 +50,7 @@ public class MonthWiseExpenseAdd extends Activity {
                 monthWiseExpensesEdit.addNewExpense();
             }
         });
-
+        ((TextView)findViewById(R.id.monthWiseExpenseHeader)).setText("Expenses for "+ this.expenses.getMonthYearHumanReadable());
     }
 
 

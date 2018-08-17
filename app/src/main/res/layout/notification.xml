@@ -9,17 +9,21 @@
         android:id="@+id/noUnAcceptedExpensePresent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="28dp"
+        android:text="@string/unacceptedExpenseEmpty"
         android:textColor="@color/colorPrimaryDark"
-        android:text="@string/unacceptedExpenseEmpty"/>
+        android:textSize="28dp" />
 
-    <RelativeLayout
-        android:id="@+id/unAcceptedExpensesContainer"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-    </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/unAcceptedExpensesContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
 

@@ -2,6 +2,7 @@ package com.thriwin.expendio;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -25,15 +27,24 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
+import static android.content.Context.MODE_ENABLE_WRITE_AHEAD_LOGGING;
 import static android.content.Context.MODE_PRIVATE;
 import static java.util.Arrays.asList;
 
 public class Utils {
 
     private static String defaultExpense = "DEFAULT_EXPENSE";
-    public static List<String> timeLineColors = asList("#D8FFE1", "#C39EBA", "#FFCECE", "#FF83A3",
+    public static List<String> timeLineColors = asList("#C39EBA", "#FFCECE", "#FF83A3",
             "#F0DEFF", "#BAC39E", "#BF97AB", "#FFE6F9",
-            "#E1FF83", "#FFB5B5", "#E0DEFF", "#BF97AB");
+            "#E1FF83", "#FFB5B5", "#E0DEFF", "#BF97AB", "#F6F3A2", "#D8FFE1");
+
+    public static List<Integer> getTimeLineColors() {
+        List<Integer> colorsHex = new ArrayList<>();
+        for (String timeLineColor : timeLineColors) {
+            colorsHex.add(Color.parseColor(timeLineColor));
+        }
+        return colorsHex;
+    }
 
     @NonNull
     public static String[] splitStatementBy(String expenseStatement, String delimiter) {
@@ -202,12 +213,9 @@ public class Utils {
         return getDeserializedExpenses(unAcceptedExpenses);
     }
 
-    public static Expenses getUnAcceptedExpensesViaSMS() {
-        return new Expenses();
-    }
 
-    public static void clearUnAcceptedExpense() {
-        getLocalStorageForPreferences().edit().putString(UNACCEPTED_EXPENSES, "[]").apply();
+    public static void clearUnAcceptedExpense(String key) {
+        getLocalStorageForPreferences().edit().remove(key).apply();
     }
 
     public static boolean isExternalStorageReadOnly() {
@@ -329,6 +337,7 @@ public class Utils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return recurringExpenses;
     }
 
@@ -343,4 +352,58 @@ public class Utils {
         }
     }
 
+    public static void saveNotificationExpenses(Expenses todaysExpenses) {
+        try {
+            ObjectMapper obj = new ObjectMapper();
+            String dailyExpenses = obj.writeValueAsString(todaysExpenses);
+            getLocalStorageForPreferences().edit().putString("DAILY_EXPENSES-" + todaysExpenses.getDateMonth(), dailyExpenses).commit();
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<Expenses> getNotificationExpenses() {
+        ArrayList<Expenses> unApprovedDayWiseExpenses = new ArrayList<>();
+
+        ObjectMapper obj = new ObjectMapper();
+        Map<String, ?> all = getLocalStorageForPreferences().getAll();
+        for (Map.Entry<String, ?> entry : all.entrySet()) {
+            if (entry.getKey().startsWith("DAILY_EXPENSES-")) {
+                try {
+                    Expenses expenses = obj.readValue(all.get(entry.getKey()).toString(), new TypeReference<Expenses>() {
+                    });
+                    unApprovedDayWiseExpenses.add(expenses);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return unApprovedDayWiseExpenses;
+
+    }
+
+    public static boolean didRecurrenceChekerRanToday() {
+//        return false;
+        String checkerRanOn = Utils.getLocalStorageForPreferences().getString("CHECKER_RAN_ON", null);
+        String dateMonth = new SimpleDateFormat("MM-dd").format(today());
+        return !isNull(checkerRanOn) && checkerRanOn.equals(dateMonth);
+    }
+
+    public static void markRecurrenceCheckerRanToday() {
+        String dateMonth = new SimpleDateFormat("MM-dd").format(today());
+        Utils.getLocalStorageForPreferences().edit().putString("CHECKER_RAN_ON", dateMonth).apply();
+    }
+
+
+    public static String getUnApprovedExpensesCount() {
+        Integer i = 0;
+        Map<String, ?> all = getLocalStorageForPreferences().getAll();
+        for (String key : all.keySet()) {
+            if (key.startsWith("DAILY_EXPENSES-") || key.equals(UNACCEPTED_EXPENSES)) {
+                i++;
+            }
+        }
+        return i.toString();
+    }
 }

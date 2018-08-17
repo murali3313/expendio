@@ -9,17 +9,17 @@
 
     <TextView
         android:background="@drawable/rounded_border_accent_bg"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:paddingLeft="20dp"
         android:text="@string/selectFileToView"
-        android:textColor="@color/primaryText"
+        android:textColor="@color/white"
         android:textSize="26sp" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="350dp">
 
         <LinearLayout
             android:id="@+id/listFiles"

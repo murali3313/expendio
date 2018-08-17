@@ -15,7 +15,7 @@
     <string name="action_settings">Settings</string>
     <string name="unacceptedExpenseEmpty">No expenses for approval</string>
     <string name="audioUnApprovedExpenses">UnApproved expenses via Audio</string>
-    <string name="smsUnApprovedExpenses">UnApproved expenses via SMS</string>
+    <string name="notificationUnApprovedExpenses">Recurring expense on: </string>
     <string name="newTagDescriptionWord">Enter word under this tag:</string>
     <string name="tagSavedSuccessfully">Tags saved successfully</string>
     <string name="downloadOptionIsNotEnabled">Please provide access for storage</string>
@@ -29,5 +29,11 @@
     <string name="daySelection">Select a day</string>
     <string name="recurringExpensesSavedSuccessfully">Recurring expenses saved successfully</string>
     <string name="mandatory">Mandatory</string>
-
+    <string name="recurrenceExpensePendingForApproval">Expenses pending for approval</string>
+    <string name="expendioSettingsNote">Expendio - An Expense management app powered by just dictating your expenses. Thriwin Solutions</string>
+    <string name="noEmailAppAvailable">No email app available. Please manually send mail to muralidharan.nandhakumar@gmail.com</string>
+    <string name="startDayOfMonth">Expense start day</string>
+    <string name="startDayOfMonthNote">Please input a day from 1-28. If not it will be defaulted to day 1.</string>
+    <string name="notificationHour">Recurring expenses, Notification hour</string>
+    <string name="notificationHourNote">Please input value from 0 - 23, If not it will be defaulted to 8 PM i.e. 20 hrs</string>
 </resources>

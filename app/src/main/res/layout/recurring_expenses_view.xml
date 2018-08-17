@@ -36,7 +36,7 @@
                 android:layout_height="35dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="35dp"
-                android:background="@mipmap/ic_add_expense"
+                android:background="@drawable/ic_add_expense"
                 android:id="@+id/addRecurringExpenses"/>
 
             <ImageButton
@@ -44,7 +44,7 @@
                 android:layout_height="35dp"
                 android:layout_alignParentRight="true"
                 android:id="@+id/saveRecurringExpenses"
-                android:background="@mipmap/ic_tag_save" />
+                android:background="@drawable/ic_tag_save" />
         </RelativeLayout>
 
         <ScrollView

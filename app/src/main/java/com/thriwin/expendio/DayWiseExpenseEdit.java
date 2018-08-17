@@ -3,9 +3,11 @@ package com.thriwin.expendio;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -54,6 +56,8 @@ public class DayWiseExpenseEdit extends Activity {
                 dayWiseExpensesEdit.addNewExpense();
             }
         });
+
+        ((TextView)findViewById(R.id.dayWiseExpenseHeader)).setText("Expenses on "+ this.expenses.getDateMonthHumanReadable());
 
 
     }

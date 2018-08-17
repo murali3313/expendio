@@ -137,7 +137,9 @@ class RecurringExpenseView extends LinearLayout implements AdapterView.OnItemSel
         switch (selectedRecurringExpensetype) {
             case DAILY:
                 recurringExpense = dailyRecurringExpenseEditView.getRecurringExpense();
-                recurringExpense.setRecurringType(RecurringExpenseType.DAILY);
+                if (!isNull(recurringExpense)) {
+                    recurringExpense.setRecurringType(RecurringExpenseType.DAILY);
+                }
                 break;
             case SPECIFIC_DAY_OF_WEEK:
                 recurringExpense = dayOfWeekRecurringExpenseEditView.getRecurringExpense();

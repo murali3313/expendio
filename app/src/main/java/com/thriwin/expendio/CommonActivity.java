@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
@@ -19,12 +21,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -173,7 +178,29 @@ public class CommonActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
 
+    View badge;
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        BottomNavigationMenuView bottomNavigationMenuView =
+                (BottomNavigationMenuView) navigation.getChildAt(0);
+        View v = bottomNavigationMenuView.getChildAt(2);
+        BottomNavigationItemView itemView = (BottomNavigationItemView) v;
+
+        if(Utils.isNull(badge)) {
+            badge = LayoutInflater.from(this)
+                    .inflate(R.layout.feed_update_count, bottomNavigationMenuView, false);
+            ((TextView) badge.findViewById(R.id.notifications_badge)).setText(Utils.getUnApprovedExpensesCount());
+
+            itemView.addView(badge);
+        }else
+        {
+            ((TextView) badge.findViewById(R.id.notifications_badge)).setText(Utils.getUnApprovedExpensesCount());
+        }
     }
 
     protected void presentTheFileToTheUser(File file) {

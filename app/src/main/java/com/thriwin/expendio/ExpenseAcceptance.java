@@ -7,7 +7,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+
+import static com.thriwin.expendio.Utils.UNACCEPTED_EXPENSES;
+import static com.thriwin.expendio.Utils.isNull;
 
 public class ExpenseAcceptance extends Activity {
 
@@ -15,9 +21,9 @@ public class ExpenseAcceptance extends Activity {
     Button okButton, cancelButton, notNowButton;
     Expenses expenses;
     ObjectMapper obj = new ObjectMapper();
+    String keyToRemove;
 
     public ExpenseAcceptance() {
-        this.expenses = Utils.getUnAcceptedExpenses();
 
     }
 
@@ -25,6 +31,20 @@ public class ExpenseAcceptance extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.expense_acceptance);
+
+        String unacceptedExpenses = getIntent().getStringExtra("UNACCEPTED_EXPENSES");
+        keyToRemove = getIntent().getStringExtra("EXPENSE_KEY_TO_REMOVE");
+        keyToRemove = isNull(keyToRemove) ? UNACCEPTED_EXPENSES : keyToRemove;
+        if (isNull(unacceptedExpenses)) {
+            this.expenses = Utils.getUnAcceptedExpenses();
+        } else {
+            try {
+                this.expenses = obj.readValue(unacceptedExpenses, new TypeReference<Expenses>() {
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         ExpensesEditView unapprovedExpenses = findViewById(R.id.unApprovedExpensesViaVoice);
         unapprovedExpenses.populate(expenses, true, false, this, false, null);
@@ -36,13 +56,14 @@ public class ExpenseAcceptance extends Activity {
         okButton.setOnClickListener(v -> {
             ExpenseListener.glowFor = unapprovedExpenses.getExpenses().getStorageKey();
             Utils.saveExpenses(unapprovedExpenses.getExpenses());
-            Utils.clearUnAcceptedExpense();
+            Utils.clearUnAcceptedExpense(this.keyToRemove);
             ExpenseAcceptance.this.finish();
         });
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Utils.clearUnAcceptedExpense(ExpenseAcceptance.this.keyToRemove);
                 ExpenseAcceptance.this.finish();
             }
         });
@@ -62,6 +83,10 @@ public class ExpenseAcceptance extends Activity {
             }
         });
 
+    }
+
+    private String getKey() {
+        return this.keyToRemove;
     }
 
 

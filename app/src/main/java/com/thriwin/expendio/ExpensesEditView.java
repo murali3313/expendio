@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.thriwin.expendio.CommonActivity.setupParent;
+import static com.thriwin.expendio.Utils.isNull;
 
 public class ExpensesEditView extends LinearLayout {
 
@@ -33,14 +34,14 @@ public class ExpensesEditView extends LinearLayout {
         inflate(context, R.layout.expenses_edit, this);
         expenseEditViews = new ArrayList<>();
         for (Expense expens : expenses) {
-            addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, expens,isTagEditDisabled, tagText);
+            addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, expens, isTagEditDisabled, tagText);
         }
 
         setupParent(this.getRootView(), activity);
     }
 
     private void addExpense(boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, Expense expens, boolean isTagEditDisabled, String tagText) {
-        ExpenseEditView expenseEditView = new ExpenseEditView(this.context, null, expens, this, makeDateEditable, makeDatePermissibleWithinMonthLimit,isTagEditDisabled,tagText);
+        ExpenseEditView expenseEditView = new ExpenseEditView(this.context, null, expens, this, makeDateEditable, makeDatePermissibleWithinMonthLimit, isTagEditDisabled, tagText);
         expenseEditViews.add(expenseEditView);
         addView(expenseEditView);
     }
@@ -48,7 +49,9 @@ public class ExpensesEditView extends LinearLayout {
     public Expenses getExpenses() {
         Expenses expenses = new Expenses();
         for (ExpenseEditView expenseEditView : expenseEditViews) {
-            expenses.add(expenseEditView.getEditedExpense());
+            Expense editedExpense = expenseEditView.getEditedExpense();
+            if (!isNull(editedExpense))
+                expenses.add(editedExpense);
         }
         return expenses;
     }
@@ -60,7 +63,8 @@ public class ExpensesEditView extends LinearLayout {
     public void addNewExpense() {
         addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, new Expense(new Date(expenses.getSpentOnDate())), false, null);
     }
-    public void addNewExpense(boolean  isTagEditDisabled, String tagText) {
+
+    public void addNewExpense(boolean isTagEditDisabled, String tagText) {
         addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, new Expense(new Date(expenses.getSpentOnDate())), isTagEditDisabled, tagText);
     }
 }

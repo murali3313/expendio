@@ -78,18 +78,18 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         View pieChartContainer = findViewById(R.id.pieChartContainer);
 
         ImageButton barChartIcon = expenseListener.findViewById(R.id.bar_chart);
-        barChartIcon.setBackgroundResource(R.mipmap.ic_bar_chart);
+        barChartIcon.setBackgroundResource(R.drawable.ic_bar_chart);
         barChartIcon.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isDisplayingPieChart) {
-                    barChartIcon.setBackgroundResource(R.mipmap.ic_pie_chart);
+                    barChartIcon.setBackgroundResource(R.drawable.ic_pie_chart);
                     isDisplayingPieChart = false;
                     barChartContainer.setVisibility(VISIBLE);
                     pieChartContainer.setVisibility(GONE);
                     loadCurrentMonthBarChart(selectedMonthStorageKey, comparingMonthStorageKey);
                 } else {
-                    barChartIcon.setBackgroundResource(R.mipmap.ic_bar_chart);
+                    barChartIcon.setBackgroundResource(R.drawable.ic_bar_chart);
                     isDisplayingPieChart = true;
                     loadMonthSelector(selectedMonthStorageKey);
                     loadCurrentMonthPieChart(selectedMonthStorageKey);
@@ -132,9 +132,9 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         buttonParams.width = 80;
         buttonParams.height = 80;
         leftArrow.setLayoutParams(buttonParams);
-        leftArrow.setBackground(getResources().getDrawable(R.mipmap.ic_previous));
+        leftArrow.setBackground(getResources().getDrawable(R.drawable.ic_previous));
         ImageButton rightArrow = new ImageButton(getContext(), null);
-        rightArrow.setBackground(getResources().getDrawable(R.mipmap.ic_next));
+        rightArrow.setBackground(getResources().getDrawable(R.drawable.ic_next));
         rightArrow.setLayoutParams(buttonParams);
         int startFrom = tagBatchSize * tagBatch - tagBatchSize;
         int endAt = startFrom + tagBatchSize > allTags.size() - 1 ? allTags.size() - 1 : startFrom + tagBatchSize - 1;
@@ -259,9 +259,9 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         buttonParams.width = 100;
         buttonParams.height = 100;
         leftArrow.setLayoutParams(buttonParams);
-        leftArrow.setBackground(getResources().getDrawable(R.mipmap.ic_previous));
+        leftArrow.setBackground(getResources().getDrawable(R.drawable.ic_previous));
         ImageButton rightArrow = new ImageButton(getContext(), null);
-        rightArrow.setBackground(getResources().getDrawable(R.mipmap.ic_next));
+        rightArrow.setBackground(getResources().getDrawable(R.drawable.ic_next));
         rightArrow.setLayoutParams(buttonParams);
         int startFrom = indexOfSelectedMonth == 0 ? 0
                 : indexOfSelectedMonth < allExpensesMonths.size() - 1 ? indexOfSelectedMonth - 1
@@ -328,7 +328,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         List<Integer> colors = getColorsForPieChart();
 
         set.setColors(colors);
-        set.setValueTextColors(asList(getResources().getColor(R.color.white)));
+        set.setValueTextColors(asList(getResources().getColor(R.color.primaryText)));
         set.setValueTextSize(19);
         Description desc = new Description();
         desc.setText("Thriwin solutions.");
@@ -340,18 +340,13 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         PieData data = new PieData(set);
         pieChart.setData(data);
         pieChart.invalidate();
+        pieChart.setEntryLabelColor(getResources().getColor(R.color.primaryText));
         return storageKeyForCurrentMonth;
     }
 
     @NonNull
     private List<Integer> getColorsForPieChart() {
-        return new ArrayList<Integer>() {{
-            add(getResources().getColor(R.color.colorAccent));
-            add(getResources().getColor(R.color.colorAlternateDark1));
-            add(getResources().getColor(R.color.colorPrimary));
-            add(getResources().getColor(R.color.colorAlternateDark2));
-            add(getResources().getColor(R.color.colorPrimaryDark));
-        }};
+        return Utils.getTimeLineColors();
     }
 
     @Override

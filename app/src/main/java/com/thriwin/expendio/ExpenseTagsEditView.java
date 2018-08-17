@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,6 +60,7 @@ public class ExpenseTagsEditView extends FlowLayout implements IDisplayAreaView 
             showToast(expenseListener, R.string.tagSavedSuccessfully);
             this.expenseListener.loadDisplayAreaWithHomeScreen();
         });
+
     }
 
 

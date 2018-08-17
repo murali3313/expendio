@@ -6,7 +6,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_tags"
-            android:icon="@mipmap/ic_menu_tags"
+            android:icon="@drawable/ic_menu_tags"
             android:title="Tags" />
         <item
             android:id="@+id/nav_general_expense_limit"
@@ -19,7 +19,7 @@
 
         <item
             android:id="@+id/nav_usual_expenses"
-            android:icon="@mipmap/ic_menu_sms"
+            android:icon="@drawable/ic_menu_repeat"
             android:title="Recurring expenses" />
         <item
             android:id="@+id/nav_download"
@@ -34,18 +34,14 @@
 
     <item android:title="Communicate">
         <menu>
-            <!--<item-->
-            <!--android:id="@+id/nav_accept_expenses"-->
-            <!--android:icon="@mipmap/ic_menu_accept_expense"-->
-            <!--android:title="Accept Expense" />-->
-            <!--<item-->
-            <!--android:id="@+id/nav_send"-->
-            <!--android:icon="@mipmap/ic_menu_send_expense"-->
-            <!--android:title="Send Expense" />-->
             <item
                 android:id="@+id/nav_feedback"
                 android:icon="@mipmap/ic_menu_app_feedback"
                 android:title="App Feedback" />
+            <item
+                android:id="@+id/nav_rate_us"
+                android:icon="@drawable/ic_rate_us"
+                android:title="Rate us" />
         </menu>
     </item>
 

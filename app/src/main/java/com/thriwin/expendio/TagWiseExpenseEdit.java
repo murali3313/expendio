@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -49,7 +50,7 @@ public class TagWiseExpenseEdit extends Activity {
         ImageButton addExpense = findViewById(R.id.addExpense);
         addExpense.setOnClickListener(v -> dayWiseExpensesEdit.addNewExpense(true, tagKey));
 
-
+        ((TextView)findViewById(R.id.dayWiseExpenseHeader)).setText("Expenses for "+ this.expenses.getFirstAssociatedTag());
     }
 
 

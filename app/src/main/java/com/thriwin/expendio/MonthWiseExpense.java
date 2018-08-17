@@ -170,11 +170,11 @@ public class MonthWiseExpense {
                 limitDetails = "Limit reached";
                 break;
             case -1:
-                limitDetails = format("Below the Expense limit \n%s", monthWiseExpenseLimit.subtract(actualSpent).toString());
+                limitDetails = format("$$: %s to reach \nthe limit", monthWiseExpenseLimit.subtract(actualSpent).toString());
                 break;
 
             case 1:
-                limitDetails = format("Above the Expense limit \n%s", actualSpent.subtract(monthWiseExpenseLimit).toString());
+                limitDetails = format("Over spent by \n%s", actualSpent.subtract(monthWiseExpenseLimit).toString());
                 break;
 
         }

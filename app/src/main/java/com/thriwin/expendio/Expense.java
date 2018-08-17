@@ -134,7 +134,7 @@ public class Expense {
 
     @JsonIgnore
     public String getDateMonthHumanReadable() {
-        return new SimpleDateFormat("dd-MMM").format(this.spentOn);
+        return new SimpleDateFormat("dd - MMM").format(this.spentOn);
     }
 
     public Set<String> getAssociatedExpenseTags() {
@@ -251,5 +251,10 @@ public class Expense {
                 break;
         }
         return value;
+    }
+
+    @JsonIgnore
+    public boolean isValid() {
+        return !this.getAmountSpent().equals("") && !this.getAmountSpent().equals("0");
     }
 }

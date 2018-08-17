@@ -8,14 +8,16 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="40dp"
         android:orientation="horizontal"
         android:background="@color/colorPrimary">
         <TextView
             android:layout_width="match_parent"
+            android:id="@+id/monthWiseExpenseHeader"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="25sp"
+            android:paddingLeft="10dp"
             android:text="Expense" />
 
         <ImageButton
@@ -23,7 +25,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
-            android:background="@mipmap/ic_add_expense_white" />
+            android:background="@drawable/ic_add_expense_white" />
 
     </RelativeLayout>
 
@@ -31,7 +33,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp">
+        android:layout_height="400dp">
 
         <ScrollView
             android:layout_width="fill_parent"

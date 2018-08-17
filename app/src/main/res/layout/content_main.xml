@@ -12,6 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/headingText"/>
         <ImageButton
             android:layout_width="35dp"
             android:id="@+id/bar_chart"
@@ -24,7 +33,7 @@
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="35dp"
-            android:background="@mipmap/ic_add_expense"
+            android:background="@drawable/ic_add_expense"
             android:onClick="addExpense" />
 
         <ImageButton
@@ -33,7 +42,7 @@
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="0dp"
-            android:background="@mipmap/ic_record_expense" />
+            android:background="@drawable/ic_record_expense" />
 
     </RelativeLayout>
 

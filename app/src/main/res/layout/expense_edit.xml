@@ -24,7 +24,7 @@
             android:layout_height="match_parent"
             android:fontFamily="serif"
             android:paddingLeft="10dp"
-            android:paddingTop="20dp"
+            android:paddingTop="15dp"
             android:textAllCaps="true"
             android:textColor="@color/primaryText"
             android:textScaleX="1"
@@ -40,12 +40,12 @@
             android:inputType="numberDecimal"
             android:maxLength="7"
             android:paddingLeft="5dp"
-            android:paddingTop="10dp"
             android:textColor="@color/primaryText" />
 
         <LinearLayout
             android:id="@+id/tags"
             android:layout_width="200dp"
+            android:paddingLeft="10dp"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
@@ -66,7 +66,7 @@
             android:layout_height="match_parent"
             android:fontFamily="serif"
             android:paddingLeft="10dp"
-            android:paddingTop="20dp"
+            android:paddingTop="15dp"
             android:text="@string/reason"
             android:textAllCaps="true"
             android:textColor="@color/primaryText"
@@ -82,11 +82,9 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="55dp"
             android:height="25dp"
-            android:gravity="bottom"
             android:background="@drawable/edit_outline"
             android:maxLength="40"
             android:paddingLeft="10dp"
-            android:paddingTop="10dp"
             android:popupTheme="@android:style/ThemeOverlay.Material.Light"
             android:textColor="@color/primaryText"></AutoCompleteTextView>
 
@@ -94,9 +92,10 @@
             android:id="@+id/remove"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_marginTop="10dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
-            android:src="@drawable/ic_remove" />
+            android:background="@drawable/ic_remove" />
     </RelativeLayout>
 </LinearLayout>
 

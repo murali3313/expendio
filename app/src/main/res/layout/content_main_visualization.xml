@@ -35,14 +35,14 @@
                 android:layout_height="35dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="37dp"
-                android:background="@mipmap/ic_add_expense" />
+                android:background="@drawable/ic_add_expense" />
 
             <ImageButton
                 android:id="@+id/addExpenseVoice"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_alignParentRight="true"
-                android:background="@mipmap/ic_record_expense" />
+                android:background="@drawable/ic_record_expense" />
 
         </RelativeLayout>
 
