@@ -223,16 +223,6 @@ public class Utils {
         return o == null;
     }
 
-    public static List<Expenses> getUnAcceptedExpenses() {
-        String unAcceptedExpenses = Utils.getLocalStorageForPreferences()
-                .getString(UNACCEPTED_EXPENSES, "[]");
-        return getDeserializedExpensesList(unAcceptedExpenses);
-    }
-
-
-    public static void clearUnAcceptedExpense(String key) {
-        getLocalStorageForPreferences().edit().remove(key).apply();
-    }
 
     public static boolean isExternalStorageReadOnly() {
         String extStorageState = Environment.getExternalStorageState();
@@ -372,7 +362,7 @@ public class Utils {
         try {
             ObjectMapper obj = new ObjectMapper();
             String dailyExpenses = obj.writeValueAsString(todaysExpenses);
-            getLocalStorageForPreferences().edit().putString("DAILY_EXPENSES-" + todaysExpenses.getDateMonth(), dailyExpenses).commit();
+            getLocalStorageForPreferences().edit().putString("DAILY_EXPENSES-" + todaysExpenses.getDateMonth() , dailyExpenses).commit();
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -412,15 +402,36 @@ public class Utils {
     }
 
 
+    public static HashMap<String, Expenses> getAllUnAcceptedExpenses() {
+        HashMap<String, Expenses> unAcceptedExpenses = new HashMap<>();
+
+        ObjectMapper obj = new ObjectMapper();
+        Map<String, ?> all = getLocalStorageForPreferences().getAll();
+        for (Map.Entry<String, ?> entry : all.entrySet()) {
+            if (entry.getKey().startsWith(UNACCEPTED_EXPENSES + "-") || entry.getKey().startsWith("DAILY_EXPENSES-")) {
+                try {
+                    Expenses expenses = obj.readValue(all.get(entry.getKey()).toString(), new TypeReference<Expenses>() {
+                    });
+                    unAcceptedExpenses.put(entry.getKey(), expenses);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return unAcceptedExpenses;
+    }
+
+
+    public static void clearUnAcceptedExpense(String key) {
+        getLocalStorageForPreferences().edit().remove(key).apply();
+    }
+
     public static String getUnApprovedExpensesCount() {
         Integer i = 0;
         Map<String, ?> all = getLocalStorageForPreferences().getAll();
         for (String key : all.keySet()) {
-            if (key.startsWith("DAILY_EXPENSES-")) {
+            if (key.startsWith("DAILY_EXPENSES-") || key.startsWith(UNACCEPTED_EXPENSES + "-")) {
                 i++;
-            }
-            if (key.equals(UNACCEPTED_EXPENSES)) {
-                i = i + getDeserializedExpensesList(all.get(UNACCEPTED_EXPENSES).toString()).size();
             }
         }
 
@@ -428,15 +439,13 @@ public class Utils {
     }
 
     public static void saveUnacceptedExpenses(Expenses processedExpenses) {
-        List<Expenses> unAcceptedExpenses = getUnAcceptedExpenses();
-        unAcceptedExpenses.add(processedExpenses);
         SharedPreferences.Editor edit = Utils.getLocalStorageForPreferences().edit();
-        edit.putString(Utils.UNACCEPTED_EXPENSES, serializeExpenses(unAcceptedExpenses));
+        edit.putString(Utils.UNACCEPTED_EXPENSES + "-" + Math.random(), serializeExpenses(processedExpenses));
         edit.apply();
     }
 
     @Nullable
-    protected static String serializeExpenses(List<Expenses> processedExpenses) {
+    protected static String serializeExpenses(Expenses processedExpenses) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         try {

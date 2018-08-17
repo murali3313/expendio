@@ -29,8 +29,8 @@ public class RecurringExpensesAlarmReceiver extends BroadcastReceiver {
             }
         }
 
-        recurrenceExpenseNotifier(context);
         remindExpenseFilling(context);
+        recurrenceExpenseNotifier(context);
     }
 
 

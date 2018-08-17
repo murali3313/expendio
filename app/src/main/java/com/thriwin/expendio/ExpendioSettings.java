@@ -82,6 +82,7 @@ public class ExpendioSettings {
 
     @JsonIgnore
     public boolean isWithinNotificationHour() {
+//        return true;
         return new Date().getHours() == this.notificationHour;
     }
 

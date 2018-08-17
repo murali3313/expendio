@@ -6,10 +6,9 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NotificationView extends LinearLayout implements IDisplayAreaView {
 
@@ -20,31 +19,19 @@ public class NotificationView extends LinearLayout implements IDisplayAreaView {
 
     @Override
     public void load(CommonActivity expenseListener, Intent intent) {
-        Expenses allUnAcceptedExpenses = new Expenses();
         LinearLayout container = findViewById(R.id.unAcceptedExpensesContainer);
         container.removeAllViews();
-        List<Expenses> unAcceptedExpenses = Utils.getUnAcceptedExpenses();
-        for (Expenses unAcceptedExpens : unAcceptedExpenses) {
-            allUnAcceptedExpenses.addAll(unAcceptedExpens);
-        }
-        if (!unAcceptedExpenses.isEmpty()) {
-            for (Expenses expenses : unAcceptedExpenses) {
-                container.addView(new UnAcceptedExpensesBaseView(getContext(), null, expenses, "UnApproved expenses via Audio", Utils.UNACCEPTED_EXPENSES));
-            }
-        }
+        HashMap<String, Expenses> unAcceptedExpenses = Utils.getAllUnAcceptedExpenses();
 
-        ArrayList<Expenses> notificationExpenses = Utils.getNotificationExpenses();
-        for (Expenses notificationExpens : notificationExpenses) {
-            allUnAcceptedExpenses.addAll(notificationExpens);
-        }
-        if (!notificationExpenses.isEmpty()) {
-            for (Expenses notificationExpens : notificationExpenses) {
-                container.addView(new UnAcceptedExpensesBaseView(getContext(), null, notificationExpens, "Recurring expense on: " + notificationExpens.getDateMonthHumanReadable(), notificationExpens.getKeyForUnApprovedDailyExpense()));
+        if (!unAcceptedExpenses.isEmpty()) {
+            for (Map.Entry<String, Expenses> expenses : unAcceptedExpenses.entrySet()) {
+                String expenseHeader = expenses.getKey().startsWith(Utils.UNACCEPTED_EXPENSES) ? "UnApproved expenses via Audio" : "Recurring expense on: "+ expenses.getValue().getDateMonthHumanReadable();
+                container.addView(new UnAcceptedExpensesBaseView(getContext(), null, expenses.getValue(), expenseHeader, expenses.getKey()));
             }
         }
 
         View viewById = findViewById(R.id.noUnAcceptedExpensePresent);
-        viewById.setVisibility(allUnAcceptedExpenses.size() == 0 ? VISIBLE : GONE);
+        viewById.setVisibility(unAcceptedExpenses.size() == 0 ? VISIBLE : GONE);
 
 
     }
