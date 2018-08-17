@@ -26,7 +26,7 @@ public class RecurringExpenseEditView extends LinearLayout {
         inflater.inflate(R.layout.recurrence_expense_edit, this);
         amount = findViewById(R.id.amount);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.select_dialog_singlechoice, ExpenseTags.getSavedExpenseTags().getWords());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, ExpenseTags.getSavedExpenseTags().getWords());
         reason = findViewById(R.id.reason);
         reason.setThreshold(1);
         reason.setAdapter(adapter);
@@ -60,4 +60,6 @@ public class RecurringExpenseEditView extends LinearLayout {
         amount.setText(recurringExpense.getAmount().toString());
         reason.setText(recurringExpense.getReason());
     }
+
+
 }

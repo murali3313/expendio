@@ -27,35 +27,37 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/defaultExpenseLimit"
             android:textColor="@color/colorPrimary"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:text="@string/defaultExpenseLimit" />
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/monthWiseExpenseLimit"
             android:layout_width="200dp"
             android:layout_height="30dp"
-            android:maxLength="9"
             android:layout_marginLeft="10dp"
-            android:paddingLeft="10dp"
             android:background="@drawable/edit_outline"
+            android:inputType="numberDecimal"
+            android:maxLength="9"
+            android:paddingLeft="10dp"
             android:textColor="@color/primaryText"
-            android:inputType="numberDecimal" />
+            android:textCursorDrawable="@null" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/acceptExpenseLimit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Accept" />
+            android:text="Accept"
+            android:background="@color/colorPrimary"/>
 
         <Button
             android:id="@+id/discardExpenseLimit"
@@ -63,6 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
+            android:background="@color/colorAlternateDark2"
             android:text="Discard" />
     </LinearLayout>
 

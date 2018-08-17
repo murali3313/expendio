@@ -27,11 +27,12 @@ public class RecurringExpensesView extends Activity {
 
         ImageButton addRecurringExpenseButton = findViewById(R.id.addRecurringExpenses);
         recurringExpensesContainer = findViewById(R.id.recurringExpenses);
+        recurringExpensesContainer.removeAllViews();
         addRecurringExpenseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RecurringExpenseView recurringExpenseView = new RecurringExpenseView(getApplicationContext(), null, RecurringExpensesView.this, new RecurringExpense());
-                recurringExpensesContainer.addView(recurringExpenseView);
+                recurringExpensesContainer.addView(recurringExpenseView, 0);
             }
         });
         ImageButton saveRecurringExpenseButton = findViewById(R.id.saveRecurringExpenses);
@@ -67,5 +68,10 @@ public class RecurringExpensesView extends Activity {
 
     public void removeChild(View view) {
         recurringExpensesContainer.removeView(view);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
     }
 }

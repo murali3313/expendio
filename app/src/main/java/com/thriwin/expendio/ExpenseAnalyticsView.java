@@ -56,10 +56,17 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
     private Integer tagBatchSize = 3;
     private Integer selectedTagBatch = 1;
     Map<String, Expenses> tagBasedExpenses;
+    PieChart pieChart;
+    BarChart barChart;
 
     public ExpenseAnalyticsView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.expense_analytics, this);
+        pieChart = findViewById(R.id.chart);
+        barChart = findViewById(R.id.groupedBarChart);
+
+        pieChart.setNoDataTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        barChart.setNoDataTextColor(getResources().getColor(R.color.colorPrimaryDark));
 
     }
 
@@ -67,6 +74,9 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
     public void load(CommonActivity expenseListener, Intent intent) {
         selectedTagBatch = 1;
         allExpensesMonths = getAllExpensesMonths();
+        if(allExpensesMonths.size()==0){
+            return;
+        }
 
         String storageKeyForCurrentMonth = !isNull(intent) && !isNull(intent.getStringExtra("ANALYTICS_MONTH")) ?
                 intent.getStringExtra("ANALYTICS_MONTH") : isNull(selectedMonthStorageKey) ? allExpensesMonths.get(allExpensesMonths.size() - 1) : selectedMonthStorageKey;
@@ -172,7 +182,6 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
     }
 
     private void loadBarChart(List<String> selectedTags, Map<String, Expenses> primaryTagBasedExpenses, Map<String, Expenses> comparingTagBasedExpenses) {
-        BarChart barChart = findViewById(R.id.groupedBarChart);
         List<BarEntry> primaryMonthEntries = new ArrayList<>();
         List<BarEntry> comparingMonthEntries = new ArrayList<>();
         ArrayList<String> groupTitles = new ArrayList<String>();
@@ -317,7 +326,6 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         MonthWiseExpense monthExpenses = Utils.getDeserializedMonthWiseExpenses(storageKeyForCurrentMonth);
 
         tagBasedExpenses = monthExpenses.getTagBasedExpenses();
-        PieChart pieChart = findViewById(R.id.chart);
         List<PieEntry> entries = new ArrayList<>();
 
         for (Map.Entry<String, Expenses> tagBasedExpense : tagBasedExpenses.entrySet()) {

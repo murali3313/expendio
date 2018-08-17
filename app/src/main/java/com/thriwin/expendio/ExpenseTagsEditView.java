@@ -60,8 +60,8 @@ public class ExpenseTagsEditView extends Activity{
                 allTagAndWords.putAll(tagAndWords);
             }
             ExpenseTags.saveExpenseTags(allTagAndWords);
+            load();
             showToast(this, R.string.tagSavedSuccessfully);
-            this.finish();
         });
 
         View resetTag = findViewById(R.id.resetTags);

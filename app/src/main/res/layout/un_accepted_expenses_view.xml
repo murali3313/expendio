@@ -19,10 +19,11 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
-            android:textAlignment="center"
-            android:textSize="21sp"
             android:fontFamily="sans-serif"
-            android:textColor="@color/primaryText" />
+            android:textAlignment="center"
+            android:textColor="@color/primaryText"
+            android:textSize="21sp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
@@ -32,20 +33,20 @@
             android:background="@color/primaryText"></View>
 
         <TextView
+            android:id="@+id/totalExpensesUnApproved"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="50dp"
             android:layout_marginLeft="20dp"
-            android:textSize="20sp"
-            android:id="@+id/totalExpensesUnApproved"/>
+            android:layout_marginTop="50dp"
+            android:textSize="20sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="80dp"
             android:layout_marginLeft="20dp"
-            android:textSize="18sp"
-            android:text="Touch here to review the expenses"/>
+            android:layout_marginTop="80dp"
+            android:text="Touch here to review the expenses"
+            android:textSize="18sp" />
     </RelativeLayout>
 
 </LinearLayout>

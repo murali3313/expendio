@@ -2,20 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bgColor"
     android:gravity="center"
-    android:orientation="vertical"
-    android:background="@color/bgColor">
+    android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:orientation="horizontal"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Expense"
             android:textColor="@color/white"
-            android:textSize="25sp"
-            android:text="Expense" />
+            android:textSize="25sp" />
 
         <ImageButton
             android:id="@+id/addExpense"
@@ -25,6 +27,7 @@
             android:background="@drawable/ic_add_expense" />
 
     </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="400dp">
@@ -59,6 +62,7 @@
                 android:id="@+id/acceptedExpense"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
                 android:text="Accept" />
 
             <Button
@@ -66,6 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:background="@color/colorAlternateDark2"
                 android:text="Discard" />
 
             <Button
@@ -73,6 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:background="@color/colorAlternateDark1"
                 android:text="Later" />
 
         </LinearLayout>

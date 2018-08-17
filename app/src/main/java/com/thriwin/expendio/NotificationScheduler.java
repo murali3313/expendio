@@ -8,13 +8,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-
-import java.math.BigDecimal;
-import java.util.Calendar;
 
 import static android.content.Context.ALARM_SERVICE;
 
@@ -22,21 +20,8 @@ public class NotificationScheduler {
     public static final int DAILY_REMINDER_REQUEST_CODE = 100;
     public static final String TAG = "NotificationScheduler";
 
-    public static void setReminder(Context context, Class<?> cls, int hour, int min) {
-        Calendar calendar = Calendar.getInstance();
-
-        Calendar setcalendar = Calendar.getInstance();
-        setcalendar.set(Calendar.HOUR_OF_DAY, hour);
-        setcalendar.set(Calendar.MINUTE, min);
-        setcalendar.set(Calendar.SECOND, 0);
-
-        // cancel already scheduled reminders
+    public static void setReminder(Context context, Class<?> cls) {
         cancelReminder(context, cls);
-
-        if (setcalendar.before(calendar))
-            setcalendar.add(Calendar.DATE, 1);
-
-        // Enable a receiver
 
         ComponentName receiver = new ComponentName(context, cls);
         PackageManager pm = context.getPackageManager();
@@ -50,7 +35,7 @@ public class NotificationScheduler {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_REMINDER_REQUEST_CODE, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000, pendingIntent);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
 
     }
 
@@ -71,11 +56,11 @@ public class NotificationScheduler {
         pendingIntent.cancel();
     }
 
-    public static void showNotification(Context context, Class<?> cls, String title, String content) {
+    public static void showNotification(Context context, Class<?> cls, String title, String content, String displayView) {
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         Intent notificationIntent = new Intent(context, cls);
-        notificationIntent.putExtra("DISPLAY_VIEW", "NOTIFICATION");
+        notificationIntent.putExtra("DISPLAY_VIEW", displayView);
 
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -91,7 +76,9 @@ public class NotificationScheduler {
         Notification notification = builder.setContentTitle(title)
                 .setAutoCancel(true)
                 .setSound(alarmSound)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
+                .setColor(context.getResources().getColor( (R.color.bgColor)))
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(content))
                 .setContentIntent(pendingIntent).build();

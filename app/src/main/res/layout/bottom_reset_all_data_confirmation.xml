@@ -14,7 +14,8 @@
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
-        android:text="Are you sure to reset the tags to default settings?"
+        android:text="This is action will erase all your expense data, tags, unapproved expenses. This is an undoable action!!!
+        \n Are you sure you want to continue?"
         android:textSize="18sp" />
 
     <LinearLayout

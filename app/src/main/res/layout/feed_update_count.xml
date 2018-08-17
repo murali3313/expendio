@@ -13,7 +13,7 @@
         android:gravity="center"
         android:padding="3dp"
         android:text="9+"
-        android:textStyle="bold"
         android:textColor="@color/colorPrimary"
-        android:textSize="17sp" />
+        android:textSize="17sp"
+        android:textStyle="bold" />
 </FrameLayout>

@@ -37,4 +37,18 @@
     <string name="notificationHour">Recurring expenses, Notification hour</string>
     <string name="notificationHourNote">Please input value from 0 - 23, If not it will be defaulted to 8 PM i.e. 20 hrs</string>
     <string name="settingsSavedSuccessfully">Settings saved successfully</string>
+    <string name="eraseAllData">Reset of all your expenses, tags and recurring expenses.</string>
+    <string name="reminderRequest">Do you want expendio to remind you for filling any expenses?</string>
+
+
+    <string name="reminder_prompt">Do Not Disturb</string>
+    <string name="expendioSettings">Expendio Settings</string>
+    <string-array name="reminder_options">
+        <item>Do Not Disturb</item>
+        <item>Once a day</item>
+        <item>Twice a day</item>
+        <item>Every two hour</item>
+        <item>Every hour</item>
+        <item>Every 15 min.</item>
+    </string-array>
 </resources>

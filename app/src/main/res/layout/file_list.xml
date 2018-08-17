@@ -2,16 +2,16 @@
 
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/bgColor"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgColor"
     android:orientation="vertical">
 
     <TextView
-        android:background="@drawable/rounded_border_accent_bg"
+        android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginBottom="20dp"
-        android:layout_width="match_parent"
+        android:background="@drawable/rounded_border_accent_bg"
         android:paddingLeft="20dp"
         android:text="@string/selectFileToView"
         android:textColor="@color/white"

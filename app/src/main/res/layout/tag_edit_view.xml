@@ -20,16 +20,26 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:textColor="@color/primaryText"
+            android:textCursorDrawable="@null"
             android:textSize="20sp" />
 
         <ImageButton
             android:id="@+id/tagRemove"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginTop="5dp"
             android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
             android:background="@drawable/ic_remove" />
     </RelativeLayout>
+
+    <com.nex3z.flowlayout.FlowLayout
+        android:id="@+id/tagWords"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp">
+
+    </com.nex3z.flowlayout.FlowLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,27 +57,17 @@
             android:id="@+id/tagWord"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:minWidth="150dp"
             android:maxLength="22"
-             />
+            android:minWidth="150dp"
+            android:textCursorDrawable="@null" />
 
         <ImageButton
+            android:id="@+id/addWordUnderTag"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:id="@+id/addWordUnderTag"
             android:background="@drawable/ic_menu_send" />
     </LinearLayout>
-
-    <com.nex3z.flowlayout.FlowLayout
-        android:id="@+id/tagWords"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp">
-
-    </com.nex3z.flowlayout.FlowLayout>
-
 </LinearLayout>
 

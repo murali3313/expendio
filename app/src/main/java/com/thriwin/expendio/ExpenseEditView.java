@@ -63,7 +63,7 @@ public class ExpenseEditView extends LinearLayout {
 
     private void populateData() {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.select_dialog_singlechoice, ExpenseTags.getSavedExpenseTags().getWords());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, ExpenseTags.getSavedExpenseTags().getWords());
 
         reason.setThreshold(1);
         //Set the adapter

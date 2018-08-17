@@ -40,15 +40,16 @@
             android:inputType="numberDecimal"
             android:maxLength="7"
             android:paddingLeft="5dp"
-            android:textColor="@color/primaryText" />
+            android:textColor="@color/primaryText"
+            android:textCursorDrawable="@null" />
 
         <LinearLayout
             android:id="@+id/tags"
             android:layout_width="200dp"
-            android:paddingLeft="10dp"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
 
         </LinearLayout>
 
@@ -74,27 +75,27 @@
             android:textSize="15dp" />
 
         <AutoCompleteTextView
-            android:cursorVisible="true"
             android:id="@+id/reason"
             android:layout_width="200dp"
-            android:textColorHint="@color/colorPrimary"
             android:layout_height="35dp"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="55dp"
+            android:layout_marginTop="10dp"
             android:height="25dp"
+            android:textCursorDrawable="@null"
             android:background="@drawable/edit_outline"
+            android:cursorVisible="true"
             android:maxLength="40"
             android:paddingLeft="10dp"
-            android:popupTheme="@android:style/ThemeOverlay.Material.Light"
-            android:textColor="@color/primaryText"></AutoCompleteTextView>
+            android:textColor="@color/primaryText"
+            android:textColorHint="@color/colorPrimary"></AutoCompleteTextView>
 
         <ImageButton
             android:id="@+id/remove"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginTop="10dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/ic_remove" />
     </RelativeLayout>
 </LinearLayout>

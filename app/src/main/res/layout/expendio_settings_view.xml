@@ -52,20 +52,22 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:text="@string/startDayOfMonth"
-                    android:textStyle="bold"
-                    android:textSize="17sp"></TextView>
+                    android:textSize="17sp"
+                    android:textStyle="bold"></TextView>
 
                 <EditText
                     android:id="@+id/startDayOfMonth"
-                    android:layout_width="70dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:maxLength="2" />
+                    android:maxLength="2"
+                    android:textCursorDrawable="@null" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -95,20 +97,22 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:text="@string/notificationHour"
-                    android:textStyle="bold"
-                    android:textSize="17sp"></TextView>
+                    android:textSize="17sp"
+                    android:textStyle="bold"></TextView>
 
                 <EditText
                     android:id="@+id/notificationHour"
-                    android:layout_width="70dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:maxLength="2" />
+                    android:maxLength="2"
+                    android:textCursorDrawable="@null" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -117,6 +121,88 @@
 
                     android:text="@string/notificationHourNote"
                     android:textStyle="italic"></TextView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/edit_outline"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reminderRequest"
+                    android:textSize="16sp"
+                    android:textStyle="italic"></TextView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <Spinner
+                    android:id="@+id/reminderOption"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/reminder_options"
+                    android:prompt="@string/reminder_prompt">
+
+                </Spinner>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/edit_outline"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/eraseAllData"
+                    android:textSize="17sp"
+                    android:textStyle="italic|bold"></TextView>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/eraseAllData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_remove" />
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

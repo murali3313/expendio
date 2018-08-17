@@ -99,12 +99,12 @@ public class ExpenseAudioListener
     }
 
     public void startListening() {
-        speech.startListening(recognizerIntent);
-    }
-
-    public void startOver() {
-        expenseAudioStatements.clear();
-        startListening();
+        try {
+            speech.startListening(recognizerIntent);
+        } catch (Exception e) {
+            speech.cancel();
+            speech.startListening(recognizerIntent);
+        }
     }
 
     public void processAudioResult(String userWords) {

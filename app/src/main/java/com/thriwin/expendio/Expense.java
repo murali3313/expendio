@@ -1,7 +1,7 @@
 package com.thriwin.expendio;
 
 import android.support.annotation.NonNull;
-import android.util.ArraySet;
+import android.support.v4.util.ArraySet;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

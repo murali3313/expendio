@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -84,6 +85,7 @@ public class Utils {
     public static void loadLocalStorageForPreferences(Context c) {
         globalAccessibleSharedPreferences = c.getSharedPreferences(DAILY_EXPENSER, MODE_PRIVATE);
         ExpenseTags.loadDefaultExpenseTagsIfNotInitialized();
+        ExpendioSettings.loadExpendioSettings();
     }
 
     public static SharedPreferences getLocalStorageForPreferences() {
@@ -445,4 +447,38 @@ public class Utils {
         return null;
     }
 
+    public static void clearAllData() {
+        getLocalStorageForPreferences().edit().clear().commit();
+        ExpenseTags.loadDefaultExpenseTagsIfNotInitialized();
+    }
+
+    public static Date lastNotiferDisplayTime() {
+        String checkerRanOn = Utils.getLocalStorageForPreferences().getString("NOTIFIER", null);
+        try {
+            return isNull(checkerRanOn) ? null : new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(checkerRanOn);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void lastNotifiedOn(Date date) {
+        String format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(date);
+        Utils.getLocalStorageForPreferences().edit().putString("NOTIFIER", format).apply();
+    }
+
+    public static boolean isReminderAlreadySet() {
+        return Utils.getLocalStorageForPreferences().getBoolean("REMINDER", false);
+    }
+
+    public static void setReminder() {
+        Utils.getLocalStorageForPreferences().edit().putBoolean("REMINDER", true);
+    }
+
+    public static int getTipsIndex() {
+        int tipIndex = getLocalStorageForPreferences().getInt("TipIndex", 0);
+        int newTipIndex = tipIndex + 1 >= RecurringExpensesAlarmReceiver.genaralTips.size() ? 0 : tipIndex + 1;
+        getLocalStorageForPreferences().edit().putInt("TipIndex", newTipIndex).commit();
+        return tipIndex;
+    }
 }

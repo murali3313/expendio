@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.File;
+import java.util.Date;
 
 import static com.thriwin.expendio.Utils.isNull;
 
@@ -57,12 +58,15 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
         } else {
             loadDisplayArea(DashboardView.valueOf(displayView), getIntent());
         }
-        NotificationScheduler.setReminder(getApplicationContext(), RecurringExpensesAlarmReceiver.class, 1, 1);
+        if (!Utils.isReminderAlreadySet()) {
+            NotificationScheduler.setReminder(getApplicationContext(), RecurringExpensesAlarmReceiver.class);
+            Utils.setReminder();
+            Utils.lastNotifiedOn(new Date());
+        }
     }
 
 
     public void addExpense(View view) {
-        NotificationScheduler.cancelReminder(getApplicationContext(), RecurringExpensesAlarmReceiver.class);
         Intent i = new Intent(ExpenseListener.this, NewExpensesCreation.class);
         if (itemSelected.equalsIgnoreCase(getResources().getString(R.string.title_expense_analysis))) {
             i.putExtra("SELECTED_STORAGE_KEY", analyticsView.selectedMonthStorageKey);
@@ -84,8 +88,7 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -98,6 +101,8 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent i = new Intent(ExpenseListener.this, ExpendioSettingsView.class);
+            startActivity(i);
             return true;
         }
 
@@ -126,11 +131,7 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
             Intent i = new Intent(ExpenseListener.this, ExpenseDefaultLimit.class);
             startActivity(i);
 
-        } else if (id == R.id.nav_expendio_settings) {
-
-            Intent i = new Intent(ExpenseListener.this, ExpendioSettingsView.class);
-            startActivity(i);
-        } else if (id == R.id.nav_rate_us) {
+        }  else if (id == R.id.nav_rate_us) {
 
             Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
@@ -143,8 +144,7 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
                 startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse("http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName())));
             }
-        }
-        else if (id == R.id.nav_feedback) {
+        } else if (id == R.id.nav_feedback) {
             Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
             emailIntent.setData(Uri.parse("mailto:thriwin.solutions@gmail.com?subject=Expendio%20App%20Feedback"));
             try {

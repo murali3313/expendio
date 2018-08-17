@@ -8,29 +8,33 @@
             android:id="@+id/nav_tags"
             android:icon="@drawable/ic_menu_tags"
             android:title="Tags" />
-        <item
-            android:id="@+id/nav_general_expense_limit"
-            android:icon="@mipmap/ic_expense_limit"
-            android:title="Set default expense limit" />
-        <item
-            android:id="@+id/nav_expendio_settings"
-            android:icon="@mipmap/ic_expendio_settings"
-            android:title="Expendio Settings" />
+
 
         <item
             android:id="@+id/nav_usual_expenses"
             android:icon="@drawable/ic_menu_repeat"
             android:title="Recurring expenses" />
-        <item
-            android:id="@+id/nav_download"
-            android:icon="@mipmap/ic_menu_excel"
-            android:title="Generate Expenses as Excel" />
+
 
         <item
-            android:id="@+id/nav_open_generated_excel"
-            android:icon="@mipmap/ic_menu_view_excel"
-            android:title="View genarated Excels" />
+            android:id="@+id/nav_general_expense_limit"
+            android:icon="@mipmap/ic_expense_limit"
+            android:title="Set default expense limit" />
     </group>
+
+    <item android:title="Reports">
+        <menu>
+            <item
+                android:id="@+id/nav_download"
+                android:icon="@mipmap/ic_menu_excel"
+                android:title="Generate Expenses as Excel" />
+
+            <item
+                android:id="@+id/nav_open_generated_excel"
+                android:icon="@mipmap/ic_menu_view_excel"
+                android:title="View genarated Excels" />
+        </menu>
+    </item>
 
     <item android:title="Communicate">
         <menu>

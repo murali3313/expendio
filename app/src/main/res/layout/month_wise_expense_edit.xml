@@ -2,23 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="395dp"
     android:layout_height="match_parent"
+    android:background="@color/bgColor"
     android:gravity="top"
-    android:orientation="vertical"
-    android:background="@color/bgColor">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:orientation="horizontal"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
         <TextView
-            android:layout_width="match_parent"
             android:id="@+id/monthWiseExpenseHeader"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="25sp"
             android:paddingLeft="10dp"
-            android:text="Expense" />
+            android:text="Expense"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
 
         <ImageButton
             android:id="@+id/addExpense"
@@ -28,7 +29,6 @@
             android:background="@drawable/ic_add_expense_white" />
 
     </RelativeLayout>
-
 
 
     <LinearLayout
@@ -65,13 +65,15 @@
                 android:id="@+id/acceptedExpense"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Accept" />
+                android:text="Accept"
+                android:background="@color/colorPrimary"/>
 
             <Button
                 android:id="@+id/discardExpenses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:background="@color/colorAlternateDark2"
                 android:text="Cancel" />
 
 
