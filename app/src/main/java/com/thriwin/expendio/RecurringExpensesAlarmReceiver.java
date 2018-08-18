@@ -28,7 +28,9 @@ public class RecurringExpensesAlarmReceiver extends BroadcastReceiver {
                 return;
             }
         }
-
+        if (isNull(Utils.getLocalStorageForPreferences())) {
+            Utils.loadLocalStorageForPreferences(context);
+        }
         remindExpenseFilling(context);
         recurrenceExpenseNotifier(context);
     }
@@ -44,9 +46,7 @@ public class RecurringExpensesAlarmReceiver extends BroadcastReceiver {
     }
 
     private void recurrenceExpenseNotifier(Context context) {
-        if (isNull(Utils.getLocalStorageForPreferences())) {
-            Utils.loadLocalStorageForPreferences(context);
-        }
+
 
         if (!Utils.didRecurrenceChekerRanToday() && ExpendioSettings.loadExpendioSettings().isWithinNotificationHour()) {
 

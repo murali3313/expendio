@@ -26,7 +26,7 @@ public class NotificationView extends LinearLayout implements IDisplayAreaView {
         if (!unAcceptedExpenses.isEmpty()) {
             for (Map.Entry<String, Expenses> expenses : unAcceptedExpenses.entrySet()) {
                 String expenseHeader = expenses.getKey().startsWith(Utils.UNACCEPTED_EXPENSES) ? "UnApproved expenses via Audio" : "Recurring expense on: "+ expenses.getValue().getDateMonthHumanReadable();
-                container.addView(new UnAcceptedExpensesBaseView(getContext(), null, expenses.getValue(), expenseHeader, expenses.getKey()));
+                container.addView(new UnAcceptedExpensesBaseView(expenseListener,getContext(), null, expenses.getValue(), expenseHeader, expenses.getKey(),this));
             }
         }
 

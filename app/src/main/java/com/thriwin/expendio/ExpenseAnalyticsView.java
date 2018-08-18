@@ -67,7 +67,6 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
 
         pieChart.setNoDataTextColor(getResources().getColor(R.color.colorPrimaryDark));
         barChart.setNoDataTextColor(getResources().getColor(R.color.colorPrimaryDark));
-
     }
 
     @Override
