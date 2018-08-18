@@ -45,7 +45,7 @@ public class NewExpensesCreation extends Activity {
         cancelButton = findViewById(R.id.discardExpenses);
 
         okButton.setOnClickListener(v -> {
-            ExpenseListener.glowFor = this.expenses.getStorageKey();
+            HomeScreenActivity.glowFor = this.expenses.getStorageKey();
             saveExpenses(expenses.getExpenses());
             NewExpensesCreation.this.finish();
 

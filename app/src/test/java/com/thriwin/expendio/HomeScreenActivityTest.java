@@ -9,7 +9,7 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
-public class ExpenseListenerTest {
+public class HomeScreenActivityTest {
 
     @Test
     public void displayExpenseForCorrection() {

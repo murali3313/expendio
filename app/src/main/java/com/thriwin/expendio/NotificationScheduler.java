@@ -35,8 +35,8 @@ public class NotificationScheduler {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DAILY_REMINDER_REQUEST_CODE, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10000, pendingIntent);
-//        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+//        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10000, pendingIntent);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
 
     }
 
@@ -62,9 +62,6 @@ public class NotificationScheduler {
 
         Intent notificationIntent = new Intent(context, cls);
         notificationIntent.putExtra("DISPLAY_VIEW", displayView);
-
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(cls);
         stackBuilder.addNextIntent(notificationIntent);

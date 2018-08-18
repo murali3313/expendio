@@ -21,7 +21,7 @@ import java.util.Date;
 
 import static com.thriwin.expendio.Utils.isNull;
 
-public class ExpenseListener extends CommonActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class NotificationScreenActivity extends CommonActivity implements NavigationView.OnNavigationItemSelectedListener {
     static String glowFor;
 
     @Override
@@ -47,27 +47,15 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         Utils.loadLocalStorageForPreferences(this.getApplicationContext());
-        homeScreenView = new HomeScreenView(getApplicationContext(), null, this);
-        analyticsView = new ExpenseAnalyticsView(getApplicationContext(), null);
         notificationView = new NotificationView(getApplicationContext(), null);
 
         super.onCreate(savedInstanceState);
-        String displayView = getIntent().getStringExtra("DISPLAY_VIEW");
-        if (isNull(displayView)) {
-            loadDisplayArea(DashboardView.HOME, getIntent());
-        } else {
-            loadDisplayArea(DashboardView.valueOf(displayView), getIntent());
-        }
-        if (!Utils.isReminderAlreadySet()) {
-            NotificationScheduler.setReminder(getApplicationContext(), RecurringExpensesAlarmReceiver.class);
-            Utils.setReminder();
-            Utils.lastNotifiedOn(new Date());
-        }
+        loadDisplayArea(DashboardView.NOTIFICATION, getIntent());
     }
 
 
     public void addExpense(View view) {
-        Intent i = new Intent(ExpenseListener.this, NewExpensesCreation.class);
+        Intent i = new Intent(NotificationScreenActivity.this, NewExpensesCreation.class);
         if (itemSelected.equalsIgnoreCase(getResources().getString(R.string.title_expense_analysis))) {
             i.putExtra("SELECTED_STORAGE_KEY", analyticsView.selectedMonthStorageKey);
 
@@ -101,7 +89,7 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent i = new Intent(ExpenseListener.this, ExpendioSettingsView.class);
+            Intent i = new Intent(NotificationScreenActivity.this, ExpendioSettingsView.class);
             startActivity(i);
             return true;
         }
@@ -116,19 +104,19 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_tags) {
-            Intent i = new Intent(ExpenseListener.this, ExpenseTagsEditView.class);
+            Intent i = new Intent(NotificationScreenActivity.this, ExpenseTagsEditView.class);
             startActivity(i);
             loadDisplayArea(DashboardView.TAG_EDIT, getIntent());
 
         } else if (id == R.id.nav_usual_expenses) {
-            Intent i = new Intent(ExpenseListener.this, RecurringExpensesView.class);
+            Intent i = new Intent(NotificationScreenActivity.this, RecurringExpensesView.class);
             startActivity(i);
 
         } else if (id == R.id.nav_download) {
             downloadAllExpenses();
 
         } else if (id == R.id.nav_general_expense_limit) {
-            Intent i = new Intent(ExpenseListener.this, ExpenseDefaultLimit.class);
+            Intent i = new Intent(NotificationScreenActivity.this, ExpenseDefaultLimit.class);
             startActivity(i);
 
         }  else if (id == R.id.nav_rate_us) {

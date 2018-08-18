@@ -50,7 +50,7 @@ public class ExpenseAcceptance extends Activity {
         notNowButton = findViewById(R.id.notNowExpense);
 
         okButton.setOnClickListener(v -> {
-            ExpenseListener.glowFor = unapprovedExpenses.getExpenses().getStorageKey();
+            HomeScreenActivity.glowFor = unapprovedExpenses.getExpenses().getStorageKey();
             Utils.saveExpenses(unapprovedExpenses.getExpenses());
             Utils.clearUnAcceptedExpense(this.keyToRemove);
             ExpenseAcceptance.this.finish();

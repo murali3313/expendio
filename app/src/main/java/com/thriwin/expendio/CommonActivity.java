@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,23 +26,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.File;
-import java.util.List;
 
 import pl.droidsonroids.gif.GifImageButton;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.thriwin.expendio.ExpenseAudioStatements.CLEAR;
 import static com.thriwin.expendio.ExpenseAudioStatements.defaultEndOfStatement;
 
@@ -86,7 +76,7 @@ public class CommonActivity extends AppCompatActivity {
         doneWithListening();
 
         Intent i = new Intent(CommonActivity.this, ExpenseAcceptance.class);
-        i.putExtra("UNACCEPTED_EXPENSES",Utils.getSerializedExpenses(processedExpenses));
+        i.putExtra("UNACCEPTED_EXPENSES", Utils.getSerializedExpenses(processedExpenses));
         startActivity(i);
     }
 
@@ -245,28 +235,27 @@ public class CommonActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Intent i = new Intent(getApplicationContext(), ExpenseListener.class);
-            i.addFlags(FLAG_ACTIVITY_NEW_TASK);
             if (!shouldRedirectToNewActivity(item)) {
                 return true;
             }
 
+            Intent i = null;
             switch (item.getItemId()) {
                 case R.id.navigation_home:
+                    i = new Intent(getApplicationContext(), HomeScreenActivity.class);
                     itemSelected = getResources().getString(R.string.title_home);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    i.putExtra("DISPLAY_VIEW", DashboardView.HOME.toString());
                     ContextCompat.startActivity(getApplicationContext(), i, null);
                     return true;
                 case R.id.navigation_analytics:
+                    i = new Intent(getApplicationContext(), AnalyticsScreenActivity.class);
                     itemSelected = getResources().getString(R.string.title_expense_analysis);
-                    i.putExtra("DISPLAY_VIEW", DashboardView.ANALYTICS.toString());
                     i.putExtra("ANALYTICS_MONTH", getMonthForAnalytics());
                     ContextCompat.startActivity(getApplicationContext(), i, null);
                     return true;
                 case R.id.navigation_notifications:
+                    i = new Intent(getApplicationContext(), NotificationScreenActivity.class);
                     itemSelected = getResources().getString(R.string.title_notifications);
-                    i.putExtra("DISPLAY_VIEW", DashboardView.NOTIFICATION.toString());
                     ContextCompat.startActivity(getApplicationContext(), i, null);
                     return true;
             }
@@ -275,7 +264,7 @@ public class CommonActivity extends AppCompatActivity {
     };
 
     public boolean shouldRedirectToNewActivity(@NonNull MenuItem item) {
-        return !itemSelected.equalsIgnoreCase(item.getTitle().toString()) || (!(CommonActivity.this instanceof ExpenseListener) && item.getTitle().toString().equals("Home"));
+        return !itemSelected.equalsIgnoreCase(item.getTitle().toString()) || (!(CommonActivity.this instanceof HomeScreenActivity) && item.getTitle().toString().equals("Home"));
     }
 
     protected String getMonthForAnalytics() {
@@ -284,7 +273,7 @@ public class CommonActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (this instanceof ExpenseListener && itemSelected.equalsIgnoreCase("Home")) {
+        if (this instanceof HomeScreenActivity && itemSelected.equalsIgnoreCase("Home")) {
             createDialog();
         } else {
             super.onBackPressed();

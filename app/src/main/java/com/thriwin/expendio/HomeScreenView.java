@@ -15,19 +15,18 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nex3z.flowlayout.FlowLayout;
 
 import java.util.Map;
 import java.util.SortedMap;
 
 public class HomeScreenView extends LinearLayout implements IDisplayAreaView {
     ObjectMapper obj = new ObjectMapper();
-    private ExpenseListener expenseListener;
+    private HomeScreenActivity homeScreenActivity;
     SortedMap<String, MonthWiseExpense> allExpensesMonthWise;
 
-    public HomeScreenView(Context context, @Nullable AttributeSet attrs, ExpenseListener expenseListener) {
+    public HomeScreenView(Context context, @Nullable AttributeSet attrs, HomeScreenActivity homeScreenActivity) {
         super(context, attrs);
-        this.expenseListener = expenseListener;
+        this.homeScreenActivity = homeScreenActivity;
         inflate(context, R.layout.home_screeen, this);
     }
 
@@ -44,7 +43,7 @@ public class HomeScreenView extends LinearLayout implements IDisplayAreaView {
                 tableRow = new TableRow(getContext(), null);
                 homeScreenContainer.addView(tableRow);
             }
-            ExpenseMonthWiseBlock expenseMonthWiseBlock = new ExpenseMonthWiseBlock(getContext(), null, monthWise, this, this.expenseListener, i);
+            ExpenseMonthWiseBlock expenseMonthWiseBlock = new ExpenseMonthWiseBlock(getContext(), null, monthWise, this, this.homeScreenActivity, i);
             tableRow.addView(expenseMonthWiseBlock, isNewLayoutStarted ? 0 : 1);
             i++;
         }

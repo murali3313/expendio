@@ -12,21 +12,21 @@ public class CommonActivityTest {
 
     @Test
     public void shouldRedirectIfTitleAreDifferentButForHomeAllowIfItIsOutsideExpenseListenerActivity() {
-        ExpenseListener expenseListener = new ExpenseListener();
+        HomeScreenActivity homeScreenActivity = new HomeScreenActivity();
         ExpenseTimelineView expenseTimelineView = new ExpenseTimelineView();
         MenuItem menuItem = mock(MenuItem.class);
         when(menuItem.getTitle()).thenReturn("Home");
         CommonActivity.itemSelected = "Home";
-        assertFalse(expenseListener.shouldRedirectToNewActivity(menuItem));
+        assertFalse(homeScreenActivity.shouldRedirectToNewActivity(menuItem));
 
         assertTrue(expenseTimelineView.shouldRedirectToNewActivity(menuItem));
 
         CommonActivity.itemSelected = "Expense";
-        assertTrue(expenseListener.shouldRedirectToNewActivity(menuItem));
+        assertTrue(homeScreenActivity.shouldRedirectToNewActivity(menuItem));
 
         when(menuItem.getTitle()).thenReturn("Expense");
         CommonActivity.itemSelected = "Expense";
-        assertFalse(expenseListener.shouldRedirectToNewActivity(menuItem));
+        assertFalse(homeScreenActivity.shouldRedirectToNewActivity(menuItem));
 
         when(menuItem.getTitle()).thenReturn("Expense");
         CommonActivity.itemSelected = "Expense";

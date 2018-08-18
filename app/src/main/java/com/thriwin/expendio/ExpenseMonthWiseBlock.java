@@ -7,10 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +22,7 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
     ObjectMapper obj = new ObjectMapper();
     public Map.Entry<String, MonthWiseExpense> expensesBlock;
 
-    public ExpenseMonthWiseBlock(Context context, @Nullable AttributeSet attrs, Map.Entry<String, MonthWiseExpense> expensesBlock, HomeScreenView homeScreenView, ExpenseListener expenseListener, int index) {
+    public ExpenseMonthWiseBlock(Context context, @Nullable AttributeSet attrs, Map.Entry<String, MonthWiseExpense> expensesBlock, HomeScreenView homeScreenView, HomeScreenActivity homeScreenActivity, int index) {
         super(context, attrs);
         this.expensesBlock = expensesBlock;
         inflate(context, R.layout.expense_month_block, this);
@@ -51,7 +49,7 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
         monthBlockContainer.setLongClickable(true);
         monthBlockContainer.setOnLongClickListener(v -> {
             View sheetView = View.inflate(context, R.layout.bottom_delete_month_confirmation, null);
-            BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(expenseListener);
+            BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(homeScreenActivity);
             mBottomSheetDialog.setContentView(sheetView);
             mBottomSheetDialog.show();
 
@@ -59,7 +57,7 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
                 @Override
                 public void onClick(View v) {
                     Utils.deleteAMonthExpense(expensesBlock.getKey());
-                    expenseListener.loadDisplayArea(DashboardView.HOME, null);
+                    homeScreenActivity.loadDisplayArea(DashboardView.HOME, null);
                     mBottomSheetDialog.cancel();
                 }
             });
