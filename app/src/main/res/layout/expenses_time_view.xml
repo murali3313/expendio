@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/expenseTimeDay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minHeight="120dp"
-    android:id="@+id/expenseTimeDay"
-    >
+    android:minHeight="120dp">
 
     <com.nex3z.flowlayout.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/expense"

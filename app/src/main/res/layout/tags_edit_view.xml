@@ -16,6 +16,14 @@
             android:textSize="25sp" />
 
         <ImageButton
+            android:id="@+id/resetTags"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="80dp"
+            android:background="@drawable/ic_clear_all" />
+
+        <ImageButton
             android:id="@+id/createNewTag"
             android:layout_width="27dp"
             android:layout_height="27dp"
@@ -30,17 +38,20 @@
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/ic_tag_save" />
+
+
     </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="450dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/tagsEditContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="vertical"
+            android:paddingBottom="50dp"></LinearLayout>
     </ScrollView>
 
 </com.nex3z.flowlayout.FlowLayout>

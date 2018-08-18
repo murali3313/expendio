@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.thriwin.expendio.Utils.UNACCEPTED_EXPENSES;
 import static com.thriwin.expendio.Utils.isNull;
@@ -36,7 +37,10 @@ public class ExpenseAcceptance extends Activity {
         keyToRemove = getIntent().getStringExtra("EXPENSE_KEY_TO_REMOVE");
         keyToRemove = isNull(keyToRemove) ? UNACCEPTED_EXPENSES : keyToRemove;
         if (isNull(unacceptedExpenses)) {
-            this.expenses = Utils.getUnAcceptedExpenses();
+            List<Expenses> unAcceptedExpenses = Utils.getUnAcceptedExpenses();
+            for (Expenses unAcceptedExpens : unAcceptedExpenses) {
+                this.expenses.addAll(unAcceptedExpens);
+            }
         } else {
             try {
                 this.expenses = obj.readValue(unacceptedExpenses, new TypeReference<Expenses>() {

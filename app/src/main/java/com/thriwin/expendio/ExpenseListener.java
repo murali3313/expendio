@@ -21,7 +21,6 @@ import java.io.File;
 import static com.thriwin.expendio.Utils.isNull;
 
 public class ExpenseListener extends CommonActivity implements NavigationView.OnNavigationItemSelectedListener {
-    ExpenseTagsEditView tagEditView;
     static String glowFor;
 
     @Override
@@ -50,7 +49,6 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
         homeScreenView = new HomeScreenView(getApplicationContext(), null, this);
         analyticsView = new ExpenseAnalyticsView(getApplicationContext(), null);
         notificationView = new NotificationView(getApplicationContext(), null);
-        tagEditView = new ExpenseTagsEditView(getApplicationContext(), null, this);
 
         super.onCreate(savedInstanceState);
         String displayView = getIntent().getStringExtra("DISPLAY_VIEW");
@@ -113,6 +111,8 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_tags) {
+            Intent i = new Intent(ExpenseListener.this, ExpenseTagsEditView.class);
+            startActivity(i);
             loadDisplayArea(DashboardView.TAG_EDIT, getIntent());
 
         } else if (id == R.id.nav_usual_expenses) {
@@ -217,15 +217,8 @@ public class ExpenseListener extends CommonActivity implements NavigationView.On
             case NOTIFICATION:
                 displayAreaView = notificationView;
                 break;
-            case TAG_EDIT:
-                displayAreaView = tagEditView;
-                break;
         }
         return displayAreaView;
-    }
-
-    public void loadDisplayAreaWithHomeScreen() {
-        loadDisplayArea(DashboardView.HOME, getIntent());
     }
 
 

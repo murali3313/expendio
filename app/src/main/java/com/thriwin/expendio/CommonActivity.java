@@ -81,13 +81,12 @@ public class CommonActivity extends AppCompatActivity {
         toast.show();
     }
 
-    public void displayExpenseForCorrection(List<Expense> processedExpenses) {
-        SharedPreferences.Editor edit = Utils.getLocalStorageForPreferences().edit();
-        edit.putString(Utils.UNACCEPTED_EXPENSES, serializeExpenses(processedExpenses));
-        edit.apply();
+    public void displayExpenseForCorrection(Expenses processedExpenses) {
+        Utils.saveUnacceptedExpenses(processedExpenses);
         doneWithListening();
 
         Intent i = new Intent(CommonActivity.this, ExpenseAcceptance.class);
+        i.putExtra("UNACCEPTED_EXPENSES",Utils.getSerializedExpenses(processedExpenses));
         startActivity(i);
     }
 
@@ -97,17 +96,6 @@ public class CommonActivity extends AppCompatActivity {
         mBottomSheetDialog.cancel();
     }
 
-    @Nullable
-    protected String serializeExpenses(List<Expense> processedExpenses) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        try {
-            return objectMapper.writeValueAsString(processedExpenses);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public void listeningInfo(ListeningQueues listeningQueues) {
         switch (listeningQueues) {
@@ -191,14 +179,13 @@ public class CommonActivity extends AppCompatActivity {
         View v = bottomNavigationMenuView.getChildAt(2);
         BottomNavigationItemView itemView = (BottomNavigationItemView) v;
 
-        if(Utils.isNull(badge)) {
+        if (Utils.isNull(badge)) {
             badge = LayoutInflater.from(this)
                     .inflate(R.layout.feed_update_count, bottomNavigationMenuView, false);
             ((TextView) badge.findViewById(R.id.notifications_badge)).setText(Utils.getUnApprovedExpensesCount());
 
             itemView.addView(badge);
-        }else
-        {
+        } else {
             ((TextView) badge.findViewById(R.id.notifications_badge)).setText(Utils.getUnApprovedExpensesCount());
         }
     }

@@ -64,7 +64,7 @@
                 android:paddingRight="20dp"
                 android:paddingTop="3dp"
                 android:textAlignment="center"
-                android:textColor="@color/primaryLight" />
+                android:textColor="@color/primaryText" />
 
             <TextView
                 android:id="@+id/monthWiseExpenseLimit"
@@ -81,7 +81,7 @@
                 android:paddingTop="3dp"
                 android:textAlignment="center"
 
-                android:textColor="@color/primaryLight" />
+                android:textColor="@color/primaryText" />
 
             <TextView
                 android:id="@+id/monthWiseExpenseLimitExceeded"
@@ -98,7 +98,7 @@
                 android:paddingTop="3dp"
                 android:textAlignment="center"
 
-                android:textColor="@color/primaryLight" />
+                android:textColor="@color/primaryText" />
 
         </LinearLayout>
 

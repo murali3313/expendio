@@ -43,7 +43,7 @@ public class ExpensesEditView extends LinearLayout {
     private void addExpense(boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, Expense expens, boolean isTagEditDisabled, String tagText) {
         ExpenseEditView expenseEditView = new ExpenseEditView(this.context, null, expens, this, makeDateEditable, makeDatePermissibleWithinMonthLimit, isTagEditDisabled, tagText);
         expenseEditViews.add(expenseEditView);
-        addView(expenseEditView);
+        addView(expenseEditView, 0);
     }
 
     public Expenses getExpenses() {

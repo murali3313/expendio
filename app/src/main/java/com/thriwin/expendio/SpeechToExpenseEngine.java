@@ -20,17 +20,22 @@ public class SpeechToExpenseEngine {
     }
 
 
-    public List<Expense> processAudio(String userStatements) {
+    public Expenses processAudio(String userStatements) {
         String[] multipleExpenseStatements = Utils.splitStatementBy(userStatements, " and ");
-        List<Expense> expenses = new ArrayList<>();
+        Expenses expenses = new Expenses();
         for (String expenseStatement : multipleExpenseStatements) {
             if (expenseStatement.trim().equals(""))
                 continue;
-            StringBuilder expModifiable = new StringBuilder(expenseStatement);
-            Date spentOn = dateProcessor.extract(expModifiable);
-            BigDecimal amountSpent = amountProcessor.extract(expModifiable);
-            List<String> spentFor = reasonProcessor.extract(expModifiable);
-            expenses.add(new Expense(amountSpent, spentOn, spentFor, expenseStatement));
+            try {
+
+                StringBuilder expModifiable = new StringBuilder(expenseStatement);
+                Date spentOn = dateProcessor.extract(expModifiable);
+                BigDecimal amountSpent = amountProcessor.extract(expModifiable);
+                List<String> spentFor = reasonProcessor.extract(expModifiable);
+                expenses.add(new Expense(amountSpent, spentOn, spentFor, expenseStatement));
+            } catch (Exception e) {
+
+            }
         }
         return expenses;
     }

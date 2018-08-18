@@ -58,12 +58,17 @@ public class DateProcessor extends Processor {
             if (index > 0) {
                 int previousNumber = getNumberFrom(allWords[index - 1]);
                 resultantDate = inferDate(resultantDate, monthSpecified, previousNumber);
-                removeMonthAndDateText(expenseStatement, allWords, resultantDate, word, index - 1);
+                if (!Utils.isNull(resultantDate)) {
+                    removeMonthAndDateText(expenseStatement, allWords, resultantDate, word, index - 1);
 
+                }
                 if (Utils.isNull(resultantDate)) {
                     int afterNumber = getNumberFrom(allWords[index + 1]);
                     resultantDate = inferDate(resultantDate, monthSpecified, afterNumber);
-                    removeMonthAndDateText(expenseStatement, allWords, resultantDate, word, index + 1);
+                    if (!Utils.isNull(resultantDate)) {
+                        removeMonthAndDateText(expenseStatement, allWords, resultantDate, word, index + 1);
+
+                    }
                 }
             }
         }
@@ -80,7 +85,7 @@ public class DateProcessor extends Processor {
 
     private Date inferDate(Date resultantDate, String monthSpecified, int dateNumber) {
         if (dateNumber > 0 && dateNumber <= 31) {
-            resultantDate = new Date(Utils.today().getYear(), allMonths.indexOf(monthSpecified) , dateNumber);
+            resultantDate = new Date(Utils.today().getYear(), allMonths.indexOf(monthSpecified), dateNumber);
         }
         return resultantDate;
     }

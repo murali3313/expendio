@@ -36,6 +36,9 @@ public class ExpenseTimeView extends LinearLayout {
             TextView textView = new TextView(this.getContext(), null);
             textView.setText(tag);
             textView.setPadding(15, 5, 15, 5);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(5, 0, 0, 0);
+            textView.setLayoutParams(layoutParams);
             textView.setTextColor(getResources().getColor(R.color.primaryText));
             textView.setBackgroundResource(R.drawable.item_border);
             tagsContainer.addView(textView);

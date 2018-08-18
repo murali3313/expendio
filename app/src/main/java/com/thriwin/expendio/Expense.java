@@ -6,7 +6,6 @@ import android.util.ArraySet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import org.apache.commons.codec.binary.StringUtils;
 import org.apache.poi.util.StringUtil;
 
 import java.math.BigDecimal;
@@ -214,7 +213,7 @@ public class Expense {
 
     @JsonIgnore
     public static int getStartDayOfMonth() {
-        return Utils.getLocalStorageForPreferences().getInt("startDayOfMonth", 1);
+        return new ExpendioSettings().getStartDayOfMonth();
     }
 
     public void santiseData() {

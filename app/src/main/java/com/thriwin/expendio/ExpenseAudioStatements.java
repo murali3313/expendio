@@ -103,7 +103,7 @@ class ExpenseAudioStatements {
         this.userStatements = new ArrayList<>();
     }
 
-    public List<Expense> getProcessedExpenses() {
+    public Expenses getProcessedExpenses() {
         return speechToExpenseEngine.processAudio(this.getAllStatements());
     }
 

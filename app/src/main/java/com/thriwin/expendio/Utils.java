@@ -5,9 +5,12 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +30,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-import static android.content.Context.MODE_ENABLE_WRITE_AHEAD_LOGGING;
 import static android.content.Context.MODE_PRIVATE;
 import static java.util.Arrays.asList;
 
@@ -93,6 +95,18 @@ public class Utils {
         try {
             ObjectMapper obj = new ObjectMapper();
             expenses = obj.readValue(expensesString, new TypeReference<Expenses>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return expenses;
+    }
+
+    public static List<Expenses> getDeserializedExpensesList(String expensesString) {
+        List<Expenses> expenses = new ArrayList<>();
+        try {
+            ObjectMapper obj = new ObjectMapper();
+            expenses = obj.readValue(expensesString, new TypeReference<List<Expenses>>() {
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -207,10 +221,10 @@ public class Utils {
         return o == null;
     }
 
-    public static Expenses getUnAcceptedExpenses() {
+    public static List<Expenses> getUnAcceptedExpenses() {
         String unAcceptedExpenses = Utils.getLocalStorageForPreferences()
                 .getString(UNACCEPTED_EXPENSES, "[]");
-        return getDeserializedExpenses(unAcceptedExpenses);
+        return getDeserializedExpensesList(unAcceptedExpenses);
     }
 
 
@@ -400,10 +414,35 @@ public class Utils {
         Integer i = 0;
         Map<String, ?> all = getLocalStorageForPreferences().getAll();
         for (String key : all.keySet()) {
-            if (key.startsWith("DAILY_EXPENSES-") || key.equals(UNACCEPTED_EXPENSES)) {
+            if (key.startsWith("DAILY_EXPENSES-")) {
                 i++;
             }
+            if (key.equals(UNACCEPTED_EXPENSES)) {
+                i = i + getDeserializedExpensesList(all.get(UNACCEPTED_EXPENSES).toString()).size();
+            }
         }
-        return i.toString();
+
+        return i.toString().equals("0") ? "" : i.toString();
     }
+
+    public static void saveUnacceptedExpenses(Expenses processedExpenses) {
+        List<Expenses> unAcceptedExpenses = getUnAcceptedExpenses();
+        unAcceptedExpenses.add(processedExpenses);
+        SharedPreferences.Editor edit = Utils.getLocalStorageForPreferences().edit();
+        edit.putString(Utils.UNACCEPTED_EXPENSES, serializeExpenses(unAcceptedExpenses));
+        edit.apply();
+    }
+
+    @Nullable
+    protected static String serializeExpenses(List<Expenses> processedExpenses) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        try {
+            return objectMapper.writeValueAsString(processedExpenses);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

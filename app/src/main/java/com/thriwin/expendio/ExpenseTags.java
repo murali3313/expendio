@@ -35,17 +35,45 @@ public class ExpenseTags {
             objectMapper = new ObjectMapper();
             defaultTags.put("eat", asList("Food"));
             defaultTags.put("hotel", asList("Food"));
+            defaultTags.put("break fast", asList("Food"));
+            defaultTags.put("breakfast", asList("Food"));
+            defaultTags.put("lunch", asList("Food"));
+            defaultTags.put("dinner", asList("Food"));
             defaultTags.put("restaurant", asList("Food"));
-            defaultTags.put("food", asList("Food"));
             defaultTags.put("bakery", asList("Food"));
+            defaultTags.put("meat", asList("Food"));
+            defaultTags.put("chicken", asList("Food"));
             defaultTags.put("grocery", asList("Food"));
             defaultTags.put("groceries", asList("Food"));
+
             defaultTags.put("hospital", asList("Health"));
-            defaultTags.put("meat", asList("Food"));
+            defaultTags.put("pharmacy", asList("Health"));
+            defaultTags.put("tablet", asList("Health"));
+            defaultTags.put("capsules", asList("Health"));
             defaultTags.put("medicine", asList("Health"));
             defaultTags.put("pharmacy", asList("Health"));
+
             defaultTags.put("bus", asList("Travel"));
             defaultTags.put("travel", asList("Travel"));
+            defaultTags.put("bus ticket", asList("Travel"));
+            defaultTags.put("train", asList("Travel"));
+            defaultTags.put("train ticket", asList("Travel"));
+            defaultTags.put("flight", asList("Travel"));
+
+            defaultTags.put("cinema", asList("Entertainment"));
+            defaultTags.put("cinema ticket", asList("Entertainment"));
+            defaultTags.put("play", asList("Entertainment"));
+            defaultTags.put("games", asList("Entertainment"));
+            defaultTags.put("video games", asList("Entertainment"));
+
+            defaultTags.put("petrol", asList("Vehicle"));
+            defaultTags.put("diesel", asList("Vehicle"));
+            defaultTags.put("bike", asList("Vehicle"));
+            defaultTags.put("repair", asList("Vehicle"));
+
+            defaultTags.put("amazon", asList("Online Shopping"));
+            defaultTags.put("flipkart", asList("Online Shopping"));
+
             defaultTags.put("miscellaneous", asList("Misc."));
             writeToPersistence(defaultTags);
         }
@@ -136,7 +164,7 @@ public class ExpenseTags {
         savedExpenseTags = null;
     }
 
-    private static void writeToPersistence(Object wordAndTags) {
+    private static void writeToPersistence(ExpenseTag wordAndTags) {
         String expenseTagsAsString = null;
         SharedPreferences.Editor edit = localStorageForPreferences.edit();
         try {
@@ -146,6 +174,7 @@ public class ExpenseTags {
         }
         edit.putString(TAGS, expenseTagsAsString);
         edit.apply();
+        savedExpenseTags = new ExpenseTags(wordAndTags);;
     }
 
     public List<String> getWords() {

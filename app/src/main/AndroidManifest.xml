@@ -44,6 +44,10 @@
             android:name=".ExpendioSettingsView"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ExpenseTagsEditView"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".DayWiseExpenseEdit"

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static java.lang.String.format;
+import static java.util.Arrays.asList;
 
 public class UnAcceptedExpensesBaseView extends LinearLayout {
     UnAcceptedExpensesBaseView inflatedView;
@@ -28,7 +29,7 @@ public class UnAcceptedExpensesBaseView extends LinearLayout {
         header.setText(expensesHeader);
 
         TextView count = inflatedView.findViewById(R.id.totalExpensesUnApproved);
-        count.setText(format("Total unapproved expenses: %d.",unAcceptedExpenses.size()));
+        count.setText(format("Total unapproved expenses: %d",unAcceptedExpenses.size()));
 
         setClickAction();
 
