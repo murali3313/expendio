@@ -341,7 +341,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         Description desc = new Description();
         desc.setText("Thriwin solutions.");
         pieChart.setDescription(desc);
-        pieChart.setCenterTextColor(getResources().getColor(R.color.colorPrimary));
+        pieChart.setCenterTextColor(getResources().getColor(R.color.colorAccent));
         pieChart.setCenterText(format("Expendio\n%s\n$$ %s", monthExpenses.getMonthYearHumanReadable(), monthExpenses.getTotalExpenditure()));
         pieChart.setCenterTextSize(25);
         pieChart.setOnChartValueSelectedListener(this);

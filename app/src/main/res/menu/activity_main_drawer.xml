@@ -18,7 +18,7 @@
         <item
             android:id="@+id/nav_sms_receiver"
             android:icon="@drawable/ic_menu_textsms"
-            android:title="SMS Inferer" />
+            android:title="SMS - Expense" />
 
 
         <item

@@ -79,7 +79,7 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
             TextView textView = new TextView(this.getContext(), null);
             textView.setText(tag);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.leftMargin=3;
+            params.leftMargin = 3;
             textView.setLayoutParams(params);
             textView.setPadding(15, 5, 15, 5);
             textView.setBackgroundResource(R.drawable.edit_outline);
@@ -89,8 +89,7 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
             textView.setOnClickListener(v -> {
                 PopupMenu popup = new PopupMenu(getContext(), v);
                 for (String tagEntry : tags) {
-                    if (!tag.equalsIgnoreCase(tagEntry))
-                        popup.getMenu().add(tagEntry);
+                    popup.getMenu().add(tagEntry);
                 }
                 selectedTextViewTag = (TextView) v;
                 popup.setOnMenuItemClickListener(ExpenseEditView.this);

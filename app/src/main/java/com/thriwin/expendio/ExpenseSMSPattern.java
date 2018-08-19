@@ -95,10 +95,15 @@ public class ExpenseSMSPattern extends Activity {
     @NonNull
     private LinearLayout getSMSPhraseCoontrol(String smsPhrase) {
         LinearLayout linearLayout = new LinearLayout(getBaseContext(), null);
+        LinearLayout.LayoutParams linearLayoutLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        linearLayoutLayoutParams.topMargin=5;
+        linearLayout.setLayoutParams(linearLayoutLayoutParams);
+
         EditText smsPhraseView = new EditText(getBaseContext(), null);
-        LinearLayout.LayoutParams textViewLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        textViewLayoutParams.height = 180;
+        LinearLayout.LayoutParams textViewLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         textViewLayoutParams.weight = 2;
+        textViewLayoutParams.height = 300;
+        textViewLayoutParams.width = 180;
 
         LinearLayout.LayoutParams buttonLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         buttonLayoutParams.height = 80;
@@ -120,6 +125,7 @@ public class ExpenseSMSPattern extends Activity {
                 smsPhraseContainer.removeView(linearLayout);
             }
         });
+        linearLayout.setBackgroundResource(R.drawable.edit_outline);
         return linearLayout;
     }
 }
