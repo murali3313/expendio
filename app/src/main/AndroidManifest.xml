@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
 
     <application
         android:allowBackup="true"
@@ -44,6 +46,9 @@
 
         <activity
             android:name=".ExpenseTimelineView"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ExpenseSMSPattern"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
@@ -87,6 +92,9 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".SMSStateReceiver" />
+        <service android:name=".SMSReceiverService"></service>
+
         <provider
             android:name=".GenericFileProvider"
             android:authorities="com.thriwin.expendio.GenericFileProvider"

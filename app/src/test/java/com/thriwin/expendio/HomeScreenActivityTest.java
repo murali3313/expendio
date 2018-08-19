@@ -13,7 +13,7 @@ public class HomeScreenActivityTest {
 
     @Test
     public void displayExpenseForCorrection() {
-        String s = Utils.serializeExpenses(asList(new Expenses(new Expense(new BigDecimal("200.30"), new Date(), asList(), "342432424"))));
+        String s = Utils.serializeExpenses(new Expenses(new Expense(new BigDecimal("200.30"), new Date(), asList(), "342432424")));
 
         assertTrue(s.contains("[{\"amountSpent\":\"200.30\""));
         assertTrue(s.contains("\"spentFor\":[],\"expenseStatement\":\"342432424\""));

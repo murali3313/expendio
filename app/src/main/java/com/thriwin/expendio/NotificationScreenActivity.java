@@ -119,7 +119,12 @@ public class NotificationScreenActivity extends CommonActivity implements Naviga
             Intent i = new Intent(NotificationScreenActivity.this, ExpenseDefaultLimit.class);
             startActivity(i);
 
-        }  else if (id == R.id.nav_rate_us) {
+        }  else if (id == R.id.nav_sms_receiver) {
+            Intent i = new Intent(NotificationScreenActivity.this, ExpenseSMSPattern.class);
+            startActivity(i);
+
+        }
+        else if (id == R.id.nav_rate_us) {
 
             Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);

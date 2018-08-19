@@ -119,7 +119,11 @@ public class AnalyticsScreenActivity extends CommonActivity implements Navigatio
             Intent i = new Intent(AnalyticsScreenActivity.this, ExpenseDefaultLimit.class);
             startActivity(i);
 
-        } else if (id == R.id.nav_rate_us) {
+        } else if (id == R.id.nav_sms_receiver) {
+            Intent i = new Intent(AnalyticsScreenActivity.this, ExpenseSMSPattern.class);
+            startActivity(i);
+
+        }else if (id == R.id.nav_rate_us) {
 
             Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
             Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);

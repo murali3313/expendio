@@ -43,6 +43,11 @@
 
     <string name="reminder_prompt">Do Not Disturb</string>
     <string name="expendioSettings">Expendio Settings</string>
+    <string name="sms_tracker_title">SMS Inferer</string>
+    <string name="sms_enabled_text">Do you want to enable SMS based expense suggestion</string>
+    <string name="savedSmsPhrases">All sms phrases and preferences saved successfully</string>
+    <string name="smsInfererNote">Please update sms phrases in such a way to uniquely identify your sms from your bank. These phrases will be used as  hint to identify and help find your expenses from messages.</string>
+    <string name="smsPermissionDenied">SMS tracking will not work if you don\'t provide permission.</string>
     <string-array name="reminder_options">
         <item>Do Not Disturb</item>
         <item>Once a day</item>

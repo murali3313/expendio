@@ -25,6 +25,7 @@ public class RecurringExpensesAlarmReceiver extends BroadcastReceiver {
         if (intent.getAction() != null && context != null) {
             if (intent.getAction().equalsIgnoreCase(Intent.ACTION_BOOT_COMPLETED)) {
                 NotificationScheduler.setReminder(context, RecurringExpensesAlarmReceiver.class);
+                context.startService(new Intent(context, SMSReceiverService.class));
                 return;
             }
         }
@@ -46,8 +47,6 @@ public class RecurringExpensesAlarmReceiver extends BroadcastReceiver {
     }
 
     private void recurrenceExpenseNotifier(Context context) {
-
-
         if (!Utils.didRecurrenceChekerRanToday() && ExpendioSettings.loadExpendioSettings().isWithinNotificationHour()) {
 
             try {

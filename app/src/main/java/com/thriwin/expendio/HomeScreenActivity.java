@@ -1,6 +1,7 @@
 package com.thriwin.expendio;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,24 +50,29 @@ public class HomeScreenActivity extends CommonActivity implements NavigationView
         navigationView.setNavigationItemSelectedListener(this);
 
         Utils.loadLocalStorageForPreferences(this.getApplicationContext());
-        homeScreenView = new HomeScreenView(getApplicationContext(), null, this);
-        analyticsView = new ExpenseAnalyticsView(getApplicationContext(), null);
-        notificationView = new NotificationView(getApplicationContext(), null);
+        Context applicationContext = getApplicationContext();
+        homeScreenView = new HomeScreenView(applicationContext, null, this);
+        analyticsView = new ExpenseAnalyticsView(applicationContext, null);
+        notificationView = new NotificationView(applicationContext, null);
 
         super.onCreate(savedInstanceState);
 
         loadDisplayArea(DashboardView.HOME, getIntent());
         if (!Utils.isReminderAlreadySet()) {
-            NotificationScheduler.setReminder(getApplicationContext(), RecurringExpensesAlarmReceiver.class);
+            NotificationScheduler.setReminder(applicationContext, RecurringExpensesAlarmReceiver.class);
             Utils.setReminder();
             Utils.lastNotifiedOn(new Date());
+
         }
         String displayView = getIntent().getStringExtra("DISPLAY_VIEW");
         if (!isEmpty(displayView) && displayView.equals("NOTIFICATION")) {
-            Intent i = new Intent(getApplicationContext(), NotificationScreenActivity.class);
+            Intent i = new Intent(applicationContext, NotificationScreenActivity.class);
             itemSelected = getResources().getString(R.string.title_notifications);
-            ContextCompat.startActivity(getApplicationContext(), i, null);
+            ContextCompat.startActivity(applicationContext, i, null);
         }
+
+        Intent service = new Intent(applicationContext, SMSReceiverService.class);
+        applicationContext.startService(service);
     }
 
 
@@ -133,6 +139,10 @@ public class HomeScreenActivity extends CommonActivity implements NavigationView
 
         } else if (id == R.id.nav_general_expense_limit) {
             Intent i = new Intent(HomeScreenActivity.this, ExpenseDefaultLimit.class);
+            startActivity(i);
+
+        } else if (id == R.id.nav_sms_receiver) {
+            Intent i = new Intent(HomeScreenActivity.this, ExpenseSMSPattern.class);
             startActivity(i);
 
         } else if (id == R.id.nav_rate_us) {

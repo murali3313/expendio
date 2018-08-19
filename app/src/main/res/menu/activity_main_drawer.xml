@@ -15,6 +15,11 @@
             android:icon="@drawable/ic_menu_repeat"
             android:title="Recurring expenses" />
 
+        <item
+            android:id="@+id/nav_sms_receiver"
+            android:icon="@drawable/ic_menu_textsms"
+            android:title="SMS Inferer" />
+
 
         <item
             android:id="@+id/nav_general_expense_limit"

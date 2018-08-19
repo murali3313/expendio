@@ -56,6 +56,7 @@ public class Utils {
 
     private static final String DAILY_EXPENSER = "DAILY_EXPENSER";
     public static final String UNACCEPTED_EXPENSES = "UnAcceptedExpenses";
+    public static final String UNACCEPTED_SMS_EXPENSES = "UnAcceptedSMSExpenses";
     public static final String TAGS = "tags";
 
 
@@ -362,7 +363,7 @@ public class Utils {
         try {
             ObjectMapper obj = new ObjectMapper();
             String dailyExpenses = obj.writeValueAsString(todaysExpenses);
-            getLocalStorageForPreferences().edit().putString("DAILY_EXPENSES-" + todaysExpenses.getDateMonth() , dailyExpenses).commit();
+            getLocalStorageForPreferences().edit().putString("DAILY_EXPENSES-" + todaysExpenses.getDateMonth(), dailyExpenses).commit();
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -430,7 +431,7 @@ public class Utils {
         Integer i = 0;
         Map<String, ?> all = getLocalStorageForPreferences().getAll();
         for (String key : all.keySet()) {
-            if (key.startsWith("DAILY_EXPENSES-") || key.startsWith(UNACCEPTED_EXPENSES + "-")) {
+            if (key.startsWith("DAILY_EXPENSES-") || key.startsWith(UNACCEPTED_EXPENSES + "-") || key.startsWith(UNACCEPTED_SMS_EXPENSES + "-")) {
                 i++;
             }
         }
@@ -489,5 +490,33 @@ public class Utils {
         int newTipIndex = tipIndex + 1 >= RecurringExpensesAlarmReceiver.genaralTips.size() ? 0 : tipIndex + 1;
         getLocalStorageForPreferences().edit().putInt("TipIndex", newTipIndex).commit();
         return tipIndex;
+    }
+
+    public static SMSInferenceSettings getSMSInfererSettings() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        SMSInferenceSettings smsInferenceSettings = new SMSInferenceSettings();
+
+        String smsInfererSettings = getLocalStorageForPreferences().getString("SMS_INFERER_SETTINGS", "{}");
+        try {
+            smsInferenceSettings = objectMapper.readValue(smsInfererSettings, SMSInferenceSettings.class);
+        } catch (IOException e) {
+
+        }
+        return smsInferenceSettings;
+    }
+
+    public static void saveSMSInfererSettings(SMSInferenceSettings settings) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            getLocalStorageForPreferences().edit().putString("SMS_INFERER_SETTINGS", objectMapper.writeValueAsString(settings)).commit();
+        } catch (IOException e) {
+
+        }
+    }
+
+    public static void saveSMSInferredExpense(Expense probableExpenses) {
+        SharedPreferences.Editor edit = Utils.getLocalStorageForPreferences().edit();
+        edit.putString(Utils.UNACCEPTED_SMS_EXPENSES + "-" + Math.random(), serializeExpenses(new Expenses(probableExpenses)));
+        edit.apply();
     }
 }
