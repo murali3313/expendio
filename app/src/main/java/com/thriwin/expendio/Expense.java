@@ -22,7 +22,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import static java.lang.String.format;
-import static java.lang.String.join;
 import static java.util.Arrays.asList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 
@@ -104,15 +103,15 @@ public class Expense {
 
     @JsonIgnore
     public void addTags() {
-        if (!Utils.isNull(spentFor) && !spentFor.isEmpty())
-
-            this.associatedExpenseTags = ExpenseTags.getAssociatedExpenseTags(spentFor);
+        if (!Utils.isNull(expenseStatement) && !expenseStatement.isEmpty())
+            this.associatedExpenseTags = ExpenseTags.getAssociatedExpenseTags(expenseStatement);
     }
 
     public void setSpentFor(List<String> words) {
         this.spentFor = words;
         addTags();
     }
+
 
     @JsonIgnore
     public String getStorageKey() {

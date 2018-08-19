@@ -40,7 +40,7 @@ public class ExpenseTimeView extends LinearLayout {
             layoutParams.setMargins(5, 0, 0, 0);
             textView.setLayoutParams(layoutParams);
             textView.setTextColor(getResources().getColor(R.color.primaryText));
-            textView.setBackgroundResource(R.drawable.item_border);
+            textView.setBackgroundResource(R.drawable.edit_outline);
             tagsContainer.addView(textView);
         }
         amount.setText(expense.getAmountSpent() + " For ");

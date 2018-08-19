@@ -2,10 +2,10 @@ package com.thriwin.expendio;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -13,7 +13,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
@@ -22,7 +22,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class ExpenseEditView extends LinearLayout {
+public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuItemClickListener {
 
     private Expense expense;
     TextView spentOn;
@@ -32,6 +32,7 @@ public class ExpenseEditView extends LinearLayout {
     LinearLayout tagsContainer;
     private ExpensesEditView parentView;
     private boolean makeDatePermissibleWithinMonthLimit;
+    TextView selectedTextViewTag;
 
 
     public ExpenseEditView(Context context, @Nullable AttributeSet attrs, Expense expens, ExpensesEditView parentView, boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, boolean isTagEditDisabled, String tagText) {
@@ -68,6 +69,8 @@ public class ExpenseEditView extends LinearLayout {
         reason.setThreshold(1);
         //Set the adapter
         reason.setAdapter(adapter);
+        ExpenseTags expenseTags = ExpenseTags.getSavedExpenseTags();
+        List<String> tags = expenseTags.getTagsOnly();
 
         for (String tag : expense.getAssociatedExpenseTags()) {
             if (Utils.isEmpty(tag.trim())) {
@@ -75,10 +78,25 @@ public class ExpenseEditView extends LinearLayout {
             }
             TextView textView = new TextView(this.getContext(), null);
             textView.setText(tag);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.leftMargin=3;
+            textView.setLayoutParams(params);
             textView.setPadding(15, 5, 15, 5);
-            textView.setBackgroundResource(R.drawable.item_border);
+            textView.setBackgroundResource(R.drawable.edit_outline);
             textView.setTextColor(getResources().getColor(R.color.primaryText));
             tagsContainer.addView(textView);
+
+            textView.setOnClickListener(v -> {
+                PopupMenu popup = new PopupMenu(getContext(), v);
+                for (String tagEntry : tags) {
+                    if (!tag.equalsIgnoreCase(tagEntry))
+                        popup.getMenu().add(tagEntry);
+                }
+                selectedTextViewTag = (TextView) v;
+                popup.setOnMenuItemClickListener(ExpenseEditView.this);
+                popup.show();
+            });
+
         }
 
         spentOn.setOnClickListener(v -> {
@@ -109,5 +127,16 @@ public class ExpenseEditView extends LinearLayout {
         expense.setExpenseStatement(reason.getText().toString());
         expense.setAmountSpent(new BigDecimal(Utils.isEmpty(amount) ? "0" : amount));
         return expense.isValid() ? expense : null;
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        String reasonString = reason.getText().toString();
+        String previousString = selectedTextViewTag.getText().toString();
+        reasonString = reasonString.replace((item.getTitle().equals("Misc.") ? ExpenseTags.MISCELLANEOUS_TAG : previousString), "");
+        reasonString = reasonString.trim() + " " + item.getTitle();
+        reason.setText(reasonString.trim());
+        selectedTextViewTag.setText(item.getTitle());
+        return false;
     }
 }

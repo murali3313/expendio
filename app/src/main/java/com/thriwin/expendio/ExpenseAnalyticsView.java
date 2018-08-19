@@ -2,6 +2,7 @@ package com.thriwin.expendio;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -216,8 +217,8 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         barChart.setData(barData);
 
 
-        set1.setColors(getResources().getColor(R.color.colorPrimary));
-        set2.setColors(getResources().getColor(R.color.colorAlternateDark1));
+        set1.setColors(Color.parseColor("#C39EBA"));
+        set2.setColors(Color.parseColor("#FF83A3"));
         set1.setAxisDependency(YAxis.AxisDependency.RIGHT);
         set2.setAxisDependency(YAxis.AxisDependency.RIGHT);
 
@@ -340,7 +341,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         Description desc = new Description();
         desc.setText("Thriwin solutions.");
         pieChart.setDescription(desc);
-        pieChart.setCenterTextColor(getResources().getColor(R.color.colorAccent));
+        pieChart.setCenterTextColor(getResources().getColor(R.color.colorPrimary));
         pieChart.setCenterText(format("Expendio\n%s\n$$ %s", monthExpenses.getMonthYearHumanReadable(), monthExpenses.getTotalExpenditure()));
         pieChart.setCenterTextSize(25);
         pieChart.setOnChartValueSelectedListener(this);

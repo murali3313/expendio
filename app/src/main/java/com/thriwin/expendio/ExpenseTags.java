@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.thriwin.expendio.Utils.*;
+import static com.thriwin.expendio.Utils.TAGS;
+import static com.thriwin.expendio.Utils.getLocalStorageForPreferences;
+import static com.thriwin.expendio.Utils.isNull;
 import static java.util.Arrays.asList;
 
 public class ExpenseTags {
@@ -89,9 +91,9 @@ public class ExpenseTags {
         return this.tags.isEmpty();
     }
 
-    public static Set<String> getAssociatedExpenseTags(List<String> words) {
+    public static Set<String> getAssociatedExpenseTags(String expenseStatement) {
         ExpenseTags tags = getSavedExpenseTags();
-        ArrayList<String> lowerCase = getLowerCase(words);
+        String lowerCase = expenseStatement.toLowerCase();
         Set<String> tagWords = new ArraySet<>();
         for (Map.Entry<String, List<String>> tagWord : tags.getTags().entrySet()) {
             if (lowerCase.contains(tagWord.getKey().toLowerCase())) {
@@ -180,10 +182,19 @@ public class ExpenseTags {
         }
         edit.putString(TAGS, expenseTagsAsString);
         edit.apply();
-        savedExpenseTags = new ExpenseTags(wordAndTags);;
+        savedExpenseTags = new ExpenseTags(wordAndTags);
+        ;
     }
 
     public List<String> getWords() {
         return this.tags.getWords();
+    }
+
+    public List<String> getTagsOnly() {
+        List<String> tags = new ArrayList<>();
+        for (Map.Entry<String, List<String>> tagEntry : getTagAndWordsAssociated()) {
+            tags.add(tagEntry.getKey());
+        }
+        return tags;
     }
 }

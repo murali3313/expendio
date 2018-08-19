@@ -14,7 +14,7 @@ public class SMSInferenceSettings {
 
     ArrayList<String> smsPhrases = new ArrayList<>();
     @JsonIgnore
-    private static SMSProcessor smsProcessor;
+    private static SMSProcessor smsProcessor = new SMSProcessor();
 
     public void setSmsPhrase(String smsPhrase) {
         smsPhrases.add(smsPhrase);
@@ -29,7 +29,15 @@ public class SMSInferenceSettings {
 
     private boolean containPhrases(String completMessages) {
         for (String smsPhrase : smsPhrases) {
-            boolean contains = completMessages.contains(smsPhrase);
+            String[] multiPhrases = smsPhrase.split(",");
+            boolean contains = true;
+            for (String multiPhrase : multiPhrases) {
+                if (!completMessages.trim().toLowerCase().contains(multiPhrase.trim().toLowerCase())) {
+                    contains = false;
+                    break;
+                }
+
+            }
             if (contains) {
                 return true;
             }

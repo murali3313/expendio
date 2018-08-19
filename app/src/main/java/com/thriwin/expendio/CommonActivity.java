@@ -19,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -204,6 +205,10 @@ public class CommonActivity extends AppCompatActivity {
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" + getApplicationContext().getPackageName() + "/files");
         File[] files = file.listFiles();
         String fileList = "";
+        if (Utils.isNull(files) || files.length == 0) {
+            showToast(R.string.noFilesGeneratedYet);
+            return;
+        }
         for (File f : files) {
             fileList += f.getAbsolutePath() + ",";
         }
@@ -284,12 +289,13 @@ public class CommonActivity extends AppCompatActivity {
 
         AlertDialog.Builder alertDlg = new AlertDialog.Builder(this);
         alertDlg.setMessage("Are you sure you want to exit?");
+        alertDlg.setIcon(R.mipmap.ic_launcher);
+        alertDlg.setTitle ("Expendio");
         alertDlg.setCancelable(false); // We avoid that the dialong can be cancelled, forcing the user to choose one of the options
         alertDlg.setPositiveButton("Yes", (dialog, id) -> CommonActivity.super.onBackPressed());
 
         alertDlg.setNegativeButton("No", (dialog, which) -> {
         });
-
         alertDlg.create().show();
     }
 

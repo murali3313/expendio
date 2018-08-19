@@ -14,6 +14,7 @@ import java.io.IOException;
 
 import static com.thriwin.expendio.Utils.UNACCEPTED_EXPENSES;
 import static com.thriwin.expendio.Utils.isNull;
+import static com.thriwin.expendio.Utils.showToast;
 
 public class ExpenseAcceptance extends Activity {
 
@@ -53,6 +54,7 @@ public class ExpenseAcceptance extends Activity {
             HomeScreenActivity.glowFor = unapprovedExpenses.getExpenses().getStorageKey();
             Utils.saveExpenses(unapprovedExpenses.getExpenses());
             Utils.clearUnAcceptedExpense(this.keyToRemove);
+            showToast(getBaseContext(),R.string.expenseSavedSuccessfully);
             ExpenseAcceptance.this.finish();
         });
 

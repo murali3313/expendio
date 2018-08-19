@@ -13,7 +13,7 @@ public class SMSProcessor {
 
     SMSProcessor() {
         dateProcessor = new DateProcessor();
-        amountProcessor = new AmountProcessor();
+        amountProcessor = new SMSAmountProcessor();
         reasonProcessor = new ReasonProcessor(Utils.getLocalStorageForPreferences());
     }
 

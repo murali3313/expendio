@@ -7,11 +7,16 @@ import android.os.Bundle;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
 
+import static com.thriwin.expendio.Utils.isNull;
+
 public class SMSStateReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Telephony.Sms.Intents.SMS_RECEIVED_ACTION)) {
+            if(isNull(Utils.getLocalStorageForPreferences())){
+                Utils.loadLocalStorageForPreferences(context);
+            }
             SMSInferenceSettings smsInfererSettings = Utils.getSMSInfererSettings();
 
             if (!smsInfererSettings.isEnabled())
@@ -28,9 +33,11 @@ public class SMSStateReceiver extends BroadcastReceiver {
 
                 if (messages.length > -1) {
                     Expense probableExpenses = smsInfererSettings.getProbableExpenses(completMessages.toString());
-                    Utils.saveSMSInferredExpense(probableExpenses);
-                    NotificationScheduler.showNotification(context, HomeScreenActivity.class,
-                            "Expense suggestion based on your sms", "Pending for your approval:" + 1 + "\n" + RecurringExpensesAlarmReceiver.genaralTips.get(Utils.getTipsIndex()), "NOTIFICATION");
+                    if (!isNull(probableExpenses)) {
+                        Utils.saveSMSInferredExpense(probableExpenses);
+                        NotificationScheduler.showNotification(context, HomeScreenActivity.class,
+                                "Expense suggestion based on your sms", "Pending for your approval:" + 1 + "\n" + RecurringExpensesAlarmReceiver.genaralTips.get(Utils.getTipsIndex()), "NOTIFICATION");
+                    }
                 }
             }
         }

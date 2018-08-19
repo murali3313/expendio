@@ -409,7 +409,8 @@ public class Utils {
         ObjectMapper obj = new ObjectMapper();
         Map<String, ?> all = getLocalStorageForPreferences().getAll();
         for (Map.Entry<String, ?> entry : all.entrySet()) {
-            if (entry.getKey().startsWith(UNACCEPTED_EXPENSES + "-") || entry.getKey().startsWith("DAILY_EXPENSES-")) {
+            if (entry.getKey().startsWith(UNACCEPTED_EXPENSES + "-") || entry.getKey().startsWith("DAILY_EXPENSES-") ||
+            entry.getKey().startsWith(UNACCEPTED_SMS_EXPENSES + "-")){
                 try {
                     Expenses expenses = obj.readValue(all.get(entry.getKey()).toString(), new TypeReference<Expenses>() {
                     });

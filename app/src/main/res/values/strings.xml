@@ -47,7 +47,10 @@
     <string name="sms_enabled_text">Do you want to enable SMS based expense suggestion</string>
     <string name="savedSmsPhrases">All sms phrases and preferences saved successfully</string>
     <string name="smsInfererNote">Please update sms phrases in such a way to uniquely identify your sms from your bank. These phrases will be used as  hint to identify and help find your expenses from messages.</string>
-    <string name="smsPermissionDenied">SMS tracking will not work if you don\'t provide permission.</string>
+    <string name="smsPermissionDenied">SMS based expense suggestion will not work if you don\'t provide permission.</string>
+    <string name="sms_entries_instructions">Please follow the instruction when you set the sms phrases.\n\n 1. Use phrases from your bank smses to uniquely identify the message \n\n 2. You can use comma separated values to define sms phrases, so that only if all phrases matches it will be considered for processing</string>
+    <string name="expenseSavedSuccessfully">Expenses saved successfully</string>
+    <string name="noFilesGeneratedYet">No files generated to display.</string>
     <string-array name="reminder_options">
         <item>Do Not Disturb</item>
         <item>Once a day</item>

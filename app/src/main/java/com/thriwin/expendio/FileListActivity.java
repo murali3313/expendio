@@ -25,7 +25,7 @@ public class FileListActivity extends Activity {
         String[] fileLists = this.getIntent().getStringExtra("FileList").split(",");
         for (String fileList : fileLists) {
             TextView textView = new TextView(getApplicationContext());
-            textView.setTextColor(getResources().getColor(R.color.colorAccent));
+            textView.setTextColor(getResources().getColor(R.color.colorPrimary));
             textView.setText(fileList.substring(fileList.lastIndexOf("/") + 1));
             textView.setTextSize(23);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

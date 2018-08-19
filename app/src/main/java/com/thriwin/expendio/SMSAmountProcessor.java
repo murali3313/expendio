@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AmountProcessor extends Processor {
+public class SMSAmountProcessor extends AmountProcessor {
     public BigDecimal extract(StringBuilder expModifiable) {
         String[] allWords = Utils.splitStatementBy(expModifiable.toString(), " ");
         List<BigDecimal> values = new ArrayList<>();
@@ -16,30 +16,10 @@ public class AmountProcessor extends Processor {
                 removeAllTextBetweenTwoNumerals(expModifiable, allWords, firstOccurenceOfNumber, index);
                 values.add(decimalFrom);
                 removeProcessedText(expModifiable, word);
-                firstOccurenceOfNumber = index;
+                break;
             }
             index++;
         }
         return values.isEmpty() ? new BigDecimal(0) : getRupeesAndPaiseFormat(values);
-    }
-
-    protected void removeAllTextBetweenTwoNumerals(StringBuilder expModifiable, String[] allWords, Integer firstOccurenceOfNumber, int index) {
-        if (firstOccurenceOfNumber >= 0) {
-                for (int i = firstOccurenceOfNumber + 1; i <= index + 1; i++) {
-                removeProcessedText(expModifiable, allWords[i]);
-            }
-        }
-    }
-
-    protected BigDecimal getRupeesAndPaiseFormat(List<BigDecimal> values) {
-        String s = "";
-        int index = 0;
-        for (BigDecimal value : values) {
-            s += index > 0 ? "." + value.toString() : value.toString();
-            if (index == 1)
-                break;
-            index++;
-        }
-        return new BigDecimal(s);
     }
 }

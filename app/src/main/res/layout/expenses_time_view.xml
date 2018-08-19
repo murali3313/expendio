@@ -13,7 +13,7 @@
 
         <TextView
             android:id="@+id/dateWiseString"
-            android:layout_width="55dp"
+            android:layout_width="65dp"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:textAlignment="gravity"
@@ -21,10 +21,10 @@
 
         <TextView
             android:id="@+id/totalExpenseDayWise"
-            android:layout_width="55dp"
+            android:layout_width="65dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="-50dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginLeft="-60dp"
+            android:layout_marginTop="60dp"
             android:textAlignment="gravity"
             android:textColor="@color/primaryText" />
 
