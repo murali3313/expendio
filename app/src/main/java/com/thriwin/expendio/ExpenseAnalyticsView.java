@@ -33,7 +33,6 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -74,7 +73,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
     public void load(CommonActivity expenseListener, Intent intent) {
         selectedTagBatch = 1;
         allExpensesMonths = getAllExpensesMonths();
-        if(allExpensesMonths.size()==0){
+        if (allExpensesMonths.size() == 0) {
             return;
         }
 
@@ -89,25 +88,24 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
 
         ImageButton barChartIcon = expenseListener.findViewById(R.id.bar_chart);
         barChartIcon.setBackgroundResource(R.drawable.ic_bar_chart);
-        barChartIcon.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isDisplayingPieChart) {
-                    barChartIcon.setBackgroundResource(R.drawable.ic_pie_chart);
-                    isDisplayingPieChart = false;
-                    barChartContainer.setVisibility(VISIBLE);
-                    pieChartContainer.setVisibility(GONE);
-                    loadCurrentMonthBarChart(selectedMonthStorageKey, comparingMonthStorageKey);
-                } else {
-                    barChartIcon.setBackgroundResource(R.drawable.ic_bar_chart);
-                    isDisplayingPieChart = true;
-                    loadMonthSelector(selectedMonthStorageKey);
-                    loadCurrentMonthPieChart(selectedMonthStorageKey);
-                    barChartContainer.setVisibility(GONE);
-                    pieChartContainer.setVisibility(VISIBLE);
-                }
+        barChartIcon.setOnClickListener(v -> {
+            if (isDisplayingPieChart) {
+                barChartIcon.setBackgroundResource(R.drawable.ic_pie_chart);
+                isDisplayingPieChart = false;
+                barChartContainer.setVisibility(VISIBLE);
+                pieChartContainer.setVisibility(GONE);
+                loadCurrentMonthBarChart(selectedMonthStorageKey, comparingMonthStorageKey);
+            } else {
+                barChartIcon.setBackgroundResource(R.drawable.ic_bar_chart);
+                isDisplayingPieChart = true;
+                loadMonthSelector(selectedMonthStorageKey);
+                loadCurrentMonthPieChart(selectedMonthStorageKey);
+                barChartContainer.setVisibility(GONE);
+                pieChartContainer.setVisibility(VISIBLE);
             }
         });
+
+        loadCurrentMonthBarChart(selectedMonthStorageKey, comparingMonthStorageKey);
     }
 
     private void loadCurrentMonthBarChart(String primaryMonth, String comparingMonth) {
@@ -342,7 +340,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         desc.setText("Thriwin solutions.");
         pieChart.setDescription(desc);
         pieChart.setCenterTextColor(getResources().getColor(R.color.colorAccent));
-        pieChart.setCenterText(format("Expendio\n%s\n$$ %s", monthExpenses.getMonthYearHumanReadable(), monthExpenses.getTotalExpenditure()));
+        pieChart.setCenterText(format("Expendio\n%s\n$$ %s", monthExpenses.getMonthYearHumanReadable(storageKeyForCurrentMonth), monthExpenses.getTotalExpenditure()));
         pieChart.setCenterTextSize(25);
         pieChart.setOnChartValueSelectedListener(this);
         PieData data = new PieData(set);

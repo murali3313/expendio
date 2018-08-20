@@ -82,7 +82,7 @@ public class ExpenseTags {
             defaultTags.put("flipkart", asList("Online Shopping"));
             defaultTags.put("online shopping", asList("Online Shopping"));
 
-            defaultTags.put("uncategorized", asList("UnCategorized"));
+            defaultTags.put(MISCELLANEOUS_TAG, asList(MISCELLANEOUS_TAG));
             defaultTags.put("misc", asList("Misc."));
             defaultTags.put("Miscellaneous", asList("Misc."));
             writeToPersistence(defaultTags);
@@ -104,7 +104,7 @@ public class ExpenseTags {
         }
 
         if (tagWords.isEmpty()) {
-            tagWords.add("Misc.");
+            tagWords.add(MISCELLANEOUS_TAG);
         }
         return tagWords;
     }

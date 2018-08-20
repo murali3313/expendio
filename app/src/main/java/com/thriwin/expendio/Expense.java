@@ -21,6 +21,7 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 
+import static com.thriwin.expendio.ExpenseTags.MISCELLANEOUS_TAG;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
@@ -151,7 +152,7 @@ public class Expense {
         if (!isEmpty(associatedExpenseTags)) {
             return associatedExpenseTags.iterator().next();
         }
-        return ExpenseTags.MISCELLANEOUS_TAG;
+        return MISCELLANEOUS_TAG;
     }
 
     @JsonIgnore
@@ -218,10 +219,10 @@ public class Expense {
     public void santiseData() {
         if (spentFor.isEmpty() || Utils.isEmpty(spentFor.get(0))) {
             spentFor.clear();
-            spentFor.add(ExpenseTags.MISCELLANEOUS_TAG);
+            spentFor.add(MISCELLANEOUS_TAG);
         }
         if (Utils.isEmpty(expenseStatement.trim()))
-            this.expenseStatement = "Miscellaneous";
+            this.expenseStatement = MISCELLANEOUS_TAG;
 
     }
 

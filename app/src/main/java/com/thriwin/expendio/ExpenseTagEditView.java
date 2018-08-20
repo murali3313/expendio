@@ -31,7 +31,7 @@ public class ExpenseTagEditView extends FlowLayout {
             EditText newTagWord = findViewById(R.id.tagWord);
             String newWord = newTagWord.getText().toString();
 
-            if (!tagWordContain(newWord) && !Utils.isEmpty(newWord)) {
+            if (!tagWordContain(newWord) && !Utils.isEmpty(newWord.trim())) {
                 addTags(taggedWordsContainer, newWord);
             }
 

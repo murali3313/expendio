@@ -64,7 +64,7 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
         addExpenseInCurrentMonth.setOnClickListener(v -> {
             Intent i = new Intent(getApplicationContext(), MonthWiseExpenseAdd.class);
             i.addFlags(FLAG_ACTIVITY_NEW_TASK);
-            i.putExtra("LatestDate", Utils.getDeserializedMonthWiseExpenses(expenseKey).getLatestDate());
+            i.putExtra("LatestDate", Utils.getDeserializedMonthWiseExpenses(expenseKey).getLatestDate(expenseKey));
             ContextCompat.startActivity(getApplicationContext(), i, null);
         });
 
@@ -83,10 +83,10 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
         monthWiseExpenseLimitExceeded.setText(monthWiseExpense.monthlyLimitExceededDetails());
 
         TextView monthWiseExpenseLimit = findViewById(R.id.monthWiseExpenseLimit);
-        monthWiseExpenseLimit.setText(format("Monthly Limit \n%s", monthWiseExpense.getMonthWiseExpenseLimit().toString()));
+        monthWiseExpenseLimit.setText(format("Expense \ncut-off \n%s", monthWiseExpense.getMonthWiseExpenseLimit().toString()));
 
         TextView monthDetails = findViewById(R.id.monthDetails);
-        monthDetails.setText(monthWiseExpense.getMonthYearHumanReadable());
+        monthDetails.setText(monthWiseExpense.getMonthYearHumanReadable(expenseKey));
 
         LinearLayoutCompat timeMarker = findViewById(R.id.timeMarker);
         timeMarker.removeAllViews();
@@ -218,7 +218,7 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
 
     private void writeAndPresentTheFile() {
         MonthWiseExpense monthWiseExpense = Utils.getDeserializedMonthWiseExpenses(expenseKey);
-        File file = generator.genarateExcelForMonthExpenses(getBaseContext(), monthWiseExpense, monthWiseExpense.getMonthYearHumanReadable());
+        File file = generator.genarateExcelForMonthExpenses(getBaseContext(), monthWiseExpense, monthWiseExpense.getMonthYearHumanReadable(expenseKey));
         presentTheFileToTheUser(file);
     }
 

@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import static com.thriwin.expendio.Utils.getDefaultExpenseLimit;
+import static com.thriwin.expendio.Utils.isEmpty;
 import static com.thriwin.expendio.Utils.isNull;
 import static java.lang.String.format;
 
@@ -96,23 +98,17 @@ public class MonthWiseExpense {
         return totalExpenditure.toString();
     }
 
-    public String getStorageKey() {
-        if (!dayWiseExpenses.isEmpty())
-            return this.dayWiseExpenses.entrySet().iterator().next().getValue().getStorageKey();
-        return "NA";
-    }
-
-    public long getLatestDate() {
+    public long getLatestDate(String selectedMonthKey) {
         if (getSortedKeys().isEmpty()) {
-            String monthAndYear = getStorageKey().replace("Expense-", "");
-            int startDayOfMonth = Expense.getStartDayOfMonth();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            String[] readableMonthAndYear = Utils.getReadableMonthAndYear(selectedMonthKey);
+            Date date;
             try {
-                return simpleDateFormat.parse(format("%d-%s", startDayOfMonth, monthAndYear)).getTime();
+                date = new SimpleDateFormat("dd/MMM/yyyy").parse(format("%d/%s/%s", Expense.getStartDayOfMonth(), readableMonthAndYear[0], readableMonthAndYear[1]));
             } catch (ParseException e) {
                 e.printStackTrace();
+                date = new Date();
             }
-            return 0l;
+            return date.getTime();
         }
         return getDayWiseExpenses(getSortedKeys().first()).getValue().getSpentOnDate();
     }
@@ -122,6 +118,15 @@ public class MonthWiseExpense {
             return this.dayWiseExpenses.get(getSortedKeys().first()).getMonthYearHumanReadable();
         }
         return "NA";
+    }
+
+    public String getMonthYearHumanReadable(String expenseKey) {
+        String monthYearHumanReadable = this.getMonthYearHumanReadable();
+        if (monthYearHumanReadable.equals("NA") && !isEmpty(expenseKey)) {
+            String[] readableMonthAndYear = Utils.getReadableMonthAndYear(expenseKey);
+            return readableMonthAndYear[0] + " - " + readableMonthAndYear[1];
+        }
+        return monthYearHumanReadable;
     }
 
     public List<Expenses> getSortedDayWiseExpenses() {

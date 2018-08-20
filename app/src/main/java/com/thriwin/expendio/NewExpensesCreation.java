@@ -35,7 +35,7 @@ public class NewExpensesCreation extends Activity {
         String selectedMonthKey = getIntent().getStringExtra("SELECTED_STORAGE_KEY");
         Date selectedDate = today();
         if (!isNull(selectedMonthKey)) {
-            selectedDate= new Date(Utils.getDeserializedMonthWiseExpenses(selectedMonthKey).getLatestDate());
+            selectedDate= new Date(Utils.getDeserializedMonthWiseExpenses(selectedMonthKey).getLatestDate(selectedMonthKey));
         }
         this.expenses = new Expenses(new Expense(new BigDecimal(0), selectedDate, new ArrayList<>(), ""));
         ExpensesEditView expenses = findViewById(R.id.newExpenses);
