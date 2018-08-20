@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/colorPrimary"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/monthWiseExpenseHeader"
@@ -19,28 +20,28 @@
             android:paddingLeft="10dp"
             android:text="Expense"
             android:textColor="@color/white"
-            android:textSize="25sp" />
+            android:textSize="22sp" />
 
         <ImageButton
             android:id="@+id/addExpense"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginRight="64dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="58dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/ic_add_expense_white" />
 
         <ImageButton
             android:id="@+id/acceptedExpense"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginRight="30dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="27dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/ic_save_white" />
 
         <ImageButton
             android:id="@+id/discardExpenses"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/ic_close_white" />
 
