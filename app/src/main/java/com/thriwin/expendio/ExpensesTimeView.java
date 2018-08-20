@@ -61,7 +61,7 @@ public class ExpensesTimeView extends LinearLayout {
         TextView dateWiseRepresentation = findViewById(R.id.dateWiseString);
         dateWiseRepresentation.setText(expenses.getValue().getDateMonthHumanReadable());
         this.expense = expenses.getValue();
-        FlowLayout expensesPerDay = findViewById(R.id.expensesPerDay);
+        LinearLayout expensesPerDay = findViewById(R.id.expensesPerDay);
         for (Expense expens : this.expense) {
             ExpenseTimeView expenseTimeView = new ExpenseTimeView(context, null, expens, this);
             expensesPerDay.addView(expenseTimeView);

@@ -45,11 +45,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <com.nex3z.flowlayout.FlowLayout
+            <LinearLayout
                 android:id="@+id/expensesPerDay"
-                android:layout_width="270dp"
-                android:layout_height="200dp"
-                android:layout_marginLeft="10dp"></com.nex3z.flowlayout.FlowLayout>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical"></LinearLayout>
         </ScrollView>
 
 

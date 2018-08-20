@@ -2,7 +2,6 @@ package com.thriwin.expendio;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -50,7 +49,11 @@ public class TagWiseExpenseEdit extends Activity {
         ImageButton addExpense = findViewById(R.id.addExpense);
         addExpense.setOnClickListener(v -> dayWiseExpensesEdit.addNewExpense(true, tagKey));
 
-        ((TextView)findViewById(R.id.dayWiseExpenseHeader)).setText("Expenses for "+ this.expenses.getFirstAssociatedTag());
+        String headerText = "Expenses for " + this.expenses.getFirstAssociatedTag();
+        int maxAllowedLengthInHeader = 22;
+        Integer tillText = headerText.length() > maxAllowedLengthInHeader ? maxAllowedLengthInHeader : headerText.length();
+        String appendingText = tillText == maxAllowedLengthInHeader ? "..." : "";
+        ((TextView) findViewById(R.id.dayWiseExpenseHeader)).setText(headerText.substring(0, tillText) + appendingText);
     }
 
 
