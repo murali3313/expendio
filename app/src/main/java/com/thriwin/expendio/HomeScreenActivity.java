@@ -128,7 +128,6 @@ public class HomeScreenActivity extends CommonActivity implements NavigationView
         if (id == R.id.nav_tags) {
             Intent i = new Intent(HomeScreenActivity.this, ExpenseTagsEditView.class);
             startActivity(i);
-            loadDisplayArea(DashboardView.TAG_EDIT, getIntent());
 
         } else if (id == R.id.nav_usual_expenses) {
             Intent i = new Intent(HomeScreenActivity.this, RecurringExpensesView.class);

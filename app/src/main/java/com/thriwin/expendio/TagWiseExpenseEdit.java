@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class TagWiseExpenseEdit extends Activity {
 
     EditText editText;
-    Button okButton, cancelButton, notNowButton;
+    ImageButton okButton, cancelButton, notNowButton;
     Expenses expenses;
     ObjectMapper obj = new ObjectMapper();
 
@@ -35,7 +35,7 @@ public class TagWiseExpenseEdit extends Activity {
         dayWiseExpensesEdit.populate(expenses, makeDateEditable, true, this, true, tagKey);
 
         okButton = findViewById(R.id.acceptedExpense);
-        cancelButton = (Button) findViewById(R.id.discardExpenses);
+        cancelButton = findViewById(R.id.discardExpenses);
 
         okButton.setOnClickListener(v -> {
             ExpenseTimelineView.glowFor = expenses.getDateMonth();

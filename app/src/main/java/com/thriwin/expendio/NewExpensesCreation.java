@@ -22,7 +22,7 @@ import static com.thriwin.expendio.Utils.today;
 
 public class NewExpensesCreation extends Activity {
 
-    Button okButton, cancelButton;
+    ImageButton okButton, cancelButton;
     Expenses expenses;
     ObjectMapper obj = new ObjectMapper();
 

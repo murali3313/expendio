@@ -106,7 +106,6 @@ public class NotificationScreenActivity extends CommonActivity implements Naviga
         if (id == R.id.nav_tags) {
             Intent i = new Intent(NotificationScreenActivity.this, ExpenseTagsEditView.class);
             startActivity(i);
-            loadDisplayArea(DashboardView.TAG_EDIT, getIntent());
 
         } else if (id == R.id.nav_usual_expenses) {
             Intent i = new Intent(NotificationScreenActivity.this, RecurringExpensesView.class);

@@ -19,7 +19,7 @@ import static com.thriwin.expendio.Utils.isNull;
 import static java.util.Arrays.asList;
 
 public class ExpenseTags {
-    public static final String MISCELLANEOUS_TAG = "Miscellaneous";
+    public static final String MISCELLANEOUS_TAG = "UnCategorized";
     static ExpenseTag defaultTags = new ExpenseTag();
     private static SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
     static ObjectMapper objectMapper = new ObjectMapper();
@@ -82,7 +82,9 @@ public class ExpenseTags {
             defaultTags.put("flipkart", asList("Online Shopping"));
             defaultTags.put("online shopping", asList("Online Shopping"));
 
-            defaultTags.put("miscellaneous", asList("Misc."));
+            defaultTags.put("uncategorized", asList("UnCategorized"));
+            defaultTags.put("misc", asList("Misc."));
+            defaultTags.put("Miscellaneous", asList("Misc."));
             writeToPersistence(defaultTags);
         }
     }

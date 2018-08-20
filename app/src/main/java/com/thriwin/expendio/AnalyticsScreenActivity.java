@@ -106,7 +106,6 @@ public class AnalyticsScreenActivity extends CommonActivity implements Navigatio
         if (id == R.id.nav_tags) {
             Intent i = new Intent(AnalyticsScreenActivity.this, ExpenseTagsEditView.class);
             startActivity(i);
-            loadDisplayArea(DashboardView.TAG_EDIT, getIntent());
 
         } else if (id == R.id.nav_usual_expenses) {
             Intent i = new Intent(AnalyticsScreenActivity.this, RecurringExpensesView.class);

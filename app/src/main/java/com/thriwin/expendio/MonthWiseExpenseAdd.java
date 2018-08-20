@@ -13,7 +13,7 @@ import java.util.Date;
 
 public class MonthWiseExpenseAdd extends Activity {
 
-    Button okButton, cancelButton, notNowButton;
+    ImageButton okButton, cancelButton, notNowButton;
     Expenses expenses;
     ObjectMapper obj = new ObjectMapper();
 
@@ -34,7 +34,7 @@ public class MonthWiseExpenseAdd extends Activity {
         monthWiseExpensesEdit.populate(expenses, true, true, this, false, null);
 
         okButton = findViewById(R.id.acceptedExpense);
-        cancelButton = (Button) findViewById(R.id.discardExpenses);
+        cancelButton =  findViewById(R.id.discardExpenses);
 
         okButton.setOnClickListener(v -> {
             ExpenseTimelineView.glowFor = expenses.getDateMonth();

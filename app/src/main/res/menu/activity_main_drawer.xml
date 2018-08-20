@@ -7,7 +7,7 @@
         <item
             android:id="@+id/nav_tags"
             android:icon="@drawable/ic_menu_tags"
-            android:title="Tags" />
+            android:title="Expense Category" />
 
 
         <item

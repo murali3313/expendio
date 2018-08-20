@@ -13,11 +13,10 @@ import java.util.Locale;
 import static android.speech.RecognizerIntent.EXTRA_LANGUAGE;
 import static android.speech.RecognizerIntent.EXTRA_LANGUAGE_MODEL;
 import static android.speech.RecognizerIntent.LANGUAGE_MODEL_FREE_FORM;
+import static com.thriwin.expendio.Utils.isNull;
 
 public class ExpenseAudioListener
         implements RecognitionListener {
-    private final String SPOKEN_WORDS = "SPOKEN_WORDS";
-    private final String DAILY_EXPENSER = "DAILY_EXPENSER";
     private SpeechRecognizer speech = null;
     private Intent recognizerIntent;
     private SharedPreferences localStorageForPreferences;
@@ -25,12 +24,20 @@ public class ExpenseAudioListener
     private static ExpenseAudioStatements expenseAudioStatements;
     boolean userStopped;
 
+    private static ExpenseAudioListener expenseAudioListener;
 
-    public ExpenseAudioListener(SharedPreferences localStorageForPreferences, CommonActivity expenseMain) {
+    public static ExpenseAudioListener getInstance(CommonActivity activity) {
+        if (isNull(expenseAudioListener)) {
+            expenseAudioListener = new ExpenseAudioListener(Utils.getLocalStorageForPreferences(), activity);
+        }
+        expenseAudioListener.expenseMain = activity;
+        return expenseAudioListener;
+    }
+
+    private ExpenseAudioListener(SharedPreferences localStorageForPreferences, CommonActivity expenseMain) {
         this.localStorageForPreferences = localStorageForPreferences;
         this.expenseMain = expenseMain;
-        speech = SpeechRecognizer.createSpeechRecognizer(expenseMain);
-        speech.setRecognitionListener(this);
+        reset();
         recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         recognizerIntent.putExtra(EXTRA_LANGUAGE_MODEL, LANGUAGE_MODEL_FREE_FORM);
         recognizerIntent.putExtra(EXTRA_LANGUAGE, Locale.getDefault());
@@ -128,5 +135,14 @@ public class ExpenseAudioListener
             expenseMain.updateWithUserSpeech(expenseAudioStatements);
             speech.startListening(recognizerIntent);
         }
+    }
+
+    public void reset() {
+        if (!isNull(speech)) {
+            speech.stopListening();
+            speech.cancel();
+        }
+        speech = SpeechRecognizer.createSpeechRecognizer(expenseMain);
+        speech.setRecognitionListener(this);
     }
 }

@@ -132,7 +132,7 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
     public boolean onMenuItemClick(MenuItem item) {
         String reasonString = reason.getText().toString();
         String previousString = selectedTextViewTag.getText().toString();
-        reasonString = reasonString.replace((item.getTitle().equals("Misc.") ? ExpenseTags.MISCELLANEOUS_TAG : previousString), "");
+        reasonString = reasonString.replace((item.getTitle().equals("UnCategorized") ? ExpenseTags.MISCELLANEOUS_TAG : previousString), "");
         reasonString = reasonString.trim() + " " + item.getTitle();
         reason.setText(reasonString.trim());
         selectedTextViewTag.setText(item.getTitle());

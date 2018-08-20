@@ -51,6 +51,7 @@
     <string name="sms_entries_instructions">Please follow the instruction when you set the sms phrases.\n\n 1. Use phrases from your bank smses to uniquely identify the message \n\n 2. You can use comma separated values to define sms phrases, so that only if all phrases matches it will be considered for processing</string>
     <string name="expenseSavedSuccessfully">Expenses saved successfully</string>
     <string name="noFilesGeneratedYet">No files generated to display.</string>
+    <string name="AudioHeader">Expenses - Voice capture</string>
     <string-array name="reminder_options">
         <item>Do Not Disturb</item>
         <item>Once a day</item>

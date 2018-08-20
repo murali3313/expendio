@@ -19,13 +19,28 @@
             android:text="Expense"
             android:textColor="@color/white"
             android:textSize="25sp" />
-
         <ImageButton
             android:id="@+id/addExpense"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_marginRight="64dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/ic_add_expense_white" />
+
+        <ImageButton
+            android:id="@+id/acceptedExpense"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginRight="30dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_save_white" />
+
+        <ImageButton
+            android:id="@+id/discardExpenses"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_close_white" />
 
 
     </RelativeLayout>
@@ -44,38 +59,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical" />
         </ScrollView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/acceptedExpense"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Accept"
-                android:background="@color/colorPrimary"/>
-
-            <Button
-                android:id="@+id/discardExpenses"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@color/colorAlternateDark2"
-                android:text="Discard" />
-
-        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

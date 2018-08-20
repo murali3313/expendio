@@ -19,7 +19,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -138,6 +137,9 @@ public class CommonActivity extends AppCompatActivity {
             case REQ_CODE_SPEECH_INPUT: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if(!Utils.isNull(expenseAudioListener)){
+                        expenseAudioListener.reset();
+                    }
                     expenseAudioListener.startListening();
                 } else {
                     showToast(R.string.audio_record_permission_denied);
@@ -153,9 +155,9 @@ public class CommonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         View listenButton = this.findViewById(R.id.addExpenseVoice);
         listenButton.setOnClickListener(v -> listenExpense(v));
-        expenseAudioListener = new ExpenseAudioListener(Utils.getLocalStorageForPreferences(), this);
+        expenseAudioListener = ExpenseAudioListener.getInstance(this);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
@@ -290,7 +292,7 @@ public class CommonActivity extends AppCompatActivity {
         AlertDialog.Builder alertDlg = new AlertDialog.Builder(this);
         alertDlg.setMessage("Are you sure you want to exit?");
         alertDlg.setIcon(R.mipmap.ic_launcher);
-        alertDlg.setTitle ("Expendio");
+        alertDlg.setTitle("Expendio");
         alertDlg.setCancelable(false); // We avoid that the dialong can be cancelled, forcing the user to choose one of the options
         alertDlg.setPositiveButton("Yes", (dialog, id) -> CommonActivity.super.onBackPressed());
 
