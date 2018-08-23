@@ -440,10 +440,12 @@ public class Utils {
         return i.toString().equals("0") ? "" : i.toString();
     }
 
-    public static void saveUnacceptedExpenses(Expenses processedExpenses) {
+    public static String saveUnacceptedExpenses(Expenses processedExpenses) {
         SharedPreferences.Editor edit = Utils.getLocalStorageForPreferences().edit();
-        edit.putString(Utils.UNACCEPTED_EXPENSES + "-" + Math.random(), serializeExpenses(processedExpenses));
+        String key = Utils.UNACCEPTED_EXPENSES + "-" + Math.random();
+        edit.putString(key, serializeExpenses(processedExpenses));
         edit.apply();
+        return key;
     }
 
     @Nullable

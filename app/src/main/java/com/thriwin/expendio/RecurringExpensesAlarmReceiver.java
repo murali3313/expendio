@@ -41,7 +41,7 @@ public class RecurringExpensesAlarmReceiver extends BroadcastReceiver {
         ExpendioSettings expendioSettings = ExpendioSettings.loadExpendioSettings();
         if (expendioSettings.canRemindUser()) {
             NotificationScheduler.showNotification(context, HomeScreenActivity.class,
-                    "Expendio", "Gentle reminder for filling your expenses.\n" + genaralTips.get(Utils.getTipsIndex()), "HOME");
+                    "Expendio", "Gentle reminder for filling your expenses.", genaralTips.get(Utils.getTipsIndex()), "HOME");
             Utils.lastNotifiedOn(new Date());
         }
     }
@@ -54,11 +54,12 @@ public class RecurringExpensesAlarmReceiver extends BroadcastReceiver {
 
                 Expenses todaysExpenses = allRecurringExpenses.getTodaysExpenses();
 
-                Utils.saveNotificationExpenses(todaysExpenses);
 
                 if (!todaysExpenses.isEmpty()) {
+                    Utils.saveNotificationExpenses(todaysExpenses);
+
                     NotificationScheduler.showNotification(context, HomeScreenActivity.class,
-                            "Expenses pending for approval", "Pending for your approval:" + todaysExpenses.size() + "\n" + genaralTips.get(Utils.getTipsIndex()), "NOTIFICATION");
+                            "Expenses pending for approval", "Pending for your approval:" + todaysExpenses.size() , genaralTips.get(Utils.getTipsIndex()), "NOTIFICATION");
                 }
                 Utils.markRecurrenceCheckerRanToday();
 

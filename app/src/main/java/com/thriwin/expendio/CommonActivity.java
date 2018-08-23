@@ -72,11 +72,12 @@ public class CommonActivity extends AppCompatActivity {
     }
 
     public void displayExpenseForCorrection(Expenses processedExpenses) {
-        Utils.saveUnacceptedExpenses(processedExpenses);
+        String key = Utils.saveUnacceptedExpenses(processedExpenses);
         doneWithListening();
 
         Intent i = new Intent(CommonActivity.this, ExpenseAcceptance.class);
         i.putExtra("UNACCEPTED_EXPENSES", Utils.getSerializedExpenses(processedExpenses));
+        i.putExtra("EXPENSE_KEY_TO_REMOVE", key);
         startActivity(i);
     }
 

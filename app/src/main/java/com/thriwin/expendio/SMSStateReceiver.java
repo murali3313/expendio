@@ -36,7 +36,7 @@ public class SMSStateReceiver extends BroadcastReceiver {
                     if (!isNull(probableExpenses)) {
                         Utils.saveSMSInferredExpense(probableExpenses);
                         NotificationScheduler.showNotification(context, HomeScreenActivity.class,
-                                "Expense suggestion based on your sms", "Pending for your approval:" + 1 + "\n" + RecurringExpensesAlarmReceiver.genaralTips.get(Utils.getTipsIndex()), "NOTIFICATION");
+                                "Expense suggestion based on your sms", "Pending for your approval:" + 1 , RecurringExpensesAlarmReceiver.genaralTips.get(Utils.getTipsIndex()), "NOTIFICATION");
                     }
                 }
             }

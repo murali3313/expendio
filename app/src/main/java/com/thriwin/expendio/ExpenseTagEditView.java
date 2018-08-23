@@ -38,7 +38,9 @@ public class ExpenseTagEditView extends FlowLayout {
             newTagWord.setText("");
         });
 
-        findViewById(R.id.tagRemove).setOnClickListener(new OnClickListener() {
+        View tagRemove = findViewById(R.id.tagRemove);
+        tagRemove.setVisibility(tagKey.equalsIgnoreCase(ExpenseTags.MISCELLANEOUS_TAG)?GONE:VISIBLE);
+        tagRemove.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 parentContainer.removeView(ExpenseTagEditView.this);

@@ -295,7 +295,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
             textView.setBackgroundResource(R.drawable.circle);
             if (expenseMonth.equals(currentMonth)) {
                 textView.setBackgroundResource(R.drawable.circle_selected);
-                textView.setTextColor(getResources().getColor(R.color.primaryLight));
+                textView.setTextColor(getResources().getColor(R.color.white));
             }
             textView.setOnClickListener(new OnClickListener() {
                 @Override

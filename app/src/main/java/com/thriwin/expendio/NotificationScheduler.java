@@ -7,7 +7,6 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
@@ -58,7 +57,7 @@ public class NotificationScheduler {
         pendingIntent.cancel();
     }
 
-    public static void showNotification(Context context, Class<?> cls, String title, String content, String displayView) {
+    public static void showNotification(Context context, Class<?> cls, String title, String subTitle, String tip, String displayView) {
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         Intent notificationIntent = new Intent(context, cls);
@@ -75,11 +74,12 @@ public class NotificationScheduler {
         Notification notification = builder.setContentTitle(title)
                 .setAutoCancel(true)
                 .setSound(alarmSound)
+                .setSubText(subTitle)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
-                .setColor(context.getResources().getColor( (R.color.bgColor)))
+                .setColor(context.getResources().getColor((R.color.bgColor)))
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(content))
+                        .bigText(subTitle + "\n" + tip))
                 .setContentIntent(pendingIntent).build();
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
