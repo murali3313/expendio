@@ -22,6 +22,6 @@ public class SMSProcessor {
         Date spentOn = dateProcessor.extract(expModifiable);
         BigDecimal amountSpent = amountProcessor.extract(expModifiable);
         List<String> spentFor = reasonProcessor.extract(expModifiable);
-        return new Expense(amountSpent, spentOn, spentFor, completMessages);
+        return new Expense(amountSpent, spentOn, completMessages);
     }
 }

@@ -138,7 +138,7 @@ public class CommonActivity extends AppCompatActivity {
             case REQ_CODE_SPEECH_INPUT: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if(!Utils.isNull(expenseAudioListener)){
+                    if (!Utils.isNull(expenseAudioListener)) {
                         expenseAudioListener.reset();
                     }
                     expenseAudioListener.startListening();
@@ -225,14 +225,19 @@ public class CommonActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case FILE_SELECTION_CODE: {
-                try {
-                    String path = data.getStringExtra("SELECTED_FILE");
-                    presentTheFileToTheUser(new File(path));
-                } catch (Exception e) {
+                if (requestCode == Activity.RESULT_OK) {
+                    try {
+                        String path = data.getStringExtra("SELECTED_FILE");
+                        presentTheFileToTheUser(new File(path));
+                    } catch (Exception e) {
+                        Toast.makeText(CommonActivity.this, "Sorry couldn't open the file", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
                     Toast.makeText(CommonActivity.this, "Sorry couldn't open the file", Toast.LENGTH_SHORT).show();
                 }
             }
         }
+
     }
 
 

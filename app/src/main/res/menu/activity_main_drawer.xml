@@ -25,6 +25,11 @@
             android:id="@+id/nav_general_expense_limit"
             android:icon="@mipmap/ic_expense_limit"
             android:title="Set default expense limit" />
+
+        <item
+            android:id="@+id/nav_general_data_share"
+            android:icon="@mipmap/ic_expense_limit"
+            android:title="Share Expense" />
     </group>
 
     <item android:title="Reports">

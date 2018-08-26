@@ -3,7 +3,6 @@ package com.thriwin.expendio;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -37,7 +36,7 @@ public class NewExpensesCreation extends Activity {
         if (!isNull(selectedMonthKey)) {
             selectedDate= new Date(Utils.getDeserializedMonthWiseExpenses(selectedMonthKey).getLatestDate(selectedMonthKey));
         }
-        this.expenses = new Expenses(new Expense(new BigDecimal(0), selectedDate, new ArrayList<>(), ""));
+        this.expenses = new Expenses(new Expense(new BigDecimal(0), selectedDate, ""));
         ExpensesEditView expenses = findViewById(R.id.newExpenses);
         expenses.populate(this.expenses, true, false, this, false, null);
 

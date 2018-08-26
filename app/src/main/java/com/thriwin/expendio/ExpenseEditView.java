@@ -120,8 +120,6 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
 
 
     public Expense getEditedExpense() {
-        String[] words = Utils.splitStatementBy(reason.getText().toString(), " ");
-        expense.setSpentFor(new ArrayList<>(asList(words)));
         String amount = this.amount.getText().toString();
         expense.setExpenseStatement(reason.getText().toString());
         expense.setAmountSpent(new BigDecimal(Utils.isEmpty(amount) ? "0" : amount));

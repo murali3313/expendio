@@ -59,6 +59,6 @@ public class RecurringExpense {
 
     @JsonIgnore
     public Expense getExpense() {
-        return new Expense(amount, today(), asList(splitStatementBy(reason, " ")), reason);
+        return new Expense(amount, today(), reason);
     }
 }

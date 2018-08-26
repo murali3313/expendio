@@ -94,6 +94,7 @@ public class ExpenseTags {
     }
 
     public static Set<String> getAssociatedExpenseTags(String expenseStatement) {
+        expenseStatement = Utils.isEmpty(expenseStatement) ? "" : expenseStatement;
         ExpenseTags tags = getSavedExpenseTags();
         String lowerCase = expenseStatement.toLowerCase();
         Set<String> tagWords = new ArraySet<>();

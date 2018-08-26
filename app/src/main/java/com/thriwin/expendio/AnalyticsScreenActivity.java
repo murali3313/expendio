@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.File;
-import java.util.Date;
 
 import static com.thriwin.expendio.Utils.isNull;
 
@@ -116,6 +115,11 @@ public class AnalyticsScreenActivity extends CommonActivity implements Navigatio
 
         } else if (id == R.id.nav_general_expense_limit) {
             Intent i = new Intent(AnalyticsScreenActivity.this, ExpenseDefaultLimit.class);
+            startActivity(i);
+
+        }else if (id == R.id.nav_general_data_share) {
+            Intent i = new Intent(AnalyticsScreenActivity.this, ExpenseShareActivity.class);
+            i.putExtra(ExpenseMonthWiseLimit.EXPENSE_STORAGE_KEY, new Expense().getStorageKey());
             startActivity(i);
 
         } else if (id == R.id.nav_sms_receiver) {

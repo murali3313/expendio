@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.thriwin.expendio.Utils.SHARED;
 import static java.lang.String.format;
 
 public class UnAcceptedExpensesBaseView extends LinearLayout {
@@ -47,6 +48,9 @@ public class UnAcceptedExpensesBaseView extends LinearLayout {
             try {
                 i.putExtra("UNACCEPTED_EXPENSES", objectMapper.writeValueAsString(unAcceptedExpenses));
                 i.putExtra("EXPENSE_KEY_TO_REMOVE", key);
+                if (key.endsWith(SHARED)) {
+                    i.putExtra("USER_NAME", unAcceptedExpenses.getNameOfSharer(key));
+                }
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }

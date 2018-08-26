@@ -3,7 +3,6 @@ package com.thriwin.expendio;
 import android.content.SharedPreferences;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class SpeechToExpenseEngine {
                 Date spentOn = dateProcessor.extract(expModifiable);
                 BigDecimal amountSpent = amountProcessor.extract(expModifiable);
                 List<String> spentFor = reasonProcessor.extract(expModifiable);
-                expenses.add(new Expense(amountSpent, spentOn, spentFor, expenseStatement));
+                expenses.add(new Expense(amountSpent, spentOn, expenseStatement));
             } catch (Exception e) {
 
             }

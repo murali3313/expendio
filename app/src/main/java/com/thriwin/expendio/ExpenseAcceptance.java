@@ -23,6 +23,7 @@ public class ExpenseAcceptance extends Activity {
     Expenses expenses;
     ObjectMapper obj = new ObjectMapper();
     String keyToRemove;
+    String userName;
 
     public ExpenseAcceptance() {
 
@@ -35,6 +36,7 @@ public class ExpenseAcceptance extends Activity {
 
         String unacceptedExpenses = getIntent().getStringExtra("UNACCEPTED_EXPENSES");
         keyToRemove = getIntent().getStringExtra("EXPENSE_KEY_TO_REMOVE");
+        userName = getIntent().getStringExtra("USER_NAME");
         keyToRemove = isNull(keyToRemove) ? UNACCEPTED_EXPENSES : keyToRemove;
         try {
             this.expenses = obj.readValue(unacceptedExpenses, new TypeReference<Expenses>() {
@@ -52,9 +54,13 @@ public class ExpenseAcceptance extends Activity {
 
         okButton.setOnClickListener(v -> {
             HomeScreenActivity.glowFor = unapprovedExpenses.getExpenses().getStorageKey();
-            Utils.saveExpenses(unapprovedExpenses.getExpenses());
+            if (isNull(userName)) {
+                Utils.saveExpenses(unapprovedExpenses.getExpenses());
+            } else {
+                Utils.saveSharedExpenses(this.userName, unapprovedExpenses.getExpenses());
+            }
             Utils.clearUnAcceptedExpense(this.keyToRemove);
-            showToast(getBaseContext(),R.string.expenseSavedSuccessfully);
+            showToast(getBaseContext(), R.string.expenseSavedSuccessfully);
             ExpenseAcceptance.this.finish();
         });
 

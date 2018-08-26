@@ -178,10 +178,13 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
             Intent i = new Intent(ExpenseTimelineView.this, ExpenseMonthWiseLimit.class);
             i.putExtra(ExpenseMonthWiseLimit.EXPENSE_STORAGE_KEY, expenseKey);
             startActivity(i);
-
-
         } else if (id == R.id.nav_open_generated_excel) {
             openFolder();
+        } else if (id == R.id.nav_general_data_share) {
+            Intent i = new Intent(ExpenseTimelineView.this, ExpenseShareActivity.class);
+            i.putExtra(ExpenseMonthWiseLimit.EXPENSE_STORAGE_KEY, expenseKey);
+            startActivity(i);
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

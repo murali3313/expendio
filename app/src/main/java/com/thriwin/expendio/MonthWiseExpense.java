@@ -84,7 +84,7 @@ public class MonthWiseExpense {
             addExpense(expense);
         }
     }
-
+    @JsonIgnore
     public SortedSet<String> getSortedKeys() {
         return new TreeSet<>(this.getDayWiseExpenses().keySet()).descendingSet();
     }
@@ -98,6 +98,7 @@ public class MonthWiseExpense {
         return totalExpenditure.toString();
     }
 
+    @JsonIgnore
     public long getLatestDate(String selectedMonthKey) {
         if (getSortedKeys().isEmpty()) {
             String[] readableMonthAndYear = Utils.getReadableMonthAndYear(selectedMonthKey);
@@ -113,6 +114,7 @@ public class MonthWiseExpense {
         return getDayWiseExpenses(getSortedKeys().first()).getValue().getSpentOnDate();
     }
 
+    @JsonIgnore
     public String getMonthYearHumanReadable() {
         if (!this.dayWiseExpenses.isEmpty()) {
             return this.dayWiseExpenses.get(getSortedKeys().first()).getMonthYearHumanReadable();
@@ -120,6 +122,7 @@ public class MonthWiseExpense {
         return "NA";
     }
 
+    @JsonIgnore
     public String getMonthYearHumanReadable(String expenseKey) {
         String monthYearHumanReadable = this.getMonthYearHumanReadable();
         if (monthYearHumanReadable.equals("NA") && !isEmpty(expenseKey)) {
@@ -129,6 +132,7 @@ public class MonthWiseExpense {
         return monthYearHumanReadable;
     }
 
+    @JsonIgnore
     public List<Expenses> getSortedDayWiseExpenses() {
         List<Expenses> expenses = new ArrayList<>();
         for (String dateMonth : getSortedKeys()) {
@@ -137,6 +141,7 @@ public class MonthWiseExpense {
         return expenses;
     }
 
+    @JsonIgnore
     public Map<String, Expenses> getTagBasedExpenses() {
         HashMap<String, Expenses> tagBasedExpenses = new HashMap<>();
         Expenses allExpenses = getAllExpenses();
@@ -154,6 +159,7 @@ public class MonthWiseExpense {
         return tagBasedExpenses;
     }
 
+    @JsonIgnore
     private Expenses getAllExpenses() {
         Expenses expenses = new Expenses();
         for (Map.Entry<String, Expenses> dayWiseExpense : dayWiseExpenses.entrySet()) {
@@ -162,10 +168,12 @@ public class MonthWiseExpense {
         return expenses;
     }
 
+    @JsonIgnore
     public BigDecimal getMonthWiseExpenseLimit() {
         return isNull(this.monthWiseExpenseLimit) ? getDefaultExpenseLimit() : this.monthWiseExpenseLimit;
     }
 
+    @JsonIgnore
     public String monthlyLimitExceededDetails() {
         String limitDetails = "NA";
         BigDecimal actualSpent = new BigDecimal(this.getTotalExpenditure());

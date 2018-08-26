@@ -36,6 +36,14 @@ import static java.util.Arrays.asList;
 
 public class Utils {
 
+    public static final String UNACCEPTED_SHARED_SMS_EXPENSES = "UNACCEPTED_SHARED_SMS_EXPENSES";
+    public static final String EXPENDIO_SMS_START = "|ExpendioSTART|";
+    public static final String EXPENDIO_SMS = "|Expendio|";
+    public static final String EXPENDIO_SMS_END = "|ExpendioEND|";
+    public static final String EXPENDIO_SMS_START_WITHESC = "\\|ExpendioSTART\\|";
+    public static final String EXPENDIO_SMS_WITHESC = "\\|Expendio\\|";
+    public static final String EXPENDIO_SMS_END_WITHESC = "\\|ExpendioEND\\|";
+    public static final String SHARED = "SHARED";
     private static String defaultExpense = "DEFAULT_EXPENSE";
     public static List<String> timeLineColors = asList("#C39EBA", "#FFCECE", "#FF83A3",
             "#F0DEFF", "#BAC39E", "#BF97AB", "#FFE6F9",
@@ -56,6 +64,7 @@ public class Utils {
 
     private static final String DAILY_EXPENSER = "DAILY_EXPENSER";
     public static final String UNACCEPTED_EXPENSES = "UnAcceptedExpenses";
+    public static final String DAILY_EXPENSES = "DAILY_EXPENSES";
     public static final String UNACCEPTED_SMS_EXPENSES = "UnAcceptedSMSExpenses";
     public static final String TAGS = "tags";
 
@@ -308,6 +317,11 @@ public class Utils {
         toast.setGravity(Gravity.BOTTOM, 0, 500);
         toast.show();
     }
+    public static void showToast(Context cx, String resourceId) {
+        Toast toast = Toast.makeText(cx, resourceId, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.BOTTOM, 0, 500);
+        toast.show();
+    }
 
     public static BigDecimal getMonthWiseExpenseLimit(String expenseStorageKey) {
         return getDeserializedMonthWiseExpenses(expenseStorageKey).getMonthWiseExpenseLimit();
@@ -363,7 +377,7 @@ public class Utils {
         try {
             ObjectMapper obj = new ObjectMapper();
             String dailyExpenses = obj.writeValueAsString(todaysExpenses);
-            getLocalStorageForPreferences().edit().putString("DAILY_EXPENSES-" + todaysExpenses.getDateMonth(), dailyExpenses).commit();
+            getLocalStorageForPreferences().edit().putString(DAILY_EXPENSES + "-" + todaysExpenses.getDateMonth(), dailyExpenses).commit();
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -376,7 +390,7 @@ public class Utils {
         ObjectMapper obj = new ObjectMapper();
         Map<String, ?> all = getLocalStorageForPreferences().getAll();
         for (Map.Entry<String, ?> entry : all.entrySet()) {
-            if (entry.getKey().startsWith("DAILY_EXPENSES-")) {
+            if (entry.getKey().startsWith(DAILY_EXPENSES + "-")) {
                 try {
                     Expenses expenses = obj.readValue(all.get(entry.getKey()).toString(), new TypeReference<Expenses>() {
                     });
@@ -409,8 +423,7 @@ public class Utils {
         ObjectMapper obj = new ObjectMapper();
         Map<String, ?> all = getLocalStorageForPreferences().getAll();
         for (Map.Entry<String, ?> entry : all.entrySet()) {
-            if (entry.getKey().startsWith(UNACCEPTED_EXPENSES + "-") || entry.getKey().startsWith("DAILY_EXPENSES-") ||
-            entry.getKey().startsWith(UNACCEPTED_SMS_EXPENSES + "-")){
+            if (isWaitingForAcceptance(entry.getKey())) {
                 try {
                     Expenses expenses = obj.readValue(all.get(entry.getKey()).toString(), new TypeReference<Expenses>() {
                     });
@@ -432,12 +445,19 @@ public class Utils {
         Integer i = 0;
         Map<String, ?> all = getLocalStorageForPreferences().getAll();
         for (String key : all.keySet()) {
-            if (key.startsWith("DAILY_EXPENSES-") || key.startsWith(UNACCEPTED_EXPENSES + "-") || key.startsWith(UNACCEPTED_SMS_EXPENSES + "-")) {
+            if (isWaitingForAcceptance(key)) {
                 i++;
             }
         }
 
         return i.toString().equals("0") ? "" : i.toString();
+    }
+
+    private static boolean isWaitingForAcceptance(String key) {
+        return key.startsWith(DAILY_EXPENSES + "-") ||
+                key.startsWith(UNACCEPTED_EXPENSES + "-") ||
+                key.startsWith(UNACCEPTED_SMS_EXPENSES + "-") ||
+                key.startsWith(UNACCEPTED_SHARED_SMS_EXPENSES + "-");
     }
 
     public static String saveUnacceptedExpenses(Expenses processedExpenses) {
@@ -521,5 +541,90 @@ public class Utils {
         SharedPreferences.Editor edit = Utils.getLocalStorageForPreferences().edit();
         edit.putString(Utils.UNACCEPTED_SMS_EXPENSES + "-" + Math.random(), serializeExpenses(new Expenses(probableExpenses)));
         edit.apply();
+    }
+
+    public static void saveSMSParsedExpenses(User authenticatedUser, Expenses parsedExpenses) {
+        SharedPreferences.Editor edit = Utils.getLocalStorageForPreferences().edit();
+        String key = Utils.UNACCEPTED_SHARED_SMS_EXPENSES + "-" + authenticatedUser.getName() + "-" +
+                parsedExpenses.getMonthYearHumanReadable() + "-" + SHARED;
+        edit.putString(key, serializeExpenses(parsedExpenses));
+        edit.apply();
+    }
+
+    public static ShareSettings getShareSettings() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ShareSettings shareSettings = new ShareSettings();
+
+        String shareSettings1 = getLocalStorageForPreferences().getString("SHARE_SETTINGS", "{}");
+        try {
+            shareSettings = objectMapper.readValue(shareSettings1, ShareSettings.class);
+        } catch (IOException e) {
+
+        }
+        return shareSettings;
+    }
+
+    public static void saveShareSettings(ShareSettings shareSettings) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            getLocalStorageForPreferences().edit().putString("SHARE_SETTINGS", objectMapper.writeValueAsString(shareSettings)).commit();
+        } catch (IOException e) {
+
+        }
+
+    }
+
+
+    public static String getFormattedShareExpense(String expenseStorageKey) {
+        StringBuilder expenses = new StringBuilder();
+        MonthWiseExpense deserializedMonthWiseExpenses = Utils.getDeserializedMonthWiseExpenses(expenseStorageKey);
+
+        expenses.append(EXPENDIO_SMS_START);
+        for (Map.Entry<String, Expenses> dayWiseExpenses : deserializedMonthWiseExpenses.getDayWiseExpenses().entrySet()) {
+            for (Expense expense : dayWiseExpenses.getValue()) {
+                expenses.append(EXPENDIO_SMS + expense.getStringFormatForSharing() + "&");
+            }
+
+        }
+        expenses.append(EXPENDIO_SMS_END);
+
+        return expenses.toString();
+    }
+
+    public static void saveSharedExpenses(String userName, Expenses expenses) {
+        HashMap<String, MonthWiseExpense> sharedExpenses = new HashMap<>();
+        for (Expense expens : expenses) {
+            String storageKeyForUser = expens.getStorageKeyForUser(userName);
+            if (sharedExpenses.keySet().contains(storageKeyForUser)) {
+                sharedExpenses.get(storageKeyForUser).addExpense(expens);
+            } else {
+                MonthWiseExpense monthWiseExpense = new MonthWiseExpense();
+                monthWiseExpense.addExpense(expens);
+                sharedExpenses.put(storageKeyForUser, monthWiseExpense);
+            }
+        }
+
+        for (Map.Entry<String, MonthWiseExpense> stringExpensesEntry : sharedExpenses.entrySet()) {
+            getLocalStorageForPreferences().edit().putString(stringExpensesEntry.getKey(), getSerializedExpenses(stringExpensesEntry.getValue())).commit();
+        }
+    }
+
+    public static SortedMap<String, MonthWiseExpense> getAllSharedExpensesFor(String key) {
+
+        SortedMap<String, MonthWiseExpense> allExpenses = new TreeMap<>(Collections.reverseOrder());
+        Map<String, ?> all = Utils.getLocalStorageForPreferences().getAll();
+        for (Map.Entry<String, ?> entry : all.entrySet()) {
+            if (entry.getKey().endsWith(key) && !entry.getKey().equals(key)) {
+                try {
+                    String userName = entry.getKey().split("-")[0];
+                    MonthWiseExpense expenses = ExpenseTags.objectMapper.readValue(all.get(entry.getKey()).toString(), new TypeReference<MonthWiseExpense>() {
+                    });
+                    allExpenses.put(userName, expenses);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return allExpenses;
     }
 }

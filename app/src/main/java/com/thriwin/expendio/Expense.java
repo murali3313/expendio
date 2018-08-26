@@ -11,7 +11,6 @@ import org.apache.poi.util.StringUtil;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -32,7 +31,6 @@ import static org.apache.commons.collections4.CollectionUtils.isEmpty;
 public class Expense {
     private BigDecimal amountSpent;
     private Date spentOn;
-    private List<String> spentFor = new ArrayList<>();
     private String expenseStatement;
     private Set<String> associatedExpenseTags = new ArraySet<>();
     public static List<String> headerColumns = asList("Spent On", "Amount", "Reason", "Tags", "Total");
@@ -41,12 +39,12 @@ public class Expense {
         this.spentOn = new Date();
         this.amountSpent = new BigDecimal("0");
         this.expenseStatement = "";
+        addTags();
     }
 
-    public Expense(BigDecimal amountSpent, Date spentOn, List<String> spentFor, String expenseStatement) {
+    public Expense(BigDecimal amountSpent, Date spentOn, String expenseStatement) {
         this.amountSpent = amountSpent;
         this.spentOn = spentOn;
-        this.spentFor = spentFor;
         this.expenseStatement = expenseStatement;
         addTags();
     }
@@ -55,6 +53,7 @@ public class Expense {
         this();
         this.spentOn = spentDate;
     }
+
 
     @JsonIgnore
     public Integer spentYear() {
@@ -95,24 +94,14 @@ public class Expense {
 
     @JsonIgnore
     public String getSpentForDisplayText() {
-        String spentForDisplayableText = "";
-        for (String s : spentFor) {
-            spentForDisplayableText += s + " ";
-        }
-        return Utils.isNull(spentForDisplayableText.trim()) ? getFirstAssociatedExpenseTag() : spentForDisplayableText;
+        expenseStatement = Utils.isEmpty(expenseStatement) ? "" : expenseStatement;
+        return expenseStatement;
     }
 
     @JsonIgnore
     public void addTags() {
-        if (!Utils.isNull(expenseStatement) && !expenseStatement.isEmpty())
-            this.associatedExpenseTags = ExpenseTags.getAssociatedExpenseTags(expenseStatement);
+        this.associatedExpenseTags = ExpenseTags.getAssociatedExpenseTags(expenseStatement);
     }
-
-    public void setSpentFor(List<String> words) {
-        this.spentFor = words;
-        addTags();
-    }
-
 
     @JsonIgnore
     public String getStorageKey() {
@@ -122,11 +111,17 @@ public class Expense {
         return format("Expense-%d-%s", this.spentYear(), month);
     }
 
+    @JsonIgnore
+    public String getStorageKeyForUser(String userName) {
+        String storageKey = getStorageKey();
+        return userName + "-" + storageKey;
+    }
 
     public String getAmountSpent() {
         return Utils.isNull(this.amountSpent) || this.amountSpent.equals(new BigDecimal(0)) ? "" : this.amountSpent.toString();
     }
 
+    @JsonIgnore
     public String getDateMonth() {
         return new SimpleDateFormat("MM-dd").format(this.spentOn);
     }
@@ -216,20 +211,19 @@ public class Expense {
         return new ExpendioSettings().getStartDayOfMonth();
     }
 
+    @JsonIgnore
     public void santiseData() {
-        if (spentFor.isEmpty() || Utils.isEmpty(spentFor.get(0))) {
-            spentFor.clear();
-            spentFor.add(MISCELLANEOUS_TAG);
-        }
         if (Utils.isEmpty(expenseStatement.trim()))
             this.expenseStatement = MISCELLANEOUS_TAG;
 
     }
 
+    @JsonIgnore
     public String getMonthYearHumanReadable() {
         return new SimpleDateFormat("MMM - yyyy").format(this.spentOn);
     }
 
+    @JsonIgnore
     public String getValue(String headerColumn) {
         String value = "";
         switch (headerColumn) {
@@ -255,5 +249,34 @@ public class Expense {
     @JsonIgnore
     public boolean isValid() {
         return !this.getAmountSpent().equals("") && !this.getAmountSpent().equals("0");
+    }
+
+    @JsonIgnore
+    public String getStringFormatForSharing() {
+        return this.spentOn.getTime() + "|" + this.expenseStatement + "|" + this.amountSpent;
+    }
+
+
+    public static Expense parse(String message) {
+        String[] split = message.split("\\|");
+        try {
+
+            Expense expense = new Expense();
+            if (split.length == 3) {
+                expense.spentOn = new Date(Long.valueOf(split[0]));
+                expense.expenseStatement = split[1];
+                expense.amountSpent = new BigDecimal(split[2]);
+                expense.addTags();
+                return expense;
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return null;
+    }
+
+    public void setExpenseStatement(String expenseStatement) {
+        this.expenseStatement = expenseStatement;
+        addTags();
     }
 }

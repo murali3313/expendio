@@ -140,6 +140,12 @@ public class HomeScreenActivity extends CommonActivity implements NavigationView
             Intent i = new Intent(HomeScreenActivity.this, ExpenseDefaultLimit.class);
             startActivity(i);
 
+        } else if (id == R.id.nav_general_data_share) {
+            Intent i = new Intent(HomeScreenActivity.this, ExpenseShareActivity.class);
+            i.putExtra(ExpenseMonthWiseLimit.EXPENSE_STORAGE_KEY, new Expense().getStorageKey());
+
+            startActivity(i);
+
         } else if (id == R.id.nav_sms_receiver) {
             Intent i = new Intent(HomeScreenActivity.this, ExpenseSMSPattern.class);
             startActivity(i);

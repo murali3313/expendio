@@ -2,6 +2,7 @@ package com.thriwin.expendio;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -25,9 +26,7 @@ public class NotificationView extends LinearLayout implements IDisplayAreaView {
 
         if (!unAcceptedExpenses.isEmpty()) {
             for (Map.Entry<String, Expenses> expenses : unAcceptedExpenses.entrySet()) {
-                String expenseHeader = expenses.getKey().startsWith(Utils.UNACCEPTED_EXPENSES) ? "UnApproved expenses via Audio" :
-                        expenses.getKey().startsWith(Utils.UNACCEPTED_SMS_EXPENSES) ? "SMS Expense suggestion" :
-                                "Recurring expense on: " + expenses.getValue().getDateMonthHumanReadable();
+                String expenseHeader = getExpenseHeader(expenses);
                 container.addView(new UnAcceptedExpensesBaseView(expenseListener, getContext(), null, expenses.getValue(), expenseHeader, expenses.getKey(), this));
             }
         }
@@ -36,5 +35,20 @@ public class NotificationView extends LinearLayout implements IDisplayAreaView {
         viewById.setVisibility(unAcceptedExpenses.size() == 0 ? VISIBLE : GONE);
 
 
+    }
+
+    @NonNull
+    private String getExpenseHeader(Map.Entry<String, Expenses> expenses) {
+        String header = "";
+        if (expenses.getKey().startsWith(Utils.UNACCEPTED_EXPENSES)) {
+            header = "UnApproved expenses via Audio";
+        } else if (expenses.getKey().startsWith(Utils.UNACCEPTED_SMS_EXPENSES)) {
+            header = "SMS Expense suggestion";
+        } else if (expenses.getKey().startsWith(Utils.DAILY_EXPENSES)) {
+            header = "Recurring expense on: " + expenses.getValue().getDateMonthHumanReadable();
+        } else if (expenses.getKey().startsWith(Utils.UNACCEPTED_SHARED_SMS_EXPENSES)) {
+            header = "Expenses from " + expenses.getKey().split("-")[1] + " for " + expenses.getValue().getMonthYearHumanReadable();
+        }
+        return header;
     }
 }

@@ -14,9 +14,11 @@ import android.widget.TextView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Map;
+import java.util.SortedMap;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.thriwin.expendio.Utils.timeLineColors;
+import static java.lang.String.format;
 
 public class ExpenseMonthWiseBlock extends LinearLayout {
     ObjectMapper obj = new ObjectMapper();
@@ -33,11 +35,20 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
 
         TextView blockName = findViewById(R.id.expenseBlockName);
         String[] readableMonthAndYear = Utils.getReadableMonthAndYear(expensesBlock.getKey());
-        String expenseLimit = String.format("\n %s", expensesBlock.getValue().monthlyLimitExceededDetails());
+        String expenseLimit = format("\n %s", expensesBlock.getValue().monthlyLimitExceededDetails());
         blockName.setText(readableMonthAndYear[0] + "\n" + readableMonthAndYear[1]);
+        TextView spentValue = findViewById(R.id.expenseSpentValue);
+        String totalExpenditure = expensesBlock.getValue().getTotalExpenditure();
+
+        spentValue.setText(format("\nYou spent : %s", totalExpenditure));
+
+        SortedMap<String, MonthWiseExpense> allSharedExpensesFor = Utils.getAllSharedExpensesFor(expensesBlock.getKey());
+
+        for (Map.Entry<String, MonthWiseExpense> sharedUserExpenses : allSharedExpensesFor.entrySet()) {
+            spentValue.append(format("\n%s : %s", sharedUserExpenses.getKey(), sharedUserExpenses.getValue().getTotalExpenditure()));
+        }
 
         ((TextView) findViewById(R.id.expenseLimitValue)).setText(expenseLimit);
-        ((TextView) findViewById(R.id.expenseSpentValue)).setText("\nSpent : " + expensesBlock.getValue().getTotalExpenditure());
 
         blockName.setTextAlignment(TEXT_ALIGNMENT_CENTER);
         monthBlockContainer.setOnClickListener(v -> {
@@ -46,6 +57,8 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
             i.putExtra("ExpenseKey", expensesBlock.getKey());
             ContextCompat.startActivity(context, i, null);
         });
+
+
         monthBlockContainer.setLongClickable(true);
         monthBlockContainer.setOnLongClickListener(v -> {
             View sheetView = View.inflate(context, R.layout.bottom_delete_month_confirmation, null);

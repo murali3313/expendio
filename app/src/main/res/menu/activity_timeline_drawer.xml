@@ -18,6 +18,11 @@
             android:id="@+id/nav_open_generated_excel"
             android:icon="@mipmap/ic_menu_view_excel"
             android:title="View genarated Excels" />
+
+        <item
+            android:id="@+id/nav_general_data_share"
+            android:icon="@mipmap/ic_expense_limit"
+            android:title="Share Expense" />
     </group>
 
 </menu>

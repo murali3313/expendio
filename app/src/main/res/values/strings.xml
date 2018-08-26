@@ -52,6 +52,13 @@
     <string name="expenseSavedSuccessfully">Expenses saved successfully</string>
     <string name="noFilesGeneratedYet">No files generated to display.</string>
     <string name="AudioHeader">Expenses - Voice capture</string>
+    <string name="bluetoothPermissionIsRequiredToShareData">Bluetooth permission required to share data.</string>
+    <string name="share_expense">Share Expense</string>
+    <string name="smsSharingNote">SMS sharing is done using your basic SMS capability of your mobile. This action would incur carrier charges.</string>
+    <string name="bluetoothNote">This option uses bluetooth to share your expense information. This works when both the device is in proximity. You should manually pair with other device once</string>
+    <string name="smsSendSuccesfully">Sms scheduled to be sent, check outbox. Recipient should have configured your number to receive the expenses in Expendio.</string>
+    <string name="bluetoothSendSuccesfully">Expense send successfully</string>
+    <string name="smsSendFailed">sending SMS failed. Please try later.</string>
     <string-array name="reminder_options">
         <item>Do Not Disturb</item>
         <item>Once a day</item>
