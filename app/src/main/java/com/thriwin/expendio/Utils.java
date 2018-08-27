@@ -37,12 +37,12 @@ import static java.util.Arrays.asList;
 public class Utils {
 
     public static final String UNACCEPTED_SHARED_SMS_EXPENSES = "UNACCEPTED_SHARED_SMS_EXPENSES";
-    public static final String EXPENDIO_SMS_START = "|ExpendioSTART|";
-    public static final String EXPENDIO_SMS = "|Expendio|";
-    public static final String EXPENDIO_SMS_END = "|ExpendioEND|";
-    public static final String EXPENDIO_SMS_START_WITHESC = "\\|ExpendioSTART\\|";
-    public static final String EXPENDIO_SMS_WITHESC = "\\|Expendio\\|";
-    public static final String EXPENDIO_SMS_END_WITHESC = "\\|ExpendioEND\\|";
+    public static final String EXPENDIO_SMS_START = "#ExpendioSTART#";
+    public static final String EXPENDIO_SMS = "#Expendio#";
+    public static final String EXPENDIO_SMS_END = "#ExpendioEND#";
+    public static final String EXPENDIO_SMS_START_WITHESC = "\\#ExpendioSTART\\#";
+    public static final String EXPENDIO_SMS_WITHESC = "\\#Expendio\\#";
+    public static final String EXPENDIO_SMS_END_WITHESC = "\\#ExpendioEND\\#";
     public static final String SHARED = "SHARED";
     private static String defaultExpense = "DEFAULT_EXPENSE";
     public static List<String> timeLineColors = asList("#C39EBA", "#FFCECE", "#FF83A3",

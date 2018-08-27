@@ -50,7 +50,9 @@ public class User {
 
     public void setPairInfoDetail(String pairInfoDetail) {
         String[] split = pairInfoDetail.split("-");
-        this.pairDeviceName = split[0].trim();
-        this.pairDetail = split[1].trim();
+        if (!isNull(split) && split.length == 2) {
+            this.pairDeviceName = split[0].trim();
+            this.pairDetail = split[1].trim();
+        }
     }
 }
