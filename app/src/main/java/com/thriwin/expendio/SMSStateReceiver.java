@@ -50,12 +50,11 @@ public class SMSStateReceiver extends BroadcastReceiver {
                     if (!isNull(authenticatedUser)) {
                         smsFromUsers.add(authenticatedUser.getName(), completMessages.toString());
                         if (smsFromUsers.isAllMessagesComplete(authenticatedUser.getName())) {
-                            Expenses parsedExpenses = shareSettings.getParsedExpenses(smsFromUsers.getCollatedMessages(authenticatedUser.getName()));
-                            if (!isNull(parsedExpenses) && !parsedExpenses.isEmpty()) {
-                                Utils.saveSMSParsedExpenses(authenticatedUser, parsedExpenses);
-                                NotificationScheduler.showNotification(context, HomeScreenActivity.class,
-                                        "Expense shared from trusted user", "Pending for your approval from: " + authenticatedUser.getName() + " :" + parsedExpenses.size(), RecurringExpensesAlarmReceiver.genaralTips.get(Utils.getTipsIndex()), "NOTIFICATION");
+                            SMSExpenseParser smsExpenseParser = new SMSExpenseParser(shareSettings, authenticatedUser, context);
+                            if (true != false) {
+                                smsExpenseParser.start();
                             }
+                            smsExpenseParser.start();
                         }
                     }
                 }
