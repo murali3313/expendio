@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
@@ -165,6 +166,7 @@ public class ExpenseShareActivity extends Activity {
         EditText child = new EditText(ExpenseShareActivity.this, null);
         LinearLayout.LayoutParams editTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         editTextParams.weight = 4;
+        child.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         child.setLayoutParams(editTextParams);
 
         child.setText(user.getName());

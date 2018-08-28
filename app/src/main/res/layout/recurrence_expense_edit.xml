@@ -43,6 +43,7 @@
         android:maxLength="40"
         android:maxLines="1"
         android:paddingLeft="5dp"
+        android:inputType="textCapSentences"
         android:textColor="@color/primaryText"
         android:textColorHint="@color/colorPrimary"></AutoCompleteTextView>
 
