@@ -28,7 +28,7 @@
 
         <item
             android:id="@+id/nav_general_data_share"
-            android:icon="@mipmap/ic_expense_limit"
+            android:icon="@drawable/ic_menu_share"
             android:title="Share Expense" />
     </group>
 

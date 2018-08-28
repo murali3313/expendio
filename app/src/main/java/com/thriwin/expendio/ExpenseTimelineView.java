@@ -29,7 +29,10 @@ import android.widget.TextView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.SortedSet;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static java.lang.String.format;
@@ -41,6 +44,7 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
     ObjectMapper obj = new ObjectMapper();
     String expenseKey;
     static String glowFor;
+    NavigationView navigationView;
 
 
     @Override
@@ -56,7 +60,9 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         ImageButton addExpenseInCurrentMonth = findViewById(R.id.addExpenseInCurrentMonth);
@@ -76,8 +82,34 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
     public void loadTimeLineView(String expenseKey) {
         this.monthWiseExpense = Utils.getDeserializedMonthWiseExpenses(expenseKey);
 
+        SortedMap<String, MonthWiseExpense> allSharedExpenses = Utils.getAllSharedExpensesFor(expenseKey);
+        BigDecimal totalExpenditureOfOtherUsers = new BigDecimal("0");
+
+        for (Map.Entry<String, MonthWiseExpense> sharedUserExpenses : allSharedExpenses.entrySet()) {
+            totalExpenditureOfOtherUsers = totalExpenditureOfOtherUsers.add(new BigDecimal(sharedUserExpenses.getValue().getTotalExpenditure()));
+        }
+
+
         TextView monthWiseTotalExpenditure = findViewById(R.id.monthWiseTotalExpenditure);
-        monthWiseTotalExpenditure.setText("Total Spent \n" + monthWiseExpense.getTotalExpenditure());
+        TextView monthWiseTotalExpenditureFor = findViewById(R.id.monthWiseTotalExpenditureFor);
+        MenuItem sharerExpenseMenuItem = navigationView.getMenu().findItem(R.id.nav_remove_sharer_expense);
+        if (!totalExpenditureOfOtherUsers.equals(new BigDecimal("0"))) {
+            monthWiseTotalExpenditureFor.setText("You:");
+            monthWiseTotalExpenditureFor.append("\nOthers:");
+            monthWiseTotalExpenditureFor.append("\nTotal:");
+            sharerExpenseMenuItem.setVisible(true);
+            monthWiseTotalExpenditureFor.setVisibility(View.VISIBLE);
+
+            monthWiseTotalExpenditure.setText(monthWiseExpense.getTotalExpenditure());
+            monthWiseTotalExpenditure.append("\n"+totalExpenditureOfOtherUsers.toString());
+            monthWiseTotalExpenditure.append("\n"+totalExpenditureOfOtherUsers.add(new BigDecimal(monthWiseExpense.getTotalExpenditure())).toString());
+        } else {
+            monthWiseTotalExpenditure.setText("Total spent \n"+monthWiseExpense.getTotalExpenditure());
+            monthWiseTotalExpenditure.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            monthWiseTotalExpenditureFor.setVisibility(View.GONE);
+            sharerExpenseMenuItem.setVisible(false);
+        }
+
 
         TextView monthWiseExpenseLimitExceeded = findViewById(R.id.monthWiseExpenseLimitExceeded);
         monthWiseExpenseLimitExceeded.setText(monthWiseExpense.monthlyLimitExceededDetails());
@@ -91,9 +123,16 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
         LinearLayoutCompat timeMarker = findViewById(R.id.timeMarker);
         timeMarker.removeAllViews();
         int index = 0;
-        for (String key : monthWiseExpense.getSortedKeys()) {
-            Map.Entry<String, Expenses> dayWiseExpense = monthWiseExpense.getDayWiseExpenses(key);
-            ExpensesTimeView expensesTimeView = new ExpensesTimeView(getBaseContext(), null, dayWiseExpense, this, index);
+
+        SortedSet<String> allSortedKeys = monthWiseExpense.getSortedKeys();
+        for (MonthWiseExpense wiseExpense : allSharedExpenses.values()) {
+            allSortedKeys = MonthWiseExpense.mergeKeys(allSortedKeys, wiseExpense.getSortedKeys());
+        }
+
+        for (String dayKey : allSortedKeys) {
+            Map.Entry<String, Expenses> dayWiseExpense = monthWiseExpense.getDayWiseExpenses(dayKey);
+            Map<String, Map.Entry<String, Expenses>> allDayWiseExpenseFromSharer = Utils.getAllDayWiseExpenseFromSharer(dayKey, allSharedExpenses);
+            ExpensesTimeView expensesTimeView = new ExpensesTimeView(getBaseContext(), null, dayWiseExpense, allDayWiseExpenseFromSharer, this, index);
             timeMarker.addView(expensesTimeView);
             index++;
         }
@@ -182,6 +221,11 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
             openFolder();
         } else if (id == R.id.nav_general_data_share) {
             Intent i = new Intent(ExpenseTimelineView.this, ExpenseShareActivity.class);
+            i.putExtra(ExpenseMonthWiseLimit.EXPENSE_STORAGE_KEY, expenseKey);
+            startActivity(i);
+
+        } else if (id == R.id.nav_remove_sharer_expense) {
+            Intent i = new Intent(ExpenseTimelineView.this, SharedExpenseDetailsRemove.class);
             i.putExtra(ExpenseMonthWiseLimit.EXPENSE_STORAGE_KEY, expenseKey);
             startActivity(i);
 

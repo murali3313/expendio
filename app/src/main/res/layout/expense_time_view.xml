@@ -8,7 +8,18 @@
     android:orientation="horizontal">
 
     <TextView
+        android:id="@+id/userName"
+        android:background="@drawable/edit_outline"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:padding="4dp"
+        android:textColor="@color/primaryText" />
+
+    <TextView
         android:id="@+id/amount"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:textColor="@color/primaryText" />

@@ -1,7 +1,6 @@
 package com.thriwin.expendio;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -89,16 +88,16 @@ public class Utils {
         return anyWord == null || anyWord.length() == 0;
     }
 
-    public static SharedPreferences globalAccessibleSharedPreferences;
+    public static CachedSharedPreferences globalAccessibleSharedPreferences;
 
 
     public static void loadLocalStorageForPreferences(Context c) {
-        globalAccessibleSharedPreferences = c.getSharedPreferences(DAILY_EXPENSER, MODE_PRIVATE);
+        globalAccessibleSharedPreferences = new CachedSharedPreferences(c.getSharedPreferences(DAILY_EXPENSER, MODE_PRIVATE));
         ExpenseTags.loadDefaultExpenseTagsIfNotInitialized();
         ExpendioSettings.loadExpendioSettings();
     }
 
-    public static SharedPreferences getLocalStorageForPreferences() {
+    public static CachedSharedPreferences getLocalStorageForPreferences() {
         return globalAccessibleSharedPreferences;
     }
 
@@ -107,18 +106,6 @@ public class Utils {
         try {
             ObjectMapper obj = new ObjectMapper();
             expenses = obj.readValue(expensesString, new TypeReference<Expenses>() {
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return expenses;
-    }
-
-    public static List<Expenses> getDeserializedExpensesList(String expensesString) {
-        List<Expenses> expenses = new ArrayList<>();
-        try {
-            ObjectMapper obj = new ObjectMapper();
-            expenses = obj.readValue(expensesString, new TypeReference<List<Expenses>>() {
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -179,7 +166,7 @@ public class Utils {
     }
 
     public static void saveExpenses(Expenses expenses) {
-        SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
+        CachedSharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
         Map<String, MonthWiseExpense> allMonthWiseExpenses = new HashMap<>();
         expenses.sanitizeData();
         for (Expense expens : expenses) {
@@ -193,7 +180,7 @@ public class Utils {
             storedExpenses.addExpense(expens);
 
         }
-        SharedPreferences.Editor edit = localStorageForPreferences.edit();
+        CachedSharedPreferences.Editor edit = localStorageForPreferences.edit();
 
         for (Map.Entry<String, MonthWiseExpense> allEditedExpense : allMonthWiseExpenses.entrySet()) {
             edit.putString(allEditedExpense.getKey(), getSerializedExpenses(allEditedExpense.getValue()));
@@ -202,19 +189,19 @@ public class Utils {
     }
 
     public static void deleteAMonthExpense(String storageKey) {
-        SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
-        SharedPreferences.Editor edit = localStorageForPreferences.edit();
+        CachedSharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
+        CachedSharedPreferences.Editor edit = localStorageForPreferences.edit();
         edit.remove(storageKey);
         edit.apply();
     }
 
     public static void saveDayWiseExpenses(String storageKey, String dateMonth, Expenses expenses) {
         expenses.sanitizeData();
-        SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
+        CachedSharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
         MonthWiseExpense storedExpenses = getDeserializedMonthWiseExpenses(storageKey);
         storedExpenses.updateExpenses(dateMonth, expenses);
 
-        SharedPreferences.Editor edit = localStorageForPreferences.edit();
+        CachedSharedPreferences.Editor edit = localStorageForPreferences.edit();
 
         edit.putString(storageKey, getSerializedExpenses(storedExpenses));
         edit.apply();
@@ -306,7 +293,7 @@ public class Utils {
 
     public static void saveDefaultExpenseLimit(String defaultExpenseLimit) {
         BigDecimal expenseLimit = new BigDecimal(isEmpty(defaultExpenseLimit.trim()) ? "0" : defaultExpenseLimit);
-        SharedPreferences.Editor edit = getLocalStorageForPreferences().edit();
+        CachedSharedPreferences.Editor edit = getLocalStorageForPreferences().edit();
         edit.putString(defaultExpense, expenseLimit.toString());
         edit.commit();
 
@@ -317,6 +304,7 @@ public class Utils {
         toast.setGravity(Gravity.BOTTOM, 0, 500);
         toast.show();
     }
+
     public static void showToast(Context cx, String resourceId) {
         Toast toast = Toast.makeText(cx, resourceId, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.BOTTOM, 0, 500);
@@ -330,7 +318,7 @@ public class Utils {
     public static void saveExpenseLimit(String expenseStorageKey, String expenseLimit) {
         MonthWiseExpense deserializedMonthWiseExpense = getDeserializedMonthWiseExpenses(expenseStorageKey);
         deserializedMonthWiseExpense.setMonthWiseExpenseLimit(new BigDecimal(expenseLimit));
-        SharedPreferences.Editor edit = getLocalStorageForPreferences().edit();
+        CachedSharedPreferences.Editor edit = getLocalStorageForPreferences().edit();
 
         edit.putString(expenseStorageKey, getSerializedExpenses(deserializedMonthWiseExpense));
         edit.commit();
@@ -338,11 +326,11 @@ public class Utils {
 
     public static void saveTagWiseExpenses(String storageKey, String tag, Expenses expenses) {
         expenses.sanitizeData();
-        SharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
+        CachedSharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
         MonthWiseExpense storedExpenses = getDeserializedMonthWiseExpenses(storageKey);
         storedExpenses.updateTagWiseExpenses(tag, expenses);
 
-        SharedPreferences.Editor edit = localStorageForPreferences.edit();
+        CachedSharedPreferences.Editor edit = localStorageForPreferences.edit();
 
         edit.putString(storageKey, getSerializedExpenses(storedExpenses));
         edit.apply();
@@ -461,7 +449,7 @@ public class Utils {
     }
 
     public static String saveUnacceptedExpenses(Expenses processedExpenses) {
-        SharedPreferences.Editor edit = Utils.getLocalStorageForPreferences().edit();
+        CachedSharedPreferences.Editor edit = Utils.getLocalStorageForPreferences().edit();
         String key = Utils.UNACCEPTED_EXPENSES + "-" + Math.random();
         edit.putString(key, serializeExpenses(processedExpenses));
         edit.apply();
@@ -538,13 +526,13 @@ public class Utils {
     }
 
     public static void saveSMSInferredExpense(Expense probableExpenses) {
-        SharedPreferences.Editor edit = Utils.getLocalStorageForPreferences().edit();
+        CachedSharedPreferences.Editor edit = Utils.getLocalStorageForPreferences().edit();
         edit.putString(Utils.UNACCEPTED_SMS_EXPENSES + "-" + Math.random(), serializeExpenses(new Expenses(probableExpenses)));
         edit.apply();
     }
 
     public static void saveSMSParsedExpenses(User authenticatedUser, Expenses parsedExpenses) {
-        SharedPreferences.Editor edit = Utils.getLocalStorageForPreferences().edit();
+        CachedSharedPreferences.Editor edit = Utils.getLocalStorageForPreferences().edit();
         String key = Utils.UNACCEPTED_SHARED_SMS_EXPENSES + "-" + authenticatedUser.getName() + "-" +
                 parsedExpenses.getMonthYearHumanReadable() + "-" + SHARED;
         edit.putString(key, serializeExpenses(parsedExpenses));
@@ -626,5 +614,73 @@ public class Utils {
             }
         }
         return allExpenses;
+    }
+
+    public static Integer getUserCountOfSharedExpensesFor(String key) {
+        key = isNull(key) ? "UNKNOWN" : key;
+        Integer count = 0;
+
+        Map<String, ?> all = Utils.getLocalStorageForPreferences().getAll();
+        for (Map.Entry<String, ?> entry : all.entrySet()) {
+            String entryKey = entry.getKey();
+            if (entryKey.endsWith(key) && !entryKey.equals(key)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static int oneOrTwoColumns() {
+        List<String> allExpensesMonths = getAllExpensesMonths();
+        int oneColumnInHomeScreen = 1;
+        int twoColumnInHomeScreen = 2;
+
+        for (String allExpensesMonth : allExpensesMonths) {
+            if (getUserCountOfSharedExpensesFor(allExpensesMonth) >= 3) {
+                return oneColumnInHomeScreen;
+            }
+        }
+
+        return twoColumnInHomeScreen;
+    }
+
+
+    public static void removeAllSharerInfo(List<String> userNames) {
+
+        for (String userName : userNames) {
+            Map<String, Object> all = getLocalStorageForPreferences().getAll();
+            for (String key : all.keySet()) {
+                if (key.contains(userName + "-")) {
+                    getLocalStorageForPreferences().edit().remove(key).commit();
+                }
+            }
+        }
+    }
+
+    public static Map<String, Map.Entry<String, Expenses>> getAllDayWiseExpenseFromSharer(String key, SortedMap<String, MonthWiseExpense> allSharedExpenses) {
+        Map<String, Map.Entry<String, Expenses>> sharerDayWiseExpenses = new HashMap<>();
+        for (Map.Entry<String, MonthWiseExpense> monthWiseExpense : allSharedExpenses.entrySet()) {
+            Map.Entry<String, Expenses> dayWiseExpenses = monthWiseExpense.getValue().getDayWiseExpenses(key);
+            if (!isNull(dayWiseExpenses)) {
+                sharerDayWiseExpenses.put(monthWiseExpense.getKey(), dayWiseExpenses);
+            }
+        }
+        return sharerDayWiseExpenses;
+    }
+
+    public static Map<String, Expenses> mergeTagBasedExpenses(MonthWiseExpense yourMonthWiseExpenses, SortedMap<String, MonthWiseExpense> sharedExpenses) {
+        SortedMap<String, Expenses> tagBasedExpenses = new TreeMap<>();
+        tagBasedExpenses.putAll(yourMonthWiseExpenses.getTagBasedExpenses());
+        for (Map.Entry<String, MonthWiseExpense> tagBasedExpensesFromShared : sharedExpenses.entrySet()) {
+            Map<String, Expenses> expenses = tagBasedExpensesFromShared.getValue().getTagBasedExpenses();
+            for (Map.Entry<String, Expenses> expensesEntry : expenses.entrySet()) {
+                if (tagBasedExpenses.containsKey(expensesEntry.getKey())) {
+                    tagBasedExpenses.get(expensesEntry.getKey()).addAll(expensesEntry.getValue());
+                } else {
+                    tagBasedExpenses.put(expensesEntry.getKey(), expensesEntry.getValue());
+                }
+            }
+        }
+        return tagBasedExpenses;
     }
 }

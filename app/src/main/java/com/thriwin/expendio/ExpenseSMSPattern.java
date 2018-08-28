@@ -100,10 +100,8 @@ public class ExpenseSMSPattern extends Activity {
         linearLayout.setLayoutParams(linearLayoutLayoutParams);
 
         EditText smsPhraseView = new EditText(getBaseContext(), null);
-        LinearLayout.LayoutParams textViewLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams textViewLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         textViewLayoutParams.weight = 2;
-        textViewLayoutParams.height = 300;
-        textViewLayoutParams.width = 180;
 
         LinearLayout.LayoutParams buttonLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         buttonLayoutParams.height = 80;

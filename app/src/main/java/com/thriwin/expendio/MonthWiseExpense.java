@@ -11,7 +11,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import lombok.Getter;
@@ -84,9 +87,17 @@ public class MonthWiseExpense {
             addExpense(expense);
         }
     }
+
     @JsonIgnore
     public SortedSet<String> getSortedKeys() {
         return new TreeSet<>(this.getDayWiseExpenses().keySet()).descendingSet();
+    }
+
+    @JsonIgnore
+    public static SortedSet<String> mergeKeys(SortedSet<String> keys1, SortedSet<String> keys2) {
+        Set<String> dayKeys = new TreeSet<>(keys1);
+        dayKeys.addAll(keys2);
+        return new TreeSet<>(dayKeys).descendingSet();
     }
 
     @JsonIgnore
@@ -143,7 +154,7 @@ public class MonthWiseExpense {
 
     @JsonIgnore
     public Map<String, Expenses> getTagBasedExpenses() {
-        HashMap<String, Expenses> tagBasedExpenses = new HashMap<>();
+        SortedMap<String, Expenses> tagBasedExpenses = new TreeMap<>();
         Expenses allExpenses = getAllExpenses();
         for (Expense expense : allExpenses) {
 

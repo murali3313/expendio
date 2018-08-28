@@ -8,11 +8,14 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -20,9 +23,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import org.apache.commons.codec.binary.StringUtils;
+import org.apache.poi.util.StringUtil;
+
 import java.util.List;
 
-import static com.thriwin.expendio.BluetoothService.ENABLE_BLUE_TOOTH_ADD;
 import static com.thriwin.expendio.BluetoothService.ENABLE_BLUE_TOOTH_INITIALIZE;
 import static com.thriwin.expendio.BluetoothService.ENABLE_BLUE_TOOTH_SEND;
 import static com.thriwin.expendio.BluetoothService.ENABLE_FOR_PAIR;
@@ -104,23 +109,52 @@ public class ExpenseShareActivity extends Activity {
     }
 
     private void saveSettings() {
-        ShareSettings shareSettings = new ShareSettings();
-        shareSettings.setShareType(sharingMethodSelector.getCheckedRadioButtonId() == R.id.smsSharing ? SHARE_TYPE.SMS : SHARE_TYPE.BLUETOOTH);
+        ShareSettings newShareSettings = new ShareSettings();
+        newShareSettings.setShareType(sharingMethodSelector.getCheckedRadioButtonId() == R.id.smsSharing ? SHARE_TYPE.SMS : SHARE_TYPE.BLUETOOTH);
         for (int i = 0; i < smsDetails.getChildCount(); i++) {
             SMSUserView smsUserView = (SMSUserView) smsDetails.getChildAt(i);
-            shareSettings.addSMSUser(smsUserView.getSmsUser());
+            newShareSettings.addSMSUser(smsUserView.getSmsUser());
         }
         for (int i = 0; i < bluetoothDetails.getChildCount(); i++) {
             BluetoothUserView bluetoothUserView = (BluetoothUserView) bluetoothDetails.getChildAt(i);
-            shareSettings.addBluetoothUser(bluetoothUserView.getBluetoothUser());
+            newShareSettings.addBluetoothUser(bluetoothUserView.getBluetoothUser());
         }
 
-        ExpenseShareActivity.this.shareSettings = shareSettings;
-        if (shareSettings.getAllSMSUsers().size() > 0) {
+        if (newShareSettings.getAllSMSUsers().size() > 0) {
             requestSMSPermission(null, SMS_SAVE);
         }
-        Utils.saveShareSettings(shareSettings);
-        showToast(ExpenseShareActivity.this, R.string.settingsSavedSuccessfully);
+        List<String> affectedUserNames = newShareSettings.compare(Utils.getShareSettings());
+        if (affectedUserNames.isEmpty()) {
+            Utils.saveShareSettings(newShareSettings);
+            ExpenseShareActivity.this.shareSettings = newShareSettings;
+            showToast(ExpenseShareActivity.this, R.string.settingsSavedSuccessfully);
+        } else {
+            View sheetView = View.inflate(ExpenseShareActivity.this, R.layout.bottom_save_share_data_loss_confirmation, null);
+            BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(ExpenseShareActivity.this);
+            TextView sharerDeleteNote = (TextView) sheetView.findViewById(R.id.sharerDeleteNote);
+            String message = sharerDeleteNote.getText().toString();
+            sharerDeleteNote.setText(String.format(message, StringUtil.join( affectedUserNames.toArray(),", ")));
+            mBottomSheetDialog.setContentView(sheetView);
+            mBottomSheetDialog.show();
+
+            mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utils.removeAllSharerInfo(affectedUserNames);
+                    Utils.saveShareSettings(newShareSettings);
+                    ExpenseShareActivity.this.shareSettings = newShareSettings;
+                    showToast(ExpenseShareActivity.this, R.string.settingsSavedSuccessfully);
+                    mBottomSheetDialog.cancel();
+                }
+            });
+
+            mBottomSheetDialog.findViewById(R.id.removeCancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mBottomSheetDialog.cancel();
+                }
+            });
+        }
     }
 
     private void loadUsers(User user) {
@@ -130,7 +164,7 @@ public class ExpenseShareActivity extends Activity {
 
         EditText child = new EditText(ExpenseShareActivity.this, null);
         LinearLayout.LayoutParams editTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        editTextParams.weight=4;
+        editTextParams.weight = 4;
         child.setLayoutParams(editTextParams);
 
         child.setText(user.getName());
@@ -140,7 +174,7 @@ public class ExpenseShareActivity extends Activity {
         removeButton.setLayoutParams(params);
         removeButton.setBackgroundResource(R.drawable.ic_remove);
 
-        child.setHint("User Name");
+        child.setHint("User Name. Keep it short and unique.");
         linearLayout.addView(child);
         linearLayout.addView(removeButton);
         usersContainer.addView(linearLayout, 0);
@@ -329,5 +363,33 @@ public class ExpenseShareActivity extends Activity {
     public boolean requestBluetoothEnablement(BluetoothUserView bluetoothUserView, int enableForPair) {
         this.selectedBluetoothUserView = bluetoothUserView;
         return requestBluetoothEnablement(enableForPair);
+    }
+
+    public static void setupParent(View view, Activity activity) {
+        //Set up touch listener for non-text box views to hide keyboard.
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard(activity);
+                    return false;
+                }
+            });
+        }
+        //If a layout container, iterate over children
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupParent(innerView, activity);
+            }
+        }
+    }
+
+    private static void hideSoftKeyboard(Activity activity) {
+        try {
+            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        } catch (Exception e) {
+
+        }
     }
 }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.SortedMap;
 
@@ -38,17 +39,27 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
         String expenseLimit = format("\n %s", expensesBlock.getValue().monthlyLimitExceededDetails());
         blockName.setText(readableMonthAndYear[0] + "\n" + readableMonthAndYear[1]);
         TextView spentValue = findViewById(R.id.expenseSpentValue);
+        TextView spentBy = findViewById(R.id.expenseSpentBy);
         String totalExpenditure = expensesBlock.getValue().getTotalExpenditure();
 
-        spentValue.setText(format("\nYou spent : %s", totalExpenditure));
+        spentValue.setText(format("\n: %s", totalExpenditure));
+        spentBy.setText(format("\nYou spent "));
 
         SortedMap<String, MonthWiseExpense> allSharedExpensesFor = Utils.getAllSharedExpensesFor(expensesBlock.getKey());
 
+        BigDecimal totalExpenditureOfAllUsers = new BigDecimal(expensesBlock.getValue().getTotalExpenditure());
         for (Map.Entry<String, MonthWiseExpense> sharedUserExpenses : allSharedExpensesFor.entrySet()) {
-            spentValue.append(format("\n%s : %s", sharedUserExpenses.getKey(), sharedUserExpenses.getValue().getTotalExpenditure()));
+            spentBy.append(format("\n%s", sharedUserExpenses.getKey()));
+            spentValue.append(format("\n: %s", sharedUserExpenses.getValue().getTotalExpenditure()));
+            totalExpenditureOfAllUsers = totalExpenditureOfAllUsers.add(new BigDecimal(sharedUserExpenses.getValue().getTotalExpenditure()));
         }
 
-        ((TextView) findViewById(R.id.expenseLimitValue)).setText(expenseLimit);
+        if (allSharedExpensesFor.size() == 0) {
+            ((TextView) findViewById(R.id.expenseLimitValue)).setText(expenseLimit);
+        } else {
+            spentBy.append(format("\n\nTotal"));
+            spentValue.append(format("\n\n: %s", totalExpenditureOfAllUsers));
+        }
 
         blockName.setTextAlignment(TEXT_ALIGNMENT_CENTER);
         monthBlockContainer.setOnClickListener(v -> {

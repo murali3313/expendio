@@ -195,25 +195,25 @@ public class BluetoothService {
     }
 
     public void stopAllBluetooth() {
-//        try {
-//            if (!isNull(acceptThread))
-//                acceptThread.stop();
-//            if (!isNull(connectedThread))
-//                connectedThread.stop();
-//        } catch (Exception e) {
-//
-//        }
+        try {
+            if (!isNull(acceptThread))
+                acceptThread.stop();
+            if (!isNull(connectedThread))
+                connectedThread.stop();
+        } catch (Exception e) {
+
+        }
 
     }
 
     public void disableBluetooth() {
-//        if (!isNull(bluetoothAdapter))
-//            bluetoothAdapter.disable();
+        if (!isNull(bluetoothAdapter))
+            bluetoothAdapter.disable();
     }
 
     public void enableBluetooth() {
-//        if (!isNull(bluetoothAdapter))
-//            bluetoothAdapter.enable();
+        if (!isNull(bluetoothAdapter))
+            bluetoothAdapter.enable();
     }
 
     public static BluetoothSocket socketInAccept = null;

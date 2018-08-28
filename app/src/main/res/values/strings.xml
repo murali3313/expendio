@@ -59,6 +59,8 @@
     <string name="smsSendSuccesfully">Sms scheduled to be sent, check outbox. Recipient should have configured your number to receive the expenses in Expendio.</string>
     <string name="bluetoothSendSuccesfully">Expense send successfully</string>
     <string name="smsSendFailed">sending SMS failed. Please try later.</string>
+    <string name="addUserHeader">Add users to send/receive expenses.</string>
+    <string name="remove_expense">Shared Expenses</string>
     <string-array name="reminder_options">
         <item>Do Not Disturb</item>
         <item>Once a day</item>

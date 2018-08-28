@@ -1,9 +1,7 @@
 package com.thriwin.expendio;
 
-import android.app.Activity;
 import android.content.Context;
 
-import static com.thriwin.expendio.SMSStateReceiver.smsFromUsers;
 import static com.thriwin.expendio.Utils.isNull;
 
 public class SMSExpenseParser extends Thread {
@@ -11,13 +9,16 @@ public class SMSExpenseParser extends Thread {
     private ShareSettings shareSettings;
     private User authenticatedUser;
     private Context context;
+    private SMSUserMessages smsFromUsers;
 
-    public SMSExpenseParser(ShareSettings shareSettings, User authenticatedUser, Context context){
+    public SMSExpenseParser(ShareSettings shareSettings, User authenticatedUser, Context context, SMSUserMessages smsUserMessages) {
 
         this.shareSettings = shareSettings;
         this.authenticatedUser = authenticatedUser;
         this.context = context;
+        this.smsFromUsers = smsUserMessages;
     }
+
     @Override
     public void run() {
         Expenses parsedExpenses = shareSettings.getParsedExpenses(smsFromUsers.getCollatedMessages(authenticatedUser.getName()));

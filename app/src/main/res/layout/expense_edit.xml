@@ -88,6 +88,7 @@
             android:background="@drawable/edit_outline"
             android:cursorVisible="true"
             android:paddingLeft="10dp"
+            android:inputType="textCapSentences"
             android:textColor="@color/primaryText"
             android:textColorHint="@color/colorPrimary"></AutoCompleteTextView>
 

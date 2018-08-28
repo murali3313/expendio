@@ -14,6 +14,7 @@ public class ExpenseTimeView extends LinearLayout {
     private Expense expense;
     TextView spentOn;
     TextView amount;
+    TextView user;
     EditText reason;
     ImageButton remove;
     LinearLayout tagsContainer;
@@ -29,6 +30,7 @@ public class ExpenseTimeView extends LinearLayout {
         this.expense = expense;
         tagsContainer = findViewById(R.id.tags);
         amount = findViewById(R.id.amount);
+        user = findViewById(R.id.userName);
         for (String tag : expense.getAssociatedExpenseTags()) {
             if (Utils.isEmpty(tag.trim())) {
                 continue;
@@ -46,4 +48,9 @@ public class ExpenseTimeView extends LinearLayout {
         amount.setText(expense.getAmountSpent() + " For ");
     }
 
+    public ExpenseTimeView(Context context, @Nullable AttributeSet attrs, Expense expense, ExpensesTimeView parentView, String username) {
+        this(context, attrs, expense, parentView);
+        user.setText(username);
+        user.setVisibility(VISIBLE);
+    }
 }

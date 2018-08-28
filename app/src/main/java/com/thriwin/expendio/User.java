@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
+import static com.thriwin.expendio.Utils.isEmpty;
 import static com.thriwin.expendio.Utils.isNull;
 
 @Setter
@@ -54,5 +55,9 @@ public class User {
             this.pairDeviceName = split[0].trim();
             this.pairDetail = split[1].trim();
         }
+    }
+
+    public boolean sameName(String name) {
+        return isEmpty(this.getName()) ? isEmpty(name) : this.getName().equalsIgnoreCase(name);
     }
 }

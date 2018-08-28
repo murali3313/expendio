@@ -50,10 +50,7 @@ public class SMSStateReceiver extends BroadcastReceiver {
                     if (!isNull(authenticatedUser)) {
                         smsFromUsers.add(authenticatedUser.getName(), completMessages.toString());
                         if (smsFromUsers.isAllMessagesComplete(authenticatedUser.getName())) {
-                            SMSExpenseParser smsExpenseParser = new SMSExpenseParser(shareSettings, authenticatedUser, context);
-                            if (true != false) {
-                                smsExpenseParser.start();
-                            }
+                            SMSExpenseParser smsExpenseParser = new SMSExpenseParser(shareSettings, authenticatedUser, context, smsFromUsers);
                             smsExpenseParser.start();
                         }
                     }

@@ -38,7 +38,7 @@ public class HomeScreenView extends LinearLayout implements IDisplayAreaView {
         TableRow tableRow = null;
 
         for (Map.Entry<String, MonthWiseExpense> monthWise : allExpensesMonthWise.entrySet()) {
-            boolean isNewLayoutStarted = i % 2 == 0;
+            boolean isNewLayoutStarted = i % Utils.oneOrTwoColumns() == 0;
             if (isNewLayoutStarted) {
                 tableRow = new TableRow(getContext(), null);
                 homeScreenContainer.addView(tableRow);

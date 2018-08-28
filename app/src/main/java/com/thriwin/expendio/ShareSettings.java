@@ -119,4 +119,24 @@ public class ShareSettings {
         }
         return expenses;
     }
+
+    public List<String> compare(ShareSettings shareSettings) {
+        List<String> affectedUsers = new ArrayList<>();
+        for (User user : shareSettings.getAllUsers()) {
+            User userFromThis = this.getUser(user.getName());
+            if (isNull(userFromThis)) {
+                affectedUsers.add(user.getName());
+            }
+        }
+        return affectedUsers;
+    }
+
+    private User getUser(String name) {
+        for (User user : users) {
+            if (user.sameName(name)) {
+                return user;
+            }
+        }
+        return null;
+    }
 }

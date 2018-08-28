@@ -17,16 +17,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.nex3z.flowlayout.FlowLayout;
-
-import java.util.ArrayList;
+import java.util.AbstractMap;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.thriwin.expendio.Utils.isNull;
 import static com.thriwin.expendio.Utils.saveDayWiseExpenses;
 import static com.thriwin.expendio.Utils.timeLineColors;
-import static java.util.Arrays.asList;
+import static java.lang.String.format;
 
 public class ExpensesTimeView extends LinearLayout {
 
@@ -37,34 +37,46 @@ public class ExpensesTimeView extends LinearLayout {
     ImageButton remove;
     LinearLayout tagsContainer;
     private Context context;
+    private Map<String, Map.Entry<String, Expenses>> allDayWiseExpenseFromSharer;
     private ExpenseTimelineView parentView;
     public Map.Entry<String, Expenses> expenses;
 
     public ExpensesTimeView(Context context, @Nullable AttributeSet attrs, Map.Entry<String, Expenses> expenses,
-                            ExpenseTimelineView parentView, int index) {
+                            Map<String, Map.Entry<String, Expenses>> allDayWiseExpenseFromSharer, ExpenseTimelineView parentView, int index) {
         super(context, attrs);
         this.context = context;
+        this.allDayWiseExpenseFromSharer = allDayWiseExpenseFromSharer;
+        this.expenses = isNull(expenses) ? new AbstractMap.SimpleEntry<>("Nothing", new Expenses()) : expenses;
+
         this.parentView = parentView;
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View inflate = inflater.inflate(R.layout.expenses_time_view, this);
-        this.expenses = expenses;
         RelativeLayout timeMarkerContainer = findViewById(R.id.expenseTimeDay);
 
         int colourIndex = index % timeLineColors.size();
         timeMarkerContainer.setBackgroundColor(Color.parseColor(timeLineColors.get(colourIndex)));
 
         TextView totalExpenseView = findViewById(R.id.totalExpenseDayWise);
-        totalExpenseView.setText(expenses.getValue().getTotalExpenditure());
+        totalExpenseView.setText(format("You \n%s\n", this.expenses.getValue().getTotalExpenditure()));
+        for (Map.Entry<String, Map.Entry<String, Expenses>> dayWiseExpensesFromSharer : allDayWiseExpenseFromSharer.entrySet()) {
+            totalExpenseView.append(format("\n%s\n%s\n", dayWiseExpensesFromSharer.getKey(), dayWiseExpensesFromSharer.getValue().getValue().getTotalExpenditure()));
+        }
 
 
         TextView dateWiseRepresentation = findViewById(R.id.dateWiseString);
-        dateWiseRepresentation.setText(expenses.getValue().getDateMonthHumanReadable());
-        this.expense = expenses.getValue();
+        dateWiseRepresentation.setText(getDate(expenses, allDayWiseExpenseFromSharer).getDateMonthHumanReadable());
+        this.expense = this.expenses.getValue();
         LinearLayout expensesPerDay = findViewById(R.id.expensesPerDay);
         for (Expense expens : this.expense) {
             ExpenseTimeView expenseTimeView = new ExpenseTimeView(context, null, expens, this);
             expensesPerDay.addView(expenseTimeView);
+        }
+        for (Map.Entry<String, Map.Entry<String, Expenses>> userDayExpensesEntry : this.allDayWiseExpenseFromSharer.entrySet()) {
+            for (Expense userDayExpense : userDayExpensesEntry.getValue().getValue()) {
+                ExpenseTimeView expenseTimeView = new ExpenseTimeView(context, null, userDayExpense, this,userDayExpensesEntry.getKey());
+                expensesPerDay.addView(expenseTimeView);
+            }
         }
 
 
@@ -77,8 +89,8 @@ public class ExpensesTimeView extends LinearLayout {
             mBottomSheetDialog.show();
 
             mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(v1 -> {
-                saveDayWiseExpenses(expenses.getValue().getStorageKey(), expenses.getValue().getDateMonth(), new Expenses());
-                parentView.loadTimeLineView(expenses.getValue().getStorageKey());
+                saveDayWiseExpenses(this.expenses.getValue().getStorageKey(), this.expenses.getValue().getDateMonth(), new Expenses());
+                parentView.loadTimeLineView(this.expenses.getValue().getStorageKey());
                 mBottomSheetDialog.cancel();
             });
 
@@ -92,7 +104,10 @@ public class ExpensesTimeView extends LinearLayout {
             public void onClick(View v) {
                 Intent i = new Intent(context, DayWiseExpenseEdit.class);
                 i.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                i.putExtra("DayWiseExpenses", Utils.getSerializedExpenses(expenses.getValue()));
+                Expenses value = ExpensesTimeView.this.expenses.getValue();
+                long spentOnDate = getDate(ExpensesTimeView.this.expenses, ExpensesTimeView.this.allDayWiseExpenseFromSharer).getSpentOnDate();
+                Expenses expenses = value.isEmpty() ? new Expenses(new Expense(new Date(spentOnDate))) : value;
+                i.putExtra("DayWiseExpenses", Utils.getSerializedExpenses(expenses));
                 ContextCompat.startActivity(context, i, null);
             }
         });
@@ -100,6 +115,12 @@ public class ExpensesTimeView extends LinearLayout {
         setAllChildWithFollowParentState(this, onLongClickListener);
         inflate.setClickable(true);
 
+    }
+
+    private Expenses getDate(Map.Entry<String, Expenses> expenses, Map<String, Map.Entry<String, Expenses>> allDayWiseExpenseFromSharer) {
+        return isNull(expenses) || expenses.getValue().isEmpty() ?
+                allDayWiseExpenseFromSharer.entrySet().iterator().next().getValue().getValue() :
+                this.expenses.getValue();
     }
 
     boolean isLongPressed = false;
@@ -111,8 +132,12 @@ public class ExpensesTimeView extends LinearLayout {
         }
         if (ev.getAction() == MotionEvent.ACTION_UP && !isLongPressed) {
             Intent i = new Intent(context, DayWiseExpenseEdit.class);
+            Expenses value = ExpensesTimeView.this.expenses.getValue();
+            long spentOnDate = getDate(ExpensesTimeView.this.expenses, ExpensesTimeView.this.allDayWiseExpenseFromSharer).getSpentOnDate();
+            Expenses expenses = value.isEmpty() ? new Expenses(new Expense(new Date(spentOnDate))) : value;
+
             i.addFlags(FLAG_ACTIVITY_NEW_TASK);
-            i.putExtra("DayWiseExpenses", Utils.getSerializedExpenses(expenses.getValue()));
+            i.putExtra("DayWiseExpenses", Utils.getSerializedExpenses(expenses));
             ContextCompat.startActivity(context, i, null);
         }
         return super.onInterceptTouchEvent(ev);
