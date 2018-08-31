@@ -174,6 +174,13 @@ public class HomeScreenActivity extends CommonActivity implements NavigationView
 
         } else if (id == R.id.nav_open_generated_excel) {
             openFolder();
+        } else if (id == R.id.nav_share_expendio) {
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, "Expendio - Free Expense manager voice enhanced. \nPlease click the below link to download and enjoy.\n" +
+                    "https://play.google.com/store/apps/details?id=com.thriwin.expendio" +
+                    "\ndeveloped by Thriwin Solutions.");
+            startActivity(Intent.createChooser(sharingIntent, "Share via"));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

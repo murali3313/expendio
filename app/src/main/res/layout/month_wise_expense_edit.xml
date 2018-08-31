@@ -26,7 +26,7 @@
             android:id="@+id/addExpense"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginRight="58dp"
+            android:layout_marginRight="30dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/ic_add_expense_white" />
 
@@ -34,7 +34,6 @@
             android:id="@+id/acceptedExpense"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginRight="27dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/ic_save_white" />
 
@@ -42,7 +41,9 @@
             android:id="@+id/discardExpenses"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:visibility="gone"
             android:layout_alignParentRight="true"
+
             android:background="@drawable/ic_close_white" />
 
     </RelativeLayout>

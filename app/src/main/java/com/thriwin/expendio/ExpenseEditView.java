@@ -17,10 +17,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.Arrays.asList;
 
 public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuItemClickListener {
 
@@ -32,13 +29,15 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
     LinearLayout tagsContainer;
     private ExpensesEditView parentView;
     private boolean makeDatePermissibleWithinMonthLimit;
+    private boolean fromSharedExpenses;
     TextView selectedTextViewTag;
 
 
-    public ExpenseEditView(Context context, @Nullable AttributeSet attrs, Expense expens, ExpensesEditView parentView, boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, boolean isTagEditDisabled, String tagText) {
+    public ExpenseEditView(Context context, @Nullable AttributeSet attrs, Expense expens, ExpensesEditView parentView, boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, boolean isTagEditDisabled, String tagText, boolean fromSharedExpenses) {
         super(context, attrs);
         this.parentView = parentView;
         this.makeDatePermissibleWithinMonthLimit = makeDatePermissibleWithinMonthLimit;
+        this.fromSharedExpenses = fromSharedExpenses;
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.expense_edit, this);
@@ -58,6 +57,13 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
             reason.setText(tagText);
             reason.setEnabled(false);
             reason.setBackgroundResource(R.drawable.disabled);
+        }
+        if (fromSharedExpenses) {
+            reason.setEnabled(false);
+            amount.setEnabled(false);
+            spentOn.setEnabled(false);
+            tagsContainer.setClickable(false);
+            remove.setVisibility(GONE);
         }
         populateData();
     }
@@ -86,15 +92,17 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
             textView.setTextColor(getResources().getColor(R.color.primaryText));
             tagsContainer.addView(textView);
 
-            textView.setOnClickListener(v -> {
-                PopupMenu popup = new PopupMenu(getContext(), v);
-                for (String tagEntry : tags) {
-                    popup.getMenu().add(tagEntry);
-                }
-                selectedTextViewTag = (TextView) v;
-                popup.setOnMenuItemClickListener(ExpenseEditView.this);
-                popup.show();
-            });
+            if (!fromSharedExpenses) {
+                textView.setOnClickListener(v -> {
+                    PopupMenu popup = new PopupMenu(getContext(), v);
+                    for (String tagEntry : tags) {
+                        popup.getMenu().add(tagEntry);
+                    }
+                    selectedTextViewTag = (TextView) v;
+                    popup.setOnMenuItemClickListener(ExpenseEditView.this);
+                    popup.show();
+                });
+            }
 
         }
 

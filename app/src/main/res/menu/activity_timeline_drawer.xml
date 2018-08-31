@@ -27,7 +27,7 @@
         <item
             android:id="@+id/nav_remove_sharer_expense"
             android:icon="@drawable/ic_remove"
-            android:title="Remove other's expense" />
+            android:title="Remove shared expenses" />
     </group>
 
 </menu>

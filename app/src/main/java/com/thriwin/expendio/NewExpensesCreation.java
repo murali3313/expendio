@@ -38,7 +38,7 @@ public class NewExpensesCreation extends Activity {
         }
         this.expenses = new Expenses(new Expense(new BigDecimal(0), selectedDate, ""));
         ExpensesEditView expenses = findViewById(R.id.newExpenses);
-        expenses.populate(this.expenses, true, false, this, false, null);
+        expenses.populate(this.expenses, true, false, this, false, null, false);
 
         okButton = findViewById(R.id.acceptedExpense);
         cancelButton = findViewById(R.id.discardExpenses);

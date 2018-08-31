@@ -43,81 +43,81 @@
         <activity
             android:name=".ExpenseShareActivity"
             android:label="@string/share_expense"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden|adjustNothing"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".ExpenseAcceptance"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
         <activity
             android:name=".NewExpensesCreation"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
 
         <activity
             android:name=".ExpenseTimelineView"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ExpenseSMSPattern"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".RecurringExpensesView"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".SharedExpenseDetailsRemove"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ExpendioSettingsView"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ExpenseTagsEditView"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".DayWiseExpenseEdit"
-            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
 
         <activity
             android:name=".TagWiseExpenseEdit"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
 
 
         <activity
             android:name=".MonthWiseExpenseAdd"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
 
         <activity
             android:name=".ExpenseDefaultLimit"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
 
         <activity
             android:name=".ExpenseMonthWiseLimit"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
 

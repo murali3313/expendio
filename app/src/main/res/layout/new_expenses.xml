@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
@@ -21,17 +22,17 @@
             android:textSize="25sp" />
         <ImageButton
             android:id="@+id/addExpense"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginRight="64dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="30dp"
+            android:foregroundGravity="center_vertical"
             android:layout_alignParentRight="true"
             android:background="@drawable/ic_add_expense_white" />
 
         <ImageButton
             android:id="@+id/acceptedExpense"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginRight="30dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/ic_save_white" />
 
@@ -40,6 +41,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
+            android:visibility="gone"
             android:background="@drawable/ic_close_white" />
 
 

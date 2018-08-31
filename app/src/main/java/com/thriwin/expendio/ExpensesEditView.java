@@ -27,21 +27,20 @@ public class ExpensesEditView extends LinearLayout {
         this.context = context;
     }
 
-    public void populate(Expenses expenses, boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, Activity activity, boolean isTagEditDisabled, String tagText) {
-        this.expenses = expenses;
+    public void populate(Expenses expenses, boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, Activity activity, boolean isTagEditDisabled, String tagText, boolean fromSharedExpenses) {
+        this.expenses = isNull(expenses) ? new Expenses() : expenses;
         this.makeDateEditable = makeDateEditable;
         this.makeDatePermissibleWithinMonthLimit = makeDatePermissibleWithinMonthLimit;
         inflate(context, R.layout.expenses_edit, this);
         expenseEditViews = new ArrayList<>();
-        for (Expense expens : expenses) {
-            addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, expens, isTagEditDisabled, tagText);
+        for (Expense expens : this.expenses) {
+            addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, expens, isTagEditDisabled, tagText,fromSharedExpenses);
         }
-
         setupParent(this.getRootView(), activity);
     }
 
-    private void addExpense(boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, Expense expens, boolean isTagEditDisabled, String tagText) {
-        ExpenseEditView expenseEditView = new ExpenseEditView(this.context, null, expens, this, makeDateEditable, makeDatePermissibleWithinMonthLimit, isTagEditDisabled, tagText);
+    private void addExpense(boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, Expense expens, boolean isTagEditDisabled, String tagText, boolean fromSharedExpenses) {
+        ExpenseEditView expenseEditView = new ExpenseEditView(this.context, null, expens, this, makeDateEditable, makeDatePermissibleWithinMonthLimit, isTagEditDisabled, tagText,fromSharedExpenses);
         expenseEditViews.add(expenseEditView);
         addView(expenseEditView, 0);
     }
@@ -61,10 +60,10 @@ public class ExpensesEditView extends LinearLayout {
     }
 
     public void addNewExpense() {
-        addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, new Expense(new Date(expenses.getSpentOnDate())), false, null);
+        addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, new Expense(new Date(expenses.getSpentOnDate())), false, null, false);
     }
 
     public void addNewExpense(boolean isTagEditDisabled, String tagText) {
-        addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, new Expense(new Date(expenses.getSpentOnDate())), isTagEditDisabled, tagText);
+        addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, new Expense(new Date(expenses.getSpentOnDate())), isTagEditDisabled, tagText, false);
     }
 }

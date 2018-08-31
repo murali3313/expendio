@@ -8,15 +8,16 @@
     android:layout_marginRight="10dp"
     android:background="@drawable/recurrence_expense_notification">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginBottom="10dp">
+        android:layout_height="wrap_content"
+        android:minHeight="120dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/unApprovedExpense"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:fontFamily="sans-serif"
@@ -26,10 +27,10 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="3dp"
+            android:layout_height="2dp"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="3dp"
             android:background="@color/primaryText"></View>
 
         <TextView
@@ -37,17 +38,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="5dp"
             android:textSize="20sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="80dp"
             android:text="Touch here to review the expenses"
             android:textSize="18sp" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>
 

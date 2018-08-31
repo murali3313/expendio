@@ -176,7 +176,7 @@ public class ExpenseShareActivity extends Activity {
         removeButton.setLayoutParams(params);
         removeButton.setBackgroundResource(R.drawable.ic_remove);
 
-        child.setHint("User Name. Keep it short and unique.");
+        child.setHint("Sharer name. Keep it short and unique.");
         linearLayout.addView(child);
         linearLayout.addView(removeButton);
         usersContainer.addView(linearLayout, 0);

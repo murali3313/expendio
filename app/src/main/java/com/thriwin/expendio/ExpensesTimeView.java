@@ -74,7 +74,7 @@ public class ExpensesTimeView extends LinearLayout {
         }
         for (Map.Entry<String, Map.Entry<String, Expenses>> userDayExpensesEntry : this.allDayWiseExpenseFromSharer.entrySet()) {
             for (Expense userDayExpense : userDayExpensesEntry.getValue().getValue()) {
-                ExpenseTimeView expenseTimeView = new ExpenseTimeView(context, null, userDayExpense, this,userDayExpensesEntry.getKey());
+                ExpenseTimeView expenseTimeView = new ExpenseTimeView(context, null, userDayExpense, this, userDayExpensesEntry.getKey());
                 expensesPerDay.addView(expenseTimeView);
             }
         }
@@ -108,6 +108,7 @@ public class ExpensesTimeView extends LinearLayout {
                 long spentOnDate = getDate(ExpensesTimeView.this.expenses, ExpensesTimeView.this.allDayWiseExpenseFromSharer).getSpentOnDate();
                 Expenses expenses = value.isEmpty() ? new Expenses(new Expense(new Date(spentOnDate))) : value;
                 i.putExtra("DayWiseExpenses", Utils.getSerializedExpenses(expenses));
+                i.putExtra("containsOtherExpenses", !allDayWiseExpenseFromSharer.isEmpty());
                 ContextCompat.startActivity(context, i, null);
             }
         });
@@ -138,6 +139,7 @@ public class ExpensesTimeView extends LinearLayout {
 
             i.addFlags(FLAG_ACTIVITY_NEW_TASK);
             i.putExtra("DayWiseExpenses", Utils.getSerializedExpenses(expenses));
+            i.putExtra("containsOtherExpenses", !allDayWiseExpenseFromSharer.isEmpty());
             ContextCompat.startActivity(context, i, null);
         }
         return super.onInterceptTouchEvent(ev);

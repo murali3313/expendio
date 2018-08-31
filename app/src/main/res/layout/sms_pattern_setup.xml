@@ -32,16 +32,16 @@
 
             <ImageButton
                 android:id="@+id/addSMSPhrase"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="30dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="35dp"
                 android:background="@drawable/ic_add_expense" />
 
             <ImageButton
                 android:id="@+id/saveSMSPhrase"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/ic_tag_save" />
         </RelativeLayout>

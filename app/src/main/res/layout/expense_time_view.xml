@@ -9,12 +9,12 @@
 
     <TextView
         android:id="@+id/userName"
-        android:background="@drawable/edit_outline"
+        android:background="@drawable/circle_selected"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:visibility="gone"
         android:padding="4dp"
-        android:textColor="@color/primaryText" />
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/amount"

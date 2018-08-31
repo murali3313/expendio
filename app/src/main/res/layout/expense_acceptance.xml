@@ -21,8 +21,8 @@
 
         <ImageButton
             android:id="@+id/addExpense"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:background="@drawable/ic_add_expense" />
 
@@ -30,7 +30,23 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="400dp">
+        android:layout_height="400dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/noteIfOtherExpenseIncluded"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="@string/noteIfOtherExpenseNotEditable"
+                android:textColor="@color/primaryText"
+                android:visibility="gone"
+                android:textStyle="italic" />
+        </LinearLayout>
 
         <ScrollView
             android:layout_width="fill_parent"

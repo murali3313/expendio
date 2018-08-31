@@ -2,7 +2,7 @@ package com.thriwin.expendio;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -29,17 +29,20 @@ public class TagWiseExpenseEdit extends Activity {
         String dayWiseExpenses = this.getIntent().getStringExtra("TagWiseExpenses");
         String tagKey = this.getIntent().getStringExtra("TagKey");
         boolean makeDateEditable = this.getIntent().getBooleanExtra("MakeDateEditable", false);
+        boolean containsOtherExpenses = this.getIntent().getBooleanExtra("containsOtherExpenses", false);
+        findViewById(R.id.noteIfOtherExpenseIncluded).setVisibility(containsOtherExpenses ? View.VISIBLE : View.GONE);
         this.expenses = Utils.getDeserializedExpenses(dayWiseExpenses);
 
         ExpensesEditView dayWiseExpensesEdit = findViewById(R.id.dayWiseExpensesEdit);
-        dayWiseExpensesEdit.populate(expenses, makeDateEditable, true, this, true, tagKey);
+        dayWiseExpensesEdit.populate(expenses, makeDateEditable, true, this, true, tagKey, false);
 
         okButton = findViewById(R.id.acceptedExpense);
         cancelButton = findViewById(R.id.discardExpenses);
 
         okButton.setOnClickListener(v -> {
+            Expenses expenses = dayWiseExpensesEdit.getExpenses();
             ExpenseTimelineView.glowFor = expenses.getDateMonth();
-            Utils.saveTagWiseExpenses(this.expenses.getStorageKey(), tagKey, dayWiseExpensesEdit.getExpenses());
+            Utils.saveTagWiseExpenses(this.expenses.getStorageKey(), tagKey, expenses);
 
             TagWiseExpenseEdit.this.finish();
         });
@@ -49,7 +52,7 @@ public class TagWiseExpenseEdit extends Activity {
         ImageButton addExpense = findViewById(R.id.addExpense);
         addExpense.setOnClickListener(v -> dayWiseExpensesEdit.addNewExpense(true, tagKey));
 
-        String headerText = "Expenses for " + this.expenses.getFirstAssociatedTag();
+        String headerText = "Expenses for " + tagKey;
         int maxAllowedLengthInHeader = 22;
         Integer tillText = headerText.length() > maxAllowedLengthInHeader ? maxAllowedLengthInHeader : headerText.length();
         String appendingText = tillText == maxAllowedLengthInHeader ? "..." : "";

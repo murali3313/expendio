@@ -11,10 +11,10 @@
 
     <TextView
         android:id="@+id/expenseBlockName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
-        android:paddingTop="20dp"
+        android:paddingTop="10dp"
         android:textAlignment="center"
         android:textColor="@color/primaryText"
         android:textSize="18sp" />
@@ -58,7 +58,7 @@
 
     <TextView
         android:id="@+id/expenseLimitValue"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:textAlignment="center"

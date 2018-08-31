@@ -29,11 +29,11 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -62,7 +62,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
     PieChart pieChart;
     BarChart barChart;
     boolean shouldIncludeOtherExpenses = false;
-
+    Map<String, Expenses> viewableTagExpenses = null;
 
     public ExpenseAnalyticsView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -131,7 +131,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
     private void loadUserSelector(LinearLayout userSelectorContainer) {
         Integer userCountOfSharedExpensesFor = Utils.getUserCountOfSharedExpensesFor(selectedMonthStorageKey);
 
-        if(!isDisplayingPieChart){
+        if (!isDisplayingPieChart) {
             userCountOfSharedExpensesFor += Utils.getUserCountOfSharedExpensesFor(comparingMonthStorageKey);
         }
 
@@ -258,22 +258,25 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
             comparingMonthEntries.add(new BarEntry(i, isNull(comparingExpenses) ? 0f : Float.parseFloat(comparingExpenses.getTotalExpenditure())));
             groupTitles.add(selectedTags.get(i));
         }
-        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(groupTitles));
+        barChart.getXAxis().setValueFormatter(new ValueFormatter(groupTitles));
         barChart.getXAxis().setTextSize(17);
         barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        barChart.getXAxis().setAxisMinimum(0f);
+        barChart.getXAxis().setLabelRotationAngle(2f);
+        barChart.getXAxis().setGranularityEnabled(true);
         Description desc = new Description();
         desc.setText("");
         barChart.setDescription(desc);
 
-        float groupSpace = 0.08f;
-        float barSpace = 0.03f; // x2 dataset
-        float barWidth = 0.35f;
+        float groupSpace = getSpace(selectedTags.size(), "G");
+        float barSpace = getSpace(selectedTags.size(), "B"); // x2 dataset
+        float barWidth = getSpace(selectedTags.size(), "W");
         String[] primaryReadableMonthAndYear = Utils.getReadableMonthAndYear(this.selectedMonthStorageKey);
         String[] comparingReadableMonthAndYear = Utils.getReadableMonthAndYear(this.comparingMonthStorageKey);
         BarDataSet set1 = new BarDataSet(primaryMonthEntries, format("%s - %s", primaryReadableMonthAndYear[0], primaryReadableMonthAndYear[1]));
         BarDataSet set2 = new BarDataSet(comparingMonthEntries, format("%s - %s", comparingReadableMonthAndYear[0], comparingReadableMonthAndYear[1]));
-        set1.setValueTextSize(13f);
-        set2.setValueTextSize(13f);
+        set1.setValueTextSize(10f);
+        set2.setValueTextSize(10f);
 
 
         BarData barData = new BarData(asList(set1, set2));
@@ -283,8 +286,8 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
 
         set1.setColors(Color.parseColor("#C39EBA"));
         set2.setColors(Color.parseColor("#FF83A3"));
-        set1.setAxisDependency(YAxis.AxisDependency.RIGHT);
-        set2.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set2.setAxisDependency(YAxis.AxisDependency.LEFT);
 
 
         barChart.getAxisLeft().setDrawGridLines(false);
@@ -292,6 +295,46 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         barChart.groupBars(0f, groupSpace, barSpace);
         barChart.invalidate();
         loadUserSelector(findViewById(R.id.userSelectorInBarChart));
+    }
+
+    private float getSpace(int size, String g) {
+        if (g.equalsIgnoreCase("G")) {
+            switch (size) {
+                case 1:
+                    return 0.09f;
+                case 2:
+                    return 0.09f;
+                case 3:
+                    return 0.09f;
+                default:
+                    return 0.09f;
+            }
+        }
+        if (g.equalsIgnoreCase("B")) {
+            switch (size) {
+                case 1:
+                    return 0.03f;
+                case 2:
+                    return 0.03f;
+                case 3:
+                    return 0.03f;
+                default:
+                    return 0.03f;
+            }
+        }
+        if (g.equalsIgnoreCase("W")) {
+            switch (size) {
+                case 1:
+                    return 0.08f;
+                case 2:
+                    return 0.22f;
+                case 3:
+                    return 0.35f;
+                default:
+                    return 0.35f;
+            }
+        }
+        return 0;
     }
 
     private void setMonthSelectorSpinners(String primaryMonth, String comparingMonth) {
@@ -391,7 +434,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         MonthWiseExpense monthExpenses = Utils.getDeserializedMonthWiseExpenses(storageKeyForCurrentMonth);
 
         tagBasedExpenses = monthExpenses.getTagBasedExpenses();
-        Map<String, Expenses> viewableTagExpenses = tagBasedExpenses;
+        viewableTagExpenses = tagBasedExpenses;
         if (shouldIncludeOtherExpenses) {
             SortedMap<String, MonthWiseExpense> allSharedExpensesFor = Utils.getAllSharedExpensesFor(storageKeyForCurrentMonth);
             viewableTagExpenses = Utils.mergeTagBasedExpenses(monthExpenses, allSharedExpensesFor);
@@ -433,9 +476,16 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         Intent i = new Intent(getContext(), TagWiseExpenseEdit.class);
         i.addFlags(FLAG_ACTIVITY_NEW_TASK);
         String label = ((PieEntry) e).getLabel();
-        i.putExtra("TagWiseExpenses", Utils.getSerializedExpenses(tagBasedExpenses.get(label)));
+        Expenses tagBasedExpenses = this.tagBasedExpenses.get(label);
+
+        if (isNull(tagBasedExpenses)) {
+            tagBasedExpenses = new Expenses(new Expense(new Date(viewableTagExpenses.get(label).getSpentOnDate())));
+        }
+
+        i.putExtra("TagWiseExpenses", Utils.getSerializedExpenses(tagBasedExpenses));
         i.putExtra("TagKey", label);
         i.putExtra("MakeDateEditable", true);
+        i.putExtra("containsOtherExpenses", shouldIncludeOtherExpenses);
         ContextCompat.startActivity(getContext(), i, null);
     }
 

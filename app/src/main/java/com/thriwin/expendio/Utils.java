@@ -110,7 +110,7 @@ public class Utils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return expenses;
+        return isNull(expenses) ? new Expenses() : expenses;
     }
 
     public static MonthWiseExpense getDeserializedMonthWiseExpenses(String expenseKey) {

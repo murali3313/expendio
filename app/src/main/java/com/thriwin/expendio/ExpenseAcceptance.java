@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
 import static com.thriwin.expendio.Utils.UNACCEPTED_EXPENSES;
+import static com.thriwin.expendio.Utils.isEmpty;
 import static com.thriwin.expendio.Utils.isNull;
 import static com.thriwin.expendio.Utils.showToast;
 
@@ -45,8 +46,11 @@ public class ExpenseAcceptance extends Activity {
             e.printStackTrace();
         }
 
+        if(!isEmpty(userName)) {
+            findViewById(R.id.noteIfOtherExpenseIncluded).setVisibility(View.VISIBLE);
+        }
         ExpensesEditView unapprovedExpenses = findViewById(R.id.unApprovedExpensesViaVoice);
-        unapprovedExpenses.populate(expenses, true, false, this, false, null);
+        unapprovedExpenses.populate(expenses, true, false, this, false, null,!isEmpty(userName));
 
         okButton = findViewById(R.id.acceptedExpense);
         cancelButton = findViewById(R.id.discardExpenses);

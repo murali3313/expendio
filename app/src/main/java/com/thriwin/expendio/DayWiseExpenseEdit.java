@@ -3,15 +3,11 @@ package com.thriwin.expendio;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import static com.thriwin.expendio.Utils.getSerializedExpenses;
 
 public class DayWiseExpenseEdit extends Activity {
 
@@ -32,17 +28,19 @@ public class DayWiseExpenseEdit extends Activity {
 
         String dayWiseExpenses = this.getIntent().getStringExtra("DayWiseExpenses");
         boolean makeDateEditable = this.getIntent().getBooleanExtra("MakeDateEditable", false);
+        boolean containsOtherExpenses = this.getIntent().getBooleanExtra("containsOtherExpenses", false);
+        findViewById(R.id.noteIfOtherExpenseIncluded).setVisibility(containsOtherExpenses ? View.VISIBLE : View.GONE);
         this.expenses = Utils.getDeserializedExpenses(dayWiseExpenses);
 
         ExpensesEditView dayWiseExpensesEdit = findViewById(R.id.dayWiseExpensesEdit);
-        dayWiseExpensesEdit.populate(expenses, makeDateEditable, true,this, false, null);
+        dayWiseExpensesEdit.populate(expenses, makeDateEditable, true, this, false, null, false);
 
         okButton = findViewById(R.id.acceptedExpense);
         cancelButton = findViewById(R.id.discardExpenses);
 
         okButton.setOnClickListener(v -> {
             ExpenseTimelineView.glowFor = expenses.getDateMonth();
-            Utils.saveDayWiseExpenses(this.expenses.getStorageKey(),this.expenses.getDateMonth(), dayWiseExpensesEdit.getExpenses());
+            Utils.saveDayWiseExpenses(this.expenses.getStorageKey(), this.expenses.getDateMonth(), dayWiseExpensesEdit.getExpenses());
 
             DayWiseExpenseEdit.this.finish();
         });
@@ -57,7 +55,7 @@ public class DayWiseExpenseEdit extends Activity {
             }
         });
 
-        ((TextView)findViewById(R.id.dayWiseExpenseHeader)).setText("Expenses on "+ this.expenses.getDateMonthHumanReadable());
+        ((TextView) findViewById(R.id.dayWiseExpenseHeader)).setText("Expenses on " + this.expenses.getDateMonthHumanReadable());
 
 
     }

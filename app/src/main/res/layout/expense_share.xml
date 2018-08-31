@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:id="@+id/expenseShareContainer"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ScrollView
@@ -48,18 +48,17 @@
 
                 <ImageButton
                     android:id="@+id/addUser"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="35dp"
+                    android:layout_marginRight="30dp"
                     android:background="@drawable/ic_add_expense" />
 
                 <ImageButton
                     android:id="@+id/save"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentRight="true"
-
                     android:background="@drawable/ic_tag_save" />
 
 
