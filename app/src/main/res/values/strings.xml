@@ -16,7 +16,7 @@
     <string name="unacceptedExpenseEmpty">No expenses for approval</string>
     <string name="audioUnApprovedExpenses">UnApproved expenses via Audio</string>
     <string name="notificationUnApprovedExpenses">Recurring expense on: </string>
-    <string name="newTagDescriptionWord">Enter word under this tag:</string>
+    <string name="newTagDescriptionWord">Add word under this category:</string>
     <string name="tagSavedSuccessfully">Tags saved successfully</string>
     <string name="downloadOptionIsNotEnabled">Please provide access for storage</string>
     <string name="selectFileToView">Touch any file to view</string>
@@ -64,6 +64,7 @@
     <string name="remove_expense">Shared Expenses</string>
     <string name="noteIfOtherExpenseIncluded">Please note: You can only edit your expenses, hence shared expenses is not visible here</string>
     <string name="noteIfOtherExpenseNotEditable">Please note: You can only edit your expenses, hence shared expenses is not editable here</string>
+    <string name="defaultExpenseLimitNote">The expense limit is an indicative figure to let you know whether your are within the limit or exceeded the limt.</string>
     <string-array name="reminder_options">
         <item>Do Not Disturb</item>
         <item>Once a day</item>

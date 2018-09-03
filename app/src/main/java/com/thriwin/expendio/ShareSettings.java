@@ -108,12 +108,13 @@ public class ShareSettings {
         return null;
     }
 
-    public Expenses getParsedExpenses(String expenseStringFromMessage) {
+    public Expenses getParsedExpenses(String expenseStringFromMessage, String name) {
         String[] expensesMessage = expenseStringFromMessage.split("&");
         Expenses expenses = new Expenses();
         for (String expens : expensesMessage) {
             Expense parse = Expense.parse(expens);
             if (!isNull(parse)) {
+                parse.setSpentBy(name);
                 expenses.add(parse);
             }
         }

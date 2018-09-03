@@ -21,7 +21,7 @@ public class SMSExpenseParser extends Thread {
 
     @Override
     public void run() {
-        Expenses parsedExpenses = shareSettings.getParsedExpenses(smsFromUsers.getCollatedMessages(authenticatedUser.getName()));
+        Expenses parsedExpenses = shareSettings.getParsedExpenses(smsFromUsers.getCollatedMessages(authenticatedUser.getName()), authenticatedUser.getName());
         if (!isNull(parsedExpenses) && !parsedExpenses.isEmpty()) {
             Utils.saveSMSParsedExpenses(authenticatedUser, parsedExpenses);
             NotificationScheduler.showNotification(context, HomeScreenActivity.class,

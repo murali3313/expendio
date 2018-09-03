@@ -28,6 +28,10 @@ public class ExcelGenerator {
 
     public File genarateExcelForMonthExpenses(Context context, MonthWiseExpense monthWiseExpense, String fileName) {
         Workbook wb = new HSSFWorkbook();
+        SortedMap<String, MonthWiseExpense> allSharedExpensesFor = Utils.getAllSharedExpensesFor(monthWiseExpense.getStorageKey());
+        for (Map.Entry<String, MonthWiseExpense> otherUserExpenses : allSharedExpensesFor.entrySet()) {
+            monthWiseExpense.merge(otherUserExpenses.getValue());
+        }
         createMonthWiseExpenseSheet(monthWiseExpense, wb);
         File file = saveFile(context, fileName, wb);
         return file;
@@ -36,7 +40,13 @@ public class ExcelGenerator {
     public File genarateExcelForAllMonths(Context context, SortedMap<String, MonthWiseExpense> allmonthWiseExpenses, String fileName) {
         Workbook wb = new HSSFWorkbook();
         for (Map.Entry<String, MonthWiseExpense> monthWiseExpenses : allmonthWiseExpenses.entrySet()) {
-            createMonthWiseExpenseSheet(monthWiseExpenses.getValue(), wb);
+            MonthWiseExpense currentUserMonthWiseExpenses = monthWiseExpenses.getValue();
+            SortedMap<String, MonthWiseExpense> allSharedExpensesFor = Utils.getAllSharedExpensesFor(monthWiseExpenses.getKey());
+            for (Map.Entry<String, MonthWiseExpense> otherUserExpenses : allSharedExpensesFor.entrySet()) {
+                currentUserMonthWiseExpenses.merge(otherUserExpenses.getValue());
+            }
+
+            createMonthWiseExpenseSheet(currentUserMonthWiseExpenses, wb);
         }
 
         File file = saveFile(context, fileName, wb);
@@ -84,7 +94,7 @@ public class ExcelGenerator {
                         Expense.headerColumns.size() - 1, Expense.headerColumns.size() - 1));
             }
             Cell dayWiseTotalCell = sheet.getRow(initialRows).getCell(Expense.headerColumns.size() - 1);
-            dayWiseTotalCell.setCellFormula(format("SUMIF(A:A,\"%s\",B:B)", dayWiseExpenses.getDateMonthHumanReadable()));
+            dayWiseTotalCell.setCellFormula(format("SUMIF(B:B,\"%s\",C:C)", dayWiseExpenses.getDateMonthHumanReadable()));
             initialRows += dayWiseExpenses.size();
         }
     }
@@ -124,7 +134,7 @@ public class ExcelGenerator {
                 c.setCellValue(String.format("%s:", Expense.headerColumns.get(i)));
                 c = row.createCell(i + 1);
                 CellStyle cellStyle = getCellStyle(wb, IndexedColors.ORANGE);
-                c.setCellFormula("SUM(E:E)");
+                c.setCellFormula("SUM(G:G)");
                 c.setCellStyle(cellStyle);
             } else {
                 c.setCellValue(Expense.headerColumns.get(i));

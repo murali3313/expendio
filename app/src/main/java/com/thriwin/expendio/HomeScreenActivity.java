@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.util.Date;
+import java.util.SortedMap;
 
 import static com.thriwin.expendio.Utils.isEmpty;
 import static com.thriwin.expendio.Utils.isNull;
@@ -189,7 +190,9 @@ public class HomeScreenActivity extends CommonActivity implements NavigationView
     }
 
     private void downloadAllExpenses() {
-        File all_expenses = generator.genarateExcelForAllMonths(getBaseContext(), Utils.getAllExpensesMonthWise(), "All_Expenses");
+
+        SortedMap<String, MonthWiseExpense> allExpensesMonthWise = Utils.getAllExpensesMonthWise();
+        File all_expenses = generator.genarateExcelForAllMonths(getBaseContext(), allExpensesMonthWise, "All_Expenses");
         presentTheFileToTheUser(all_expenses);
     }
 

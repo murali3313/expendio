@@ -33,7 +33,10 @@ public class Expense {
     private Date spentOn;
     private String expenseStatement;
     private Set<String> associatedExpenseTags = new ArraySet<>();
-    public static List<String> headerColumns = asList("Spent On", "Amount", "Reason", "Tags", "Total");
+    public static List<String> headerColumns = asList("Spent by", "Spent On", "Amount", "Reason", "Tags", "Transaction Type", "Total");
+
+    private TransactionType transactionType = TransactionType.CASH;
+    private String spentBy = "You";
 
     public Expense() {
         this.spentOn = new Date();
@@ -227,6 +230,9 @@ public class Expense {
     public String getValue(String headerColumn) {
         String value = "";
         switch (headerColumn) {
+            case "Spent by":
+                value = this.spentBy;
+                break;
             case "Spent On":
                 value = getDateMonthHumanReadable();
                 break;
@@ -239,6 +245,9 @@ public class Expense {
                 break;
             case "Tags":
                 value = getConcatenatedTags();
+                break;
+            case "Transaction Type":
+                value = this.transactionType.toString();
                 break;
             default:
                 break;
@@ -253,7 +262,7 @@ public class Expense {
 
     @JsonIgnore
     public String getStringFormatForSharing() {
-        return this.spentOn.getTime() + "|" + this.expenseStatement + "|" + this.amountSpent;
+        return this.spentOn.getTime() + "|" + this.expenseStatement + "|" + this.amountSpent + "|" + (this.isCashTransaction() ? "C" : "D");
     }
 
 
@@ -263,9 +272,13 @@ public class Expense {
 
             Expense expense = new Expense();
             if (split.length == 3) {
-                expense.spentOn = new Date(Long.valueOf(split[0]));
-                expense.expenseStatement = split[1];
-                expense.amountSpent = new BigDecimal(split[2]);
+                expenseWithoutTransactionType(split, expense);
+                expense.addTags();
+                return expense;
+            }
+            if (split.length == 4) {
+                expenseWithoutTransactionType(split, expense);
+                expense.transactionType = split[3].equalsIgnoreCase("D") ? TransactionType.DIGITAL : TransactionType.CASH;
                 expense.addTags();
                 return expense;
             }
@@ -275,8 +288,24 @@ public class Expense {
         return null;
     }
 
+    private static void expenseWithoutTransactionType(String[] split, Expense expense) {
+        expense.spentOn = new Date(Long.valueOf(split[0]));
+        expense.expenseStatement = split[1];
+        expense.amountSpent = new BigDecimal(split[2]);
+    }
+
     public void setExpenseStatement(String expenseStatement) {
         this.expenseStatement = expenseStatement;
         addTags();
+    }
+
+    @JsonIgnore
+    public boolean isCashTransaction() {
+        return this.transactionType.equals(TransactionType.CASH);
+    }
+
+    @JsonIgnore
+    public String getTransactionTypeDisplayText() {
+        return this.transactionType.toString();
     }
 }

@@ -2,10 +2,12 @@ package com.thriwin.expendio;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -23,6 +25,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -30,6 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -37,7 +41,7 @@ import java.util.SortedSet;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static java.lang.String.format;
 
-public class ExpenseTimelineView extends CommonActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ExpenseTimelineView extends CommonActivity implements NavigationView.OnNavigationItemSelectedListener, PopupMenu.OnMenuItemClickListener {
 
     Button okButton, cancelButton;
     MonthWiseExpense monthWiseExpense;
@@ -61,7 +65,6 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
         toggle.syncState();
 
 
-
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -76,7 +79,7 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
 
         loadTimeLineView(expenseKey);
         super.onCreate(savedInstanceState);
-
+        loadMonthDetails(expenseKey);
     }
 
     public void loadTimeLineView(String expenseKey) {
@@ -101,10 +104,10 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
             monthWiseTotalExpenditureFor.setVisibility(View.VISIBLE);
 
             monthWiseTotalExpenditure.setText(monthWiseExpense.getTotalExpenditure());
-            monthWiseTotalExpenditure.append("\n"+totalExpenditureOfOtherUsers.toString());
-            monthWiseTotalExpenditure.append("\n"+totalExpenditureOfOtherUsers.add(new BigDecimal(monthWiseExpense.getTotalExpenditure())).toString());
+            monthWiseTotalExpenditure.append("\n" + totalExpenditureOfOtherUsers.toString());
+            monthWiseTotalExpenditure.append("\n" + totalExpenditureOfOtherUsers.add(new BigDecimal(monthWiseExpense.getTotalExpenditure())).toString());
         } else {
-            monthWiseTotalExpenditure.setText("Total spent \n"+monthWiseExpense.getTotalExpenditure());
+            monthWiseTotalExpenditure.setText("Total spent \n" + monthWiseExpense.getTotalExpenditure());
             monthWiseTotalExpenditure.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             monthWiseTotalExpenditureFor.setVisibility(View.GONE);
             sharerExpenseMenuItem.setVisible(false);
@@ -117,8 +120,6 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
         TextView monthWiseExpenseLimit = findViewById(R.id.monthWiseExpenseLimit);
         monthWiseExpenseLimit.setText(format("Expense \ncut-off \n%s", monthWiseExpense.getMonthWiseExpenseLimit().toString()));
 
-        TextView monthDetails = findViewById(R.id.monthDetails);
-        monthDetails.setText(monthWiseExpense.getMonthYearHumanReadable(expenseKey));
 
         LinearLayoutCompat timeMarker = findViewById(R.id.timeMarker);
         timeMarker.removeAllViews();
@@ -162,6 +163,34 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
                 glowFor = null;
             }
         });
+    }
+
+    private void loadMonthDetails(String expenseKey) {
+        TextView monthDetails = findViewById(R.id.monthDetails);
+        String[] readableMonthAndYear = Utils.getReadableMonthAndYear(expenseKey);
+        String displayedMonthAndYear = format("%s - %s", readableMonthAndYear[0], readableMonthAndYear[1]);
+        monthDetails.setText(displayedMonthAndYear);
+
+        monthDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(ExpenseTimelineView.this, monthDetails);
+                List<String> allExpensesMonths = Utils.getAllExpensesMonths();
+                Menu menu = popup.getMenu();
+                for (String allExpensesMonth : allExpensesMonths) {
+                    String[] readableMonthAndYear = Utils.getReadableMonthAndYear(allExpensesMonth);
+                    String newReadableMonthAndYear = format("%s - %s", readableMonthAndYear[0], readableMonthAndYear[1]);
+                    if (!displayedMonthAndYear.equalsIgnoreCase(newReadableMonthAndYear)) {
+                        menu.add(newReadableMonthAndYear);
+                    }
+                }
+
+                popup.setOnMenuItemClickListener(ExpenseTimelineView.this);
+                popup.show();
+            }
+        });
+
+
     }
 
     @Override
@@ -210,7 +239,37 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_download) {
+        if (id == R.id.nav_tags) {
+            Intent i = new Intent(ExpenseTimelineView.this, ExpenseTagsEditView.class);
+            startActivity(i);
+
+        } else if (id == R.id.nav_usual_expenses) {
+            Intent i = new Intent(ExpenseTimelineView.this, RecurringExpensesView.class);
+            startActivity(i);
+
+        } else if (id == R.id.nav_rate_us) {
+
+            Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
+            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
+                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            try {
+                startActivity(goToMarket);
+            } catch (ActivityNotFoundException e) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName())));
+            }
+        } else if (id == R.id.nav_feedback) {
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+            emailIntent.setData(Uri.parse("mailto:thriwin.solutions@gmail.com?subject=Expendio%20App%20Feedback"));
+            try {
+                startActivity(emailIntent);
+            } catch (ActivityNotFoundException e) {
+                showToast(R.string.noEmailAppAvailable);
+            }
+
+        } else if (id == R.id.nav_download) {
             downloadMonthWiseExpense();
 
         } else if (id == R.id.nav_expense_limit) {
@@ -227,6 +286,17 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
         } else if (id == R.id.nav_remove_sharer_expense) {
             Intent i = new Intent(ExpenseTimelineView.this, SharedExpenseDetailsRemove.class);
             i.putExtra(ExpenseMonthWiseLimit.EXPENSE_STORAGE_KEY, expenseKey);
+            startActivity(i);
+
+        } else if (id == R.id.nav_share_expendio) {
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, "Expendio - Free Expense manager voice enhanced. \nPlease click the below link to download and enjoy.\n" +
+                    "https://play.google.com/store/apps/details?id=com.thriwin.expendio" +
+                    "\ndeveloped by Thriwin Solutions.");
+            startActivity(Intent.createChooser(sharingIntent, "Share via"));
+        }else if (id == R.id.nav_sms_receiver) {
+            Intent i = new Intent(ExpenseTimelineView.this, ExpenseSMSPattern.class);
             startActivity(i);
 
         }
@@ -275,4 +345,12 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
     }
 
 
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        Intent i = new Intent(ExpenseTimelineView.this, ExpenseTimelineView.class);
+        i.addFlags(FLAG_ACTIVITY_NEW_TASK);
+        i.putExtra("ExpenseKey", Utils.getStorageKeyFromText(item.getTitle().toString()));
+        ContextCompat.startActivity(ExpenseTimelineView.this, i, null);
+        return false;
+    }
 }

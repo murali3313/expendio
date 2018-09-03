@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.math.BigDecimal;
 
@@ -18,6 +19,10 @@ public class RecurringExpenseEditView extends LinearLayout {
     private RecurringExpenseView intermediateView;
     AutoCompleteTextView reason;
     EditText amount;
+    LinearLayout cashTransaction;
+    LinearLayout cardTransaction;
+    TextView transactionTypeSelected;
+    TransactionType selectedTransaction = TransactionType.CASH;
 
     public RecurringExpenseEditView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -38,6 +43,25 @@ public class RecurringExpenseEditView extends LinearLayout {
             }
         });
 
+        cashTransaction = findViewById(R.id.cashTransaction);
+        cardTransaction = findViewById(R.id.cardTransaction);
+        transactionTypeSelected = findViewById(R.id.transactionType);
+
+        cashTransaction.getChildAt(0).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedTransaction = TransactionType.CASH;
+                loadTransactionType();
+            }
+        });
+        cardTransaction.getChildAt(0).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedTransaction = TransactionType.DIGITAL;
+                loadTransactionType();
+            }
+        });
+
 
     }
 
@@ -52,6 +76,7 @@ public class RecurringExpenseEditView extends LinearLayout {
         boolean isReasonNotEmpty = !Utils.isEmpty(reason.getText().toString().trim());
         if (isAmountNotEmpty && isReasonNotEmpty) {
             recurringExpense = new RecurringExpense(new BigDecimal(amount.getText().toString()), reason.getText().toString());
+            recurringExpense.setTransactionType(selectedTransaction);
         }
         return recurringExpense;
     }
@@ -59,6 +84,20 @@ public class RecurringExpenseEditView extends LinearLayout {
     public void populate(RecurringExpense recurringExpense) {
         amount.setText(recurringExpense.getAmount().toString());
         reason.setText(recurringExpense.getReason());
+        selectedTransaction = recurringExpense.getTransactionType();
+        loadTransactionType();
+    }
+
+    private void loadTransactionType() {
+        if (selectedTransaction.equals(TransactionType.CASH)) {
+            cashTransaction.setBackgroundResource(R.drawable.transaction_border_selected);
+            cardTransaction.setBackgroundResource(R.drawable.transaction_border);
+        } else {
+            cashTransaction.setBackgroundResource(R.drawable.transaction_border);
+            cardTransaction.setBackgroundResource(R.drawable.transaction_border_selected);
+        }
+
+        transactionTypeSelected.setText(selectedTransaction.toString());
     }
 
 

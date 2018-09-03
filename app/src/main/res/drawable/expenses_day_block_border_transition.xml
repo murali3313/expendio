@@ -6,10 +6,10 @@
         android:bottomRightRadius="7dp"
         android:topLeftRadius="7dp"
         android:bottomLeftRadius="7dp" />
-    <solid android:color="@color/colorPrimary"></solid>
+    <solid android:color="#ff376a"></solid>
     <stroke
         android:width="3dp"
-        android:color="@color/bgColor" />
+        android:color="#ff376a" />
     <size android:height="@dimen/activity_horizontal_margin"></size>
 
 </shape>

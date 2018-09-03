@@ -6,8 +6,8 @@ android {
         applicationId "com.thriwin.expendio"
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 5
-        versionName "5.0"
+        versionCode 8
+        versionName "8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

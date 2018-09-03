@@ -1,57 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" $$ " />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/amount"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="5dp"
-        android:layout_weight="2"
-        android:background="@drawable/edit_outline"
-        android:hint="@string/mandatory"
-        android:inputType="numberDecimal"
-        android:maxLength="7"
-        android:paddingLeft="5dp"
-        android:textColor="@color/primaryText"
-        android:textCursorDrawable="@null" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" $$ " />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:text="For: " />
+        <EditText
+            android:id="@+id/amount"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="2"
+            android:background="@drawable/edit_outline"
+            android:hint="@string/mandatory"
+            android:inputType="numberDecimal"
+            android:maxLength="7"
+            android:paddingLeft="5dp"
+            android:textColor="@color/primaryText"
+            android:textCursorDrawable="@null" />
 
-    <AutoCompleteTextView
-        android:id="@+id/reason"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_marginLeft="5dp"
-        android:layout_weight="3"
-        android:height="25dp"
-        android:textCursorDrawable="@null"
-        android:background="@drawable/edit_outline"
-        android:cursorVisible="true"
-        android:hint="@string/mandatory"
-        android:maxLength="40"
-        android:maxLines="1"
-        android:paddingLeft="5dp"
-        android:inputType="textCapSentences"
-        android:textColor="@color/primaryText"
-        android:textColorHint="@color/colorPrimary"></AutoCompleteTextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:text="For: " />
 
-    <ImageButton
-        android:id="@+id/remove"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/ic_remove" />
+        <AutoCompleteTextView
+            android:id="@+id/reason"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="3"
+            android:height="25dp"
+            android:background="@drawable/edit_outline"
+            android:cursorVisible="true"
+            android:hint="@string/mandatory"
+            android:inputType="textCapSentences"
+            android:maxLength="40"
+            android:maxLines="1"
+            android:paddingLeft="5dp"
+            android:textColor="@color/primaryText"
+            android:textColorHint="@color/colorPrimary"
+            android:textCursorDrawable="@null"></AutoCompleteTextView>
+
+        <ImageButton
+            android:id="@+id/remove"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_remove" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:text="Transaction type: "/>
+            <LinearLayout
+                android:id="@+id/cashTransaction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transaction_border_selected">
+
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@mipmap/ic_cash" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cardTransaction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp">
+
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@mipmap/ic_card" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/transactionType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cash"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:textAlignment="center"
+            android:textColor="@color/primaryText"
+            android:textStyle="bold" />
+    </LinearLayout>
 </LinearLayout>

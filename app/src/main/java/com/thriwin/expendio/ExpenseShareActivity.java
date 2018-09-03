@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
@@ -24,7 +25,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import org.apache.commons.codec.binary.StringUtils;
 import org.apache.poi.util.StringUtil;
 
 import java.util.List;
@@ -134,7 +134,7 @@ public class ExpenseShareActivity extends Activity {
             BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(ExpenseShareActivity.this);
             TextView sharerDeleteNote = (TextView) sheetView.findViewById(R.id.sharerDeleteNote);
             String message = sharerDeleteNote.getText().toString();
-            sharerDeleteNote.setText(String.format(message, StringUtil.join( affectedUserNames.toArray(),", ")));
+            sharerDeleteNote.setText(String.format(message, StringUtil.join(affectedUserNames.toArray(), ", ")));
             mBottomSheetDialog.setContentView(sheetView);
             mBottomSheetDialog.show();
 
@@ -164,6 +164,7 @@ public class ExpenseShareActivity extends Activity {
         linearLayout.setLayoutParams(layoutParams);
 
         EditText child = new EditText(ExpenseShareActivity.this, null);
+        child.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});
         LinearLayout.LayoutParams editTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         editTextParams.weight = 4;
         child.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
@@ -177,6 +178,7 @@ public class ExpenseShareActivity extends Activity {
         removeButton.setBackgroundResource(R.drawable.ic_remove);
 
         child.setHint("Sharer name. Keep it short and unique.");
+        child.requestFocus();
         linearLayout.addView(child);
         linearLayout.addView(removeButton);
         usersContainer.addView(linearLayout, 0);

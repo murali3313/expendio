@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -15,6 +16,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+
+import com.nex3z.flowlayout.FlowLayout;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,12 +29,14 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
     EditText amount;
     AutoCompleteTextView reason;
     ImageButton remove;
-    LinearLayout tagsContainer;
+    FlowLayout tagsContainer;
     private ExpensesEditView parentView;
     private boolean makeDatePermissibleWithinMonthLimit;
     private boolean fromSharedExpenses;
     TextView selectedTextViewTag;
-
+    LinearLayout cashTransaction;
+    LinearLayout cardTransaction;
+    TextView transactionTypeSelected;
 
     public ExpenseEditView(Context context, @Nullable AttributeSet attrs, Expense expens, ExpensesEditView parentView, boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, boolean isTagEditDisabled, String tagText, boolean fromSharedExpenses) {
         super(context, attrs);
@@ -49,6 +54,10 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
         remove = findViewById(R.id.remove);
         tagsContainer = findViewById(R.id.tags);
 
+        cashTransaction = findViewById(R.id.cashTransaction);
+        cardTransaction = findViewById(R.id.cardTransaction);
+        transactionTypeSelected = findViewById(R.id.transactionType);
+
         spentOn.setText(expense.getSpentOnDisplayText());
         amount.setText(expense.getAmountSpent().toString());
         reason.setText(expense.getSpentForDisplayText());
@@ -65,6 +74,21 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
             tagsContainer.setClickable(false);
             remove.setVisibility(GONE);
         }
+
+        cashTransaction.getChildAt(0).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expense.setTransactionType(TransactionType.CASH);
+                loadTransactionType();
+            }
+        });
+        cardTransaction.getChildAt(0).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expense.setTransactionType(TransactionType.DIGITAL);
+                loadTransactionType();
+            }
+        });
         populateData();
     }
 
@@ -85,7 +109,7 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
             TextView textView = new TextView(this.getContext(), null);
             textView.setText(tag);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.leftMargin = 3;
+            params.setMargins(3, 3, 3, 3);
             textView.setLayoutParams(params);
             textView.setPadding(15, 5, 15, 5);
             textView.setBackgroundResource(R.drawable.edit_outline);
@@ -104,6 +128,7 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
                 });
             }
 
+            loadTransactionType();
         }
 
         spentOn.setOnClickListener(v -> {
@@ -124,6 +149,18 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
             parentView.removeView(this);
             parentView.removeExpenseView(this);
         });
+    }
+
+    private void loadTransactionType() {
+        if (expense.isCashTransaction()) {
+            cashTransaction.setBackgroundResource(R.drawable.transaction_border_selected);
+            cardTransaction.setBackgroundResource(R.drawable.transaction_border);
+        } else {
+            cashTransaction.setBackgroundResource(R.drawable.transaction_border);
+            cardTransaction.setBackgroundResource(R.drawable.transaction_border_selected);
+        }
+
+        transactionTypeSelected.setText(expense.getTransactionTypeDisplayText());
     }
 
 

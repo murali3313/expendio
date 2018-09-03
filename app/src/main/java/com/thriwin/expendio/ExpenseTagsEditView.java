@@ -49,6 +49,7 @@ public class ExpenseTagsEditView extends Activity{
         createTag.setOnClickListener(v -> {
             ExpenseTagEditView tagEditView = new ExpenseTagEditView(this, null, "", new ArrayList<>(), tagContainer);
             tagContainer.addView(tagEditView, 0);
+            tagEditView.requestFocus();
         });
 
         View saveTags = findViewById(R.id.saveTags);

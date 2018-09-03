@@ -79,7 +79,7 @@ public class BluetoothService {
                     if (!isNull(authenticatedBluetoothUser)) {
                         string_recieved = string_recieved.replaceAll(EXPENDIO_SMS_START_WITHESC, "").replaceAll(EXPENDIO_SMS_WITHESC, "").replaceAll(EXPENDIO_SMS_END_WITHESC, "");
 
-                        Expenses parsedExpenses = shareSettings.getParsedExpenses(string_recieved);
+                        Expenses parsedExpenses = shareSettings.getParsedExpenses(string_recieved, authenticatedBluetoothUser.getName());
                         if (!isNull(parsedExpenses) && !parsedExpenses.isEmpty()) {
                             Utils.saveSMSParsedExpenses(authenticatedBluetoothUser, parsedExpenses);
                             NotificationScheduler.showNotification(activity, HomeScreenActivity.class,

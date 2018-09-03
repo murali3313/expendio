@@ -8,13 +8,10 @@ import java.util.Date;
 import java.util.List;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import static com.thriwin.expendio.Utils.isNull;
-import static com.thriwin.expendio.Utils.splitStatementBy;
 import static com.thriwin.expendio.Utils.today;
-import static java.util.Arrays.asList;
 
 @Setter
 @Getter
@@ -24,6 +21,7 @@ public class RecurringExpense {
     private String reason;
     private List<String> dayOfWeek;
     private String dayOfMonth;
+    private TransactionType transactionType = TransactionType.CASH;
 
     public BigDecimal getAmount() {
         return isNull(amount) ? new BigDecimal("0") : amount;
@@ -59,6 +57,14 @@ public class RecurringExpense {
 
     @JsonIgnore
     public Expense getExpense() {
-        return new Expense(amount, today(), reason);
+        Expense expense = new Expense(amount, today(), reason);
+        expense.setTransactionType(transactionType);
+        return expense;
     }
+
+    @JsonIgnore
+    public boolean isCashTransaction() {
+        return this.transactionType.equals(TransactionType.CASH);
+    }
+
 }

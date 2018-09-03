@@ -225,7 +225,7 @@ public class CommonActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case FILE_SELECTION_CODE: {
-                if (requestCode == Activity.RESULT_OK) {
+                if (resultCode == Activity.RESULT_OK) {
                     try {
                         String path = data.getStringExtra("SELECTED_FILE");
                         presentTheFileToTheUser(new File(path));

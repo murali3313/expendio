@@ -43,7 +43,7 @@
         <activity
             android:name=".ExpenseShareActivity"
             android:label="@string/share_expense"
-            android:windowSoftInputMode="stateHidden|adjustNothing"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
@@ -64,13 +64,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ExpenseSMSPattern"
-            android:windowSoftInputMode="stateHidden|adjustNothing"
+            android:windowSoftInputMode="stateHidden|adjustResize"
 
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".RecurringExpensesView"
-            android:windowSoftInputMode="stateHidden|adjustNothing"
+            android:windowSoftInputMode="stateHidden|adjustResize"
 
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -86,7 +86,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ExpenseTagsEditView"
-            android:windowSoftInputMode="stateHidden|adjustNothing"
+            android:windowSoftInputMode="stateHidden|adjustResize"
 
             android:theme="@style/AppTheme.NoActionBar" />
 

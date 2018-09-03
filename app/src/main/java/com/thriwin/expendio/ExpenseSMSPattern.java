@@ -44,7 +44,10 @@ public class ExpenseSMSPattern extends Activity {
         findViewById(R.id.addSMSPhrase).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                smsPhraseContainer.addView(getSMSPhraseCoontrol(""), 0);
+                LinearLayout smsPhraseCoontrol = getSMSPhraseCoontrol("");
+                smsPhraseContainer.addView(smsPhraseCoontrol, 0);
+                smsPhraseCoontrol.requestFocus();
+
             }
         });
 

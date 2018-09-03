@@ -33,6 +33,7 @@ public class RecurringExpensesView extends Activity {
             public void onClick(View v) {
                 RecurringExpenseView recurringExpenseView = new RecurringExpenseView(getApplicationContext(), null, RecurringExpensesView.this, new RecurringExpense());
                 recurringExpensesContainer.addView(recurringExpenseView, 0);
+                recurringExpenseView.requestFocus();
             }
         });
         ImageButton saveRecurringExpenseButton = findViewById(R.id.saveRecurringExpenses);

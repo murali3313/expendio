@@ -24,7 +24,7 @@
                     android:paddingLeft="10dp"
                     android:text="@string/remove_expense"
                     android:textColor="@color/white"
-                    android:textSize="23sp"
+                    android:textSize="21sp"
                     android:textStyle="bold" />
 
             </LinearLayout>

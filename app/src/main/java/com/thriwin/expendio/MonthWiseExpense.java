@@ -110,9 +110,13 @@ public class MonthWiseExpense {
     }
 
     @JsonIgnore
-    public long getLatestDate(String selectedMonthKey) {
+    public long getLatestDate(String expenseStorageKey) {
+        if (new Expense(Utils.today()).getStorageKey().equalsIgnoreCase(expenseStorageKey)) {
+            return Utils.today().getTime();
+        }
+
         if (getSortedKeys().isEmpty()) {
-            String[] readableMonthAndYear = Utils.getReadableMonthAndYear(selectedMonthKey);
+            String[] readableMonthAndYear = Utils.getReadableMonthAndYear(expenseStorageKey);
             Date date;
             try {
                 date = new SimpleDateFormat("dd/MMM/yyyy").parse(format("%d/%s/%s", Expense.getStartDayOfMonth(), readableMonthAndYear[0], readableMonthAndYear[1]));
@@ -204,4 +208,26 @@ public class MonthWiseExpense {
         }
         return limitDetails;
     }
+
+    @JsonIgnore
+    public void merge(MonthWiseExpense thatMonthWiseExpense) {
+        for (Map.Entry<String, Expenses> otherUserExpenses : thatMonthWiseExpense.getDayWiseExpenses().entrySet()) {
+            Map.Entry<String, Expenses> dayWiseExpenses = this.getDayWiseExpenses(otherUserExpenses.getKey());
+            if (isNull(dayWiseExpenses)) {
+                this.dayWiseExpenses.put(otherUserExpenses.getKey(), otherUserExpenses.getValue());
+            } else {
+                this.dayWiseExpenses.get(otherUserExpenses.getKey()).addAll(otherUserExpenses.getValue());
+            }
+        }
+    }
+
+    @JsonIgnore
+    public String getStorageKey() {
+        if (!this.dayWiseExpenses.isEmpty()) {
+            return this.dayWiseExpenses.get(getSortedKeys().first()).getStorageKey();
+        }
+        return "NA";
+    }
+
+
 }

@@ -3,6 +3,8 @@ package com.thriwin.expendio;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
@@ -26,7 +28,6 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.thriwin.expendio.Utils.isNull;
 import static com.thriwin.expendio.Utils.saveDayWiseExpenses;
 import static com.thriwin.expendio.Utils.timeLineColors;
-import static java.lang.String.format;
 
 public class ExpensesTimeView extends LinearLayout {
 
@@ -57,10 +58,10 @@ public class ExpensesTimeView extends LinearLayout {
         int colourIndex = index % timeLineColors.size();
         timeMarkerContainer.setBackgroundColor(Color.parseColor(timeLineColors.get(colourIndex)));
 
-        TextView totalExpenseView = findViewById(R.id.totalExpenseDayWise);
-        totalExpenseView.setText(format("You \n%s\n", this.expenses.getValue().getTotalExpenditure()));
+        LinearLayout totalExpenseView = findViewById(R.id.totalExpenseDayWise);
+        buildNameAndExpenditure(context, totalExpenseView, "You", this.expenses.getValue().getTotalExpenditure());
         for (Map.Entry<String, Map.Entry<String, Expenses>> dayWiseExpensesFromSharer : allDayWiseExpenseFromSharer.entrySet()) {
-            totalExpenseView.append(format("\n%s\n%s\n", dayWiseExpensesFromSharer.getKey(), dayWiseExpensesFromSharer.getValue().getValue().getTotalExpenditure()));
+            buildNameAndExpenditure(context, totalExpenseView, dayWiseExpensesFromSharer.getKey(), dayWiseExpensesFromSharer.getValue().getValue().getTotalExpenditure());
         }
 
 
@@ -69,12 +70,12 @@ public class ExpensesTimeView extends LinearLayout {
         this.expense = this.expenses.getValue();
         LinearLayout expensesPerDay = findViewById(R.id.expensesPerDay);
         for (Expense expens : this.expense) {
-            ExpenseTimeView expenseTimeView = new ExpenseTimeView(context, null, expens, this);
+            ExpenseTimeView expenseTimeView = new ExpenseTimeView(context, null, expens, this, colourIndex);
             expensesPerDay.addView(expenseTimeView);
         }
         for (Map.Entry<String, Map.Entry<String, Expenses>> userDayExpensesEntry : this.allDayWiseExpenseFromSharer.entrySet()) {
             for (Expense userDayExpense : userDayExpensesEntry.getValue().getValue()) {
-                ExpenseTimeView expenseTimeView = new ExpenseTimeView(context, null, userDayExpense, this, userDayExpensesEntry.getKey());
+                ExpenseTimeView expenseTimeView = new ExpenseTimeView(context, null, userDayExpense, this, userDayExpensesEntry.getKey(), colourIndex);
                 expensesPerDay.addView(expenseTimeView);
             }
         }
@@ -115,6 +116,32 @@ public class ExpensesTimeView extends LinearLayout {
 
         setAllChildWithFollowParentState(this, onLongClickListener);
         inflate.setClickable(true);
+
+    }
+
+    @NonNull
+    private void buildNameAndExpenditure(Context context, LinearLayout totalExpenseView, String userName, String expenditure) {
+        if(expenditure.equalsIgnoreCase("0")){
+           return;
+        }
+        TextView nameView = new TextView(context, null);
+        nameView.setText(userName);
+        nameView.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+        nameView.setTextColor(getResources().getColor(R.color.primaryText));
+        if (!userName.equalsIgnoreCase("You")) {
+            nameView.setBackgroundResource(R.drawable.name_selected);
+        }
+
+        TextView expenditureView = new TextView(context, null);
+        expenditureView.setText(expenditure+"\n");
+        expenditureView.setTextColor(getResources().getColor(R.color.primaryText));
+        expenditureView.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+        expenditureView.setTypeface(expenditureView.getTypeface(), Typeface.BOLD);
+
+
+        totalExpenseView.addView(nameView);
+        totalExpenseView.addView(expenditureView);
+
 
     }
 

@@ -5,19 +5,25 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_tags"
+            android:icon="@drawable/ic_menu_tags"
+            android:title="Expense Category" />
+
+
+        <item
+            android:id="@+id/nav_usual_expenses"
+            android:icon="@drawable/ic_menu_repeat"
+            android:title="Recurring expenses" />
+
+        <item
+            android:id="@+id/nav_sms_receiver"
+            android:icon="@drawable/ic_menu_textsms"
+            android:title="SMS - Expense" />
+
+        <item
             android:id="@+id/nav_expense_limit"
             android:icon="@mipmap/ic_expense_limit"
             android:title="Set expense limit" />
-
-        <item
-            android:id="@+id/nav_download"
-            android:icon="@mipmap/ic_menu_excel"
-            android:title="Generate monthly expenses as Excel" />
-
-        <item
-            android:id="@+id/nav_open_generated_excel"
-            android:icon="@mipmap/ic_menu_view_excel"
-            android:title="View genarated Excels" />
 
         <item
             android:id="@+id/nav_general_data_share"
@@ -29,5 +35,35 @@
             android:icon="@drawable/ic_remove"
             android:title="Remove shared expenses" />
     </group>
+    <item android:title="Reports">
+        <menu>
+
+            <item
+                android:id="@+id/nav_download"
+                android:icon="@mipmap/ic_menu_excel"
+                android:title="Generate monthly expenses as Excel" />
+
+            <item
+                android:id="@+id/nav_open_generated_excel"
+                android:icon="@mipmap/ic_menu_view_excel"
+                android:title="View genarated Excels" />
+        </menu>
+    </item>
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_feedback"
+                android:icon="@mipmap/ic_menu_app_feedback"
+                android:title="App Feedback" />
+            <item
+                android:id="@+id/nav_rate_us"
+                android:icon="@drawable/ic_rate_us"
+                android:title="Rate us" />
+            <item
+                android:id="@+id/nav_share_expendio"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share expendio" />
+        </menu>
+    </item>
 
 </menu>

@@ -46,7 +46,11 @@ public class Utils {
     private static String defaultExpense = "DEFAULT_EXPENSE";
     public static List<String> timeLineColors = asList("#C39EBA", "#FFCECE", "#FF83A3",
             "#F0DEFF", "#BAC39E", "#BF97AB", "#FFE6F9",
-            "#E1FF83", "#FFB5B5", "#E0DEFF", "#BF97AB", "#F6F3A2", "#D8FFE1");
+            "#E1FF83", "#FFB5B5", "#E0DEFF", "#BF97AB", "#D8FFE1", "#f8f6bd");
+
+    public static List<String> complimentaryTimeLineColors = asList("#9ec3a7", "#ceffff", "#83ffdf",
+            "#edffde", "#a79ec3", "#97bfab", "#e6ffec",
+            "#a183ff", "#b5ffff", "#fdffde", "#97bfab", "#ffd8f6", "#a2a5f6");
 
     public static List<Integer> getTimeLineColors() {
         List<Integer> colorsHex = new ArrayList<>();
@@ -580,6 +584,9 @@ public class Utils {
     }
 
     public static void saveSharedExpenses(String userName, Expenses expenses) {
+        if (isNull(getLocalStorageForPreferences().getString(expenses.getStorageKey(), null))) {
+            getLocalStorageForPreferences().edit().putString(expenses.getStorageKey(), getSerializedExpenses(new MonthWiseExpense()));
+        }
         HashMap<String, MonthWiseExpense> sharedExpenses = new HashMap<>();
         for (Expense expens : expenses) {
             String storageKeyForUser = expens.getStorageKeyForUser(userName);

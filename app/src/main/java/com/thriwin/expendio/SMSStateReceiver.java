@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
 
+import static com.thriwin.expendio.Utils.EXPENDIO_SMS;
 import static com.thriwin.expendio.Utils.isNull;
 
 public class SMSStateReceiver extends BroadcastReceiver {
@@ -37,8 +38,9 @@ public class SMSStateReceiver extends BroadcastReceiver {
 
                 if (messages.length > -1) {
 
-                    if (smsInfererSettings.isEnabled()) {
-                        Expense probableExpenses = smsInfererSettings.getProbableExpenses(completMessages.toString());
+                    String message = completMessages.toString();
+                    if (smsInfererSettings.isEnabled() && !message.contains(EXPENDIO_SMS)) {
+                        Expense probableExpenses = smsInfererSettings.getProbableExpenses(message);
                         if (!isNull(probableExpenses)) {
                             Utils.saveSMSInferredExpense(probableExpenses);
                             NotificationScheduler.showNotification(context, HomeScreenActivity.class,
@@ -46,9 +48,9 @@ public class SMSStateReceiver extends BroadcastReceiver {
                         }
                     }
 
-                    User authenticatedUser = shareSettings.getAuthenticatedSMSUser(from, completMessages.toString());
+                    User authenticatedUser = shareSettings.getAuthenticatedSMSUser(from, message);
                     if (!isNull(authenticatedUser)) {
-                        smsFromUsers.add(authenticatedUser.getName(), completMessages.toString());
+                        smsFromUsers.add(authenticatedUser.getName(), message);
                         if (smsFromUsers.isAllMessagesComplete(authenticatedUser.getName())) {
                             SMSExpenseParser smsExpenseParser = new SMSExpenseParser(shareSettings, authenticatedUser, context, smsFromUsers);
                             smsExpenseParser.start();
