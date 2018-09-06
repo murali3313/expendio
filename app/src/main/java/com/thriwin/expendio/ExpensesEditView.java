@@ -33,7 +33,7 @@ public class ExpensesEditView extends LinearLayout {
         this.makeDatePermissibleWithinMonthLimit = makeDatePermissibleWithinMonthLimit;
         inflate(context, R.layout.expenses_edit, this);
         expenseEditViews = new ArrayList<>();
-        for (Expense expens : this.expenses) {
+        for (Expense expens : this.expenses.sortByYou()) {
             addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, expens, isTagEditDisabled, tagText,fromSharedExpenses);
         }
         setupParent(this.getRootView(), activity);

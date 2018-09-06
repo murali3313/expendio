@@ -32,21 +32,25 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
     FlowLayout tagsContainer;
     private ExpensesEditView parentView;
     private boolean makeDatePermissibleWithinMonthLimit;
+    private boolean stillUnSavedExpenses;
     private boolean fromSharedExpenses;
     TextView selectedTextViewTag;
     LinearLayout cashTransaction;
     LinearLayout cardTransaction;
     TextView transactionTypeSelected;
 
-    public ExpenseEditView(Context context, @Nullable AttributeSet attrs, Expense expens, ExpensesEditView parentView, boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, boolean isTagEditDisabled, String tagText, boolean fromSharedExpenses) {
+    public ExpenseEditView(Context context, @Nullable AttributeSet attrs, Expense expens, ExpensesEditView parentView, boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, boolean isTagEditDisabled, String tagText, boolean stillUnSavedExpenses) {
         super(context, attrs);
         this.parentView = parentView;
         this.makeDatePermissibleWithinMonthLimit = makeDatePermissibleWithinMonthLimit;
-        this.fromSharedExpenses = fromSharedExpenses;
+        this.stillUnSavedExpenses = stillUnSavedExpenses;
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.expense_edit, this);
         this.expense = expens;
+
+        this.fromSharedExpenses = this.expense.spentbyOthers();
+
         spentOn = findViewById(R.id.spentOn);
         spentOn.setEnabled(makeDateEditable);
         amount = findViewById(R.id.amount);
@@ -57,6 +61,7 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
         cashTransaction = findViewById(R.id.cashTransaction);
         cardTransaction = findViewById(R.id.cardTransaction);
         transactionTypeSelected = findViewById(R.id.transactionType);
+        LinearLayout editable = findViewById(R.id.editable);
 
         spentOn.setText(expense.getSpentOnDisplayText());
         amount.setText(expense.getAmountSpent().toString());
@@ -67,13 +72,7 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
             reason.setEnabled(false);
             reason.setBackgroundResource(R.drawable.disabled);
         }
-        if (fromSharedExpenses) {
-            reason.setEnabled(false);
-            amount.setEnabled(false);
-            spentOn.setEnabled(false);
-            tagsContainer.setClickable(false);
-            remove.setVisibility(GONE);
-        }
+
 
         cashTransaction.getChildAt(0).setOnClickListener(new OnClickListener() {
             @Override
@@ -90,6 +89,16 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
             }
         });
         populateData();
+        if (this.fromSharedExpenses) {
+            reason.setEnabled(false);
+            amount.setEnabled(false);
+            spentOn.setEnabled(false);
+            tagsContainer.setClickable(false);
+            remove.setVisibility(GONE);
+            cashTransaction.getChildAt(0).setClickable(false);
+            cardTransaction.getChildAt(0).setClickable(false);
+            editable.setVisibility(VISIBLE);
+        }
     }
 
     private void populateData() {
@@ -128,7 +137,20 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
                 });
             }
 
+
             loadTransactionType();
+        }
+
+        if (fromSharedExpenses) {
+            TextView textView = new TextView(this.getContext(), null);
+            textView.setText(this.expense.getSpentBy());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.setMargins(3, 3, 3, 3);
+            textView.setLayoutParams(params);
+            textView.setPadding(15, 5, 15, 5);
+            textView.setBackgroundResource(R.drawable.name_selected);
+            textView.setTextColor(getResources().getColor(R.color.primaryText));
+            tagsContainer.addView(textView);
         }
 
         spentOn.setOnClickListener(v -> {
@@ -165,6 +187,8 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
 
 
     public Expense getEditedExpense() {
+        if (this.expense.spentbyOthers() && !stillUnSavedExpenses)
+            return null;
         String amount = this.amount.getText().toString();
         expense.setExpenseStatement(reason.getText().toString());
         expense.setAmountSpent(new BigDecimal(Utils.isEmpty(amount) ? "0" : amount));

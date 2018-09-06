@@ -476,7 +476,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         Intent i = new Intent(getContext(), TagWiseExpenseEdit.class);
         i.addFlags(FLAG_ACTIVITY_NEW_TASK);
         String label = ((PieEntry) e).getLabel();
-        Expenses tagBasedExpenses = this.tagBasedExpenses.get(label);
+        Expenses tagBasedExpenses = this.viewableTagExpenses.get(label);
 
         if (isNull(tagBasedExpenses)) {
             tagBasedExpenses = new Expenses(new Expense(new Date(viewableTagExpenses.get(label).getSpentOnDate())));

@@ -183,7 +183,6 @@ public class MonthWiseExpense {
         return expenses;
     }
 
-    @JsonIgnore
     public BigDecimal getMonthWiseExpenseLimit() {
         return isNull(this.monthWiseExpenseLimit) ? getDefaultExpenseLimit() : this.monthWiseExpenseLimit;
     }

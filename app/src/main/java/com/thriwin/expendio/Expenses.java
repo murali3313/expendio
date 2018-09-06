@@ -15,12 +15,17 @@ public class Expenses extends ArrayList<Expense> {
         this.add(e);
     }
 
+    public Expenses(Expenses expenses) {
+        this.addAll(expenses);
+    }
+
     @JsonIgnore
     public String getDateMonthHumanReadable() {
         if (!this.isEmpty())
             return this.get(0).getDateMonthHumanReadable();
         return "NA";
     }
+
     @JsonIgnore
     public String getMonthYearHumanReadable() {
         if (!this.isEmpty())
@@ -95,4 +100,21 @@ public class Expenses extends ArrayList<Expense> {
     }
 
 
+    public Expenses merge(Expenses value) {
+        Expenses expenses = new Expenses(this);
+        expenses.addAll(value);
+        return expenses;
+    }
+
+    public Expenses sortByYou() {
+        Expenses expenses = new Expenses();
+        for (Expense expens : this) {
+            if (expens.spentbyOthers()) {
+                expenses.add(0, expens);
+            } else {
+                expenses.add(expens);
+            }
+        }
+        return expenses;
+    }
 }

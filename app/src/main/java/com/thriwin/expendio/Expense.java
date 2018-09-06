@@ -308,4 +308,8 @@ public class Expense {
     public String getTransactionTypeDisplayText() {
         return this.transactionType.toString();
     }
+
+    public boolean spentbyOthers() {
+        return !this.spentBy.equalsIgnoreCase("you");
+    }
 }

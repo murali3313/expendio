@@ -105,7 +105,8 @@ public class ExpensesTimeView extends LinearLayout {
             public void onClick(View v) {
                 Intent i = new Intent(context, DayWiseExpenseEdit.class);
                 i.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                Expenses value = ExpensesTimeView.this.expenses.getValue();
+                Expenses value = getMergedYoursAndSharerExpenses();
+
                 long spentOnDate = getDate(ExpensesTimeView.this.expenses, ExpensesTimeView.this.allDayWiseExpenseFromSharer).getSpentOnDate();
                 Expenses expenses = value.isEmpty() ? new Expenses(new Expense(new Date(spentOnDate))) : value;
                 i.putExtra("DayWiseExpenses", Utils.getSerializedExpenses(expenses));
@@ -119,10 +120,19 @@ public class ExpensesTimeView extends LinearLayout {
 
     }
 
+    private Expenses getMergedYoursAndSharerExpenses() {
+        Expenses value = ExpensesTimeView.this.expenses.getValue();
+
+        for (Map.Entry<String, Map.Entry<String, Expenses>> expenseFromOthers : ExpensesTimeView.this.allDayWiseExpenseFromSharer.entrySet()) {
+            value = value.merge(expenseFromOthers.getValue().getValue());
+        }
+        return value;
+    }
+
     @NonNull
     private void buildNameAndExpenditure(Context context, LinearLayout totalExpenseView, String userName, String expenditure) {
-        if(expenditure.equalsIgnoreCase("0")){
-           return;
+        if (expenditure.equalsIgnoreCase("0")) {
+            return;
         }
         TextView nameView = new TextView(context, null);
         nameView.setText(userName);
@@ -133,7 +143,7 @@ public class ExpensesTimeView extends LinearLayout {
         }
 
         TextView expenditureView = new TextView(context, null);
-        expenditureView.setText(expenditure+"\n");
+        expenditureView.setText(expenditure + "\n");
         expenditureView.setTextColor(getResources().getColor(R.color.primaryText));
         expenditureView.setTextAlignment(TEXT_ALIGNMENT_CENTER);
         expenditureView.setTypeface(expenditureView.getTypeface(), Typeface.BOLD);
@@ -160,10 +170,9 @@ public class ExpensesTimeView extends LinearLayout {
         }
         if (ev.getAction() == MotionEvent.ACTION_UP && !isLongPressed) {
             Intent i = new Intent(context, DayWiseExpenseEdit.class);
-            Expenses value = ExpensesTimeView.this.expenses.getValue();
+            Expenses value = getMergedYoursAndSharerExpenses();
             long spentOnDate = getDate(ExpensesTimeView.this.expenses, ExpensesTimeView.this.allDayWiseExpenseFromSharer).getSpentOnDate();
             Expenses expenses = value.isEmpty() ? new Expenses(new Expense(new Date(spentOnDate))) : value;
-
             i.addFlags(FLAG_ACTIVITY_NEW_TASK);
             i.putExtra("DayWiseExpenses", Utils.getSerializedExpenses(expenses));
             i.putExtra("containsOtherExpenses", !allDayWiseExpenseFromSharer.isEmpty());
