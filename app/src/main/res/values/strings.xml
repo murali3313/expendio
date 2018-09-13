@@ -66,6 +66,7 @@
     <string name="noteIfOtherExpenseNotEditable">Please note: You can only edit your expenses, hence shared expenses is not editable here</string>
     <string name="defaultExpenseLimitNote">The expense limit is an indicative figure to let you know whether your are within the limit or exceeded the limt.</string>
     <string name="notEditable">Shared expense, non-editable</string>
+    <string name="expenseCategoryHeader">Edit - Expense Category</string>
     <string-array name="reminder_options">
         <item>Do Not Disturb</item>
         <item>Once a day</item>

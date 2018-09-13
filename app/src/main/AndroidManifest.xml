@@ -64,12 +64,16 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ExpenseSMSPattern"
+            android:label="@string/sms_tracker_title"
+
             android:windowSoftInputMode="stateHidden|adjustResize"
 
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".RecurringExpensesView"
+            android:label="@string/recurring_expenses_title"
+
             android:windowSoftInputMode="stateHidden|adjustResize"
 
             android:theme="@style/AppTheme.NoActionBar" />
@@ -86,6 +90,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ExpenseTagsEditView"
+            android:label="@string/expenseCategoryHeader"
             android:windowSoftInputMode="stateHidden|adjustResize"
 
             android:theme="@style/AppTheme.NoActionBar" />

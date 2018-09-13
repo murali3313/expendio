@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -36,6 +37,7 @@ import pl.droidsonroids.gif.GifImageButton;
 
 import static com.thriwin.expendio.ExpenseAudioStatements.CLEAR;
 import static com.thriwin.expendio.ExpenseAudioStatements.defaultEndOfStatement;
+import static com.thriwin.expendio.Utils.isNull;
 
 public class CommonActivity extends AppCompatActivity {
     protected static final int REQ_CODE_SPEECH_INPUT = 55;
@@ -70,6 +72,13 @@ public class CommonActivity extends AppCompatActivity {
         toast.setGravity(Gravity.BOTTOM, 0, 500);
         toast.show();
     }
+
+    public void showToast( String resourceId) {
+        Toast toast = Toast.makeText(CommonActivity.this, resourceId, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.BOTTOM, 0, 500);
+        toast.show();
+    }
+
 
     public void displayExpenseForCorrection(Expenses processedExpenses) {
         String key = Utils.saveUnacceptedExpenses(processedExpenses);
@@ -138,7 +147,7 @@ public class CommonActivity extends AppCompatActivity {
             case REQ_CODE_SPEECH_INPUT: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (!Utils.isNull(expenseAudioListener)) {
+                    if (!isNull(expenseAudioListener)) {
                         expenseAudioListener.reset();
                     }
                     expenseAudioListener.startListening();
@@ -155,9 +164,10 @@ public class CommonActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View listenButton = this.findViewById(R.id.addExpenseVoice);
-        listenButton.setOnClickListener(v -> listenExpense(v));
-        expenseAudioListener = ExpenseAudioListener.getInstance(this);
-
+        if (!isNull(listenButton)) {
+            listenButton.setOnClickListener(v -> listenExpense(v));
+            expenseAudioListener = ExpenseAudioListener.getInstance(this);
+        }
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
@@ -173,7 +183,7 @@ public class CommonActivity extends AppCompatActivity {
         View v = bottomNavigationMenuView.getChildAt(2);
         BottomNavigationItemView itemView = (BottomNavigationItemView) v;
 
-        if (Utils.isNull(badge)) {
+        if (isNull(badge)) {
             badge = LayoutInflater.from(this)
                     .inflate(R.layout.feed_update_count, bottomNavigationMenuView, false);
             ((TextView) badge.findViewById(R.id.notifications_badge)).setText(Utils.getUnApprovedExpensesCount());
@@ -208,7 +218,7 @@ public class CommonActivity extends AppCompatActivity {
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" + getApplicationContext().getPackageName() + "/files");
         File[] files = file.listFiles();
         String fileList = "";
-        if (Utils.isNull(files) || files.length == 0) {
+        if (isNull(files) || files.length == 0) {
             showToast(R.string.noFilesGeneratedYet);
             return;
         }

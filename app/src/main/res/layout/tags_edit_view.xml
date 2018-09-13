@@ -1,72 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.nex3z.flowlayout.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/drawer_layout"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:fitsSystemWindows="true"
+tools:openDrawer="start">
+
+<include
+    layout="@layout/app_bar_expense_category"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/colorPrimary">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="10dp"
-            android:text="Edit - Expense Category"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/resetTags"
-            android:layout_width="27dp"
-            android:layout_height="27dp"
-            android:layout_marginTop="5dp"
-
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="60dp"
-            android:background="@drawable/ic_clear_all" />
-
-        <ImageButton
-            android:id="@+id/createNewTag"
-            android:layout_width="27dp"
-            android:layout_height="27dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/ic_add_expense" />
-
-        <ImageButton
-            android:id="@+id/saveTags"
-            android:layout_width="27dp"
-            android:layout_height="27dp"
-            android:layout_marginTop="5dp"
-
-            android:layout_alignParentRight="true"
-            android:background="@drawable/ic_tag_save" />
-
-
-    </RelativeLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="50dp">
-
-        <LinearLayout
-            android:id="@+id/tagsEditContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingBottom="50dp"></LinearLayout>
-    </ScrollView>
-
-</com.nex3z.flowlayout.FlowLayout>
-
+<android.support.design.widget.NavigationView
+    android:id="@+id/nav_view"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:fitsSystemWindows="true"
+    app:headerLayout="@layout/nav_header_main"
+    app:menu="@menu/activity_main_drawer" />
+</android.support.v4.widget.DrawerLayout>

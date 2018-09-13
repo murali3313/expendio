@@ -25,7 +25,7 @@ import java.util.SortedMap;
 import static com.thriwin.expendio.Utils.isEmpty;
 import static com.thriwin.expendio.Utils.isNull;
 
-public class HomeScreenActivity extends CommonActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeScreenActivity extends GeneralActivity{
     static String glowFor;
 
     @Override
@@ -120,81 +120,7 @@ public class HomeScreenActivity extends CommonActivity implements NavigationView
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
-        if (id == R.id.nav_tags) {
-            Intent i = new Intent(HomeScreenActivity.this, ExpenseTagsEditView.class);
-            startActivity(i);
-
-        } else if (id == R.id.nav_usual_expenses) {
-            Intent i = new Intent(HomeScreenActivity.this, RecurringExpensesView.class);
-            startActivity(i);
-
-        } else if (id == R.id.nav_download) {
-            downloadAllExpenses();
-
-        } else if (id == R.id.nav_general_expense_limit) {
-            Intent i = new Intent(HomeScreenActivity.this, ExpenseDefaultLimit.class);
-            startActivity(i);
-
-        } else if (id == R.id.nav_general_data_share) {
-            Intent i = new Intent(HomeScreenActivity.this, ExpenseShareActivity.class);
-            i.putExtra(ExpenseMonthWiseLimit.EXPENSE_STORAGE_KEY, new Expense().getStorageKey());
-
-            startActivity(i);
-
-        } else if (id == R.id.nav_sms_receiver) {
-            Intent i = new Intent(HomeScreenActivity.this, ExpenseSMSPattern.class);
-            startActivity(i);
-
-        } else if (id == R.id.nav_rate_us) {
-
-            Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
-            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
-                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-            try {
-                startActivity(goToMarket);
-            } catch (ActivityNotFoundException e) {
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName())));
-            }
-        } else if (id == R.id.nav_feedback) {
-            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-            emailIntent.setData(Uri.parse("mailto:thriwin.solutions@gmail.com?subject=Expendio%20App%20Feedback"));
-            try {
-                startActivity(emailIntent);
-            } catch (ActivityNotFoundException e) {
-                showToast(R.string.noEmailAppAvailable);
-            }
-
-        } else if (id == R.id.nav_open_generated_excel) {
-            openFolder();
-        } else if (id == R.id.nav_share_expendio) {
-            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-            sharingIntent.setType("text/plain");
-            sharingIntent.putExtra(Intent.EXTRA_TEXT, "Expendio - Free Expense manager voice enhanced. \nPlease click the below link to download and enjoy.\n" +
-                    "https://play.google.com/store/apps/details?id=com.thriwin.expendio" +
-                    "\ndeveloped by Thriwin Solutions.");
-            startActivity(Intent.createChooser(sharingIntent, "Share via"));
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    private void downloadAllExpenses() {
-
-        SortedMap<String, MonthWiseExpense> allExpensesMonthWise = Utils.getAllExpensesMonthWise();
-        File all_expenses = generator.genarateExcelForAllMonths(getBaseContext(), allExpensesMonthWise, "All_Expenses");
-        presentTheFileToTheUser(all_expenses);
-    }
 
     public void loadDisplayArea(DashboardView dashboardView, Intent intent) {
         LinearLayout displayArea = findViewById(R.id.displayArea);

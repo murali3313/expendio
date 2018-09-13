@@ -1,36 +1,29 @@
 package com.thriwin.expendio;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
-import android.util.AttributeSet;
-import android.view.Gravity;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nex3z.flowlayout.FlowLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.thriwin.expendio.Utils.showToast;
-
-public class ExpenseTagsEditView extends Activity{
+public class ExpenseTagsEditView extends GeneralActivity {
     ObjectMapper obj = new ObjectMapper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.tags_edit_view);
+        super.onCreate(savedInstanceState);
         load();
     }
 
@@ -62,7 +55,7 @@ public class ExpenseTagsEditView extends Activity{
             }
             ExpenseTags.saveExpenseTags(allTagAndWords);
             load();
-            showToast(this, R.string.tagSavedSuccessfully);
+            showToast(R.string.tagSavedSuccessfully);
         });
 
         View resetTag = findViewById(R.id.resetTags);

@@ -35,7 +35,7 @@ import static com.thriwin.expendio.BluetoothService.ENABLE_FOR_PAIR;
 import static com.thriwin.expendio.Utils.isNull;
 import static com.thriwin.expendio.Utils.showToast;
 
-public class ExpenseShareActivity extends Activity {
+public class ExpenseShareActivity extends GeneralActivity {
     BluetoothService bluetoothService;
     LinearLayout smsDetails;
     View smsDetailsNote;
@@ -54,12 +54,12 @@ public class ExpenseShareActivity extends Activity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.expense_share);
+        super.onCreate(savedInstanceState);
 
         expenseStorageKey = getIntent().getStringExtra(ExpenseMonthWiseLimit.EXPENSE_STORAGE_KEY);
         String[] readableMonthAndYear = Utils.getReadableMonthAndYear(expenseStorageKey);
-        ((TextView) findViewById(R.id.expenseShareForMonthHeader)).setText("Share " + readableMonthAndYear[0] + "-" + readableMonthAndYear[1]);
+        ((TextView) findViewById(R.id.expenseShareForMonthHeader)).setText("Share " + readableMonthAndYear[0] + "-" + readableMonthAndYear[1]+" expenses");
         smsRadioButton = findViewById(R.id.smsSharing);
         bluetoothRadioButton = findViewById(R.id.bluetoothSharing);
 
@@ -93,7 +93,7 @@ public class ExpenseShareActivity extends Activity {
     private void startBlueToothServerListening() {
         if (!requestBluetoothEnablement(ENABLE_BLUE_TOOTH_INITIALIZE)) {
             bluetoothService.initializeBluetoothServer();
-            showToast(ExpenseShareActivity.this, "Ready to accept expenses, via bluetooth!!!");
+            showToast( "Ready to accept expenses, via bluetooth!!!");
         }
     }
 
@@ -128,7 +128,7 @@ public class ExpenseShareActivity extends Activity {
         if (affectedUserNames.isEmpty()) {
             Utils.saveShareSettings(newShareSettings);
             ExpenseShareActivity.this.shareSettings = newShareSettings;
-            showToast(ExpenseShareActivity.this, R.string.settingsSavedSuccessfully);
+            showToast( R.string.settingsSavedSuccessfully);
         } else {
             View sheetView = View.inflate(ExpenseShareActivity.this, R.layout.bottom_save_share_data_loss_confirmation, null);
             BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(ExpenseShareActivity.this);
@@ -144,7 +144,7 @@ public class ExpenseShareActivity extends Activity {
                     Utils.removeAllSharerInfo(affectedUserNames);
                     Utils.saveShareSettings(newShareSettings);
                     ExpenseShareActivity.this.shareSettings = newShareSettings;
-                    showToast(ExpenseShareActivity.this, R.string.settingsSavedSuccessfully);
+                    showToast( R.string.settingsSavedSuccessfully);
                     mBottomSheetDialog.cancel();
                 }
             });
@@ -275,7 +275,7 @@ public class ExpenseShareActivity extends Activity {
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         afterBluetoothEnablement(requestCode, resultCode);
     }
@@ -286,22 +286,22 @@ public class ExpenseShareActivity extends Activity {
                 if (resultCode == Activity.RESULT_OK) {
                     selectedBluetoothUserView.showPairDetails();
                 } else {
-                    showToast(this, R.string.bluetoothPermissionIsRequiredToShareData);
+                    showToast( R.string.bluetoothPermissionIsRequiredToShareData);
                 }
             }
             case ENABLE_BLUE_TOOTH_SEND: {
                 if (resultCode == Activity.RESULT_OK) {
                     selectedBluetoothUserView.sendExpense();
                 } else {
-                    showToast(this, R.string.bluetoothPermissionIsRequiredToShareData);
+                    showToast( R.string.bluetoothPermissionIsRequiredToShareData);
                 }
             }
             case ENABLE_BLUE_TOOTH_INITIALIZE: {
                 if (resultCode == Activity.RESULT_OK) {
                     bluetoothService.initializeBluetoothServer();
-                    showToast(ExpenseShareActivity.this, "Ready to accept expenses, via bluetooth!!!");
+                    showToast("Ready to accept expenses, via bluetooth!!!");
                 } else {
-                    showToast(this, R.string.bluetoothPermissionIsRequiredToShareData);
+                    showToast(R.string.bluetoothPermissionIsRequiredToShareData);
                 }
             }
         }
@@ -329,7 +329,7 @@ public class ExpenseShareActivity extends Activity {
 
                 } else {
 
-                    showToast(this, R.string.smsPermissionDenied);
+                    showToast(R.string.smsPermissionDenied);
                 }
                 return;
             }
@@ -339,7 +339,7 @@ public class ExpenseShareActivity extends Activity {
 
                 } else {
 
-                    showToast(this, R.string.smsPermissionDenied);
+                    showToast( R.string.smsPermissionDenied);
                 }
                 return;
             }

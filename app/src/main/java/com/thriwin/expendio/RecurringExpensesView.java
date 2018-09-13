@@ -8,23 +8,18 @@ import android.widget.LinearLayout;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class RecurringExpensesView extends Activity {
+public class RecurringExpensesView extends GeneralActivity {
     ObjectMapper obj = new ObjectMapper();
-    RecurringExpenseEditView dailyRecurringExpenseEditView;
-    RecurringExpenseEditView dayOfWeekRecurringExpenseEditView;
-    RecurringExpenseEditView dayOfMonthRecurringExpenseEditView;
     LinearLayout recurringExpensesContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.recurring_expenses_view);
+        super.onCreate(savedInstanceState);
         load();
     }
 
     public void load() {
-
-
         ImageButton addRecurringExpenseButton = findViewById(R.id.addRecurringExpenses);
         recurringExpensesContainer = findViewById(R.id.recurringExpenses);
         recurringExpensesContainer.removeAllViews();

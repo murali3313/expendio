@@ -16,15 +16,15 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
-public class ExpenseSMSPattern extends Activity {
+public class ExpenseSMSPattern extends GeneralActivity {
 
     SMSInferenceSettings smsInferenceSettingsToSave = new SMSInferenceSettings();
     LinearLayout smsPhraseContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.sms_pattern_setup);
+        super.onCreate(savedInstanceState);
         load();
 
 

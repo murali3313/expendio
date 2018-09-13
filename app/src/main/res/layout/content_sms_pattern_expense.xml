@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.thriwin.expendio.RecurringExpensesView"
+    tools:showIn="@layout/app_bar_recurring_expense">
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/addSMSPhrase"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/ic_add_expense" />
+
+                <ImageButton
+                    android:id="@+id/saveSMSPhrase"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/ic_tag_save" />
+            </RelativeLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="190dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="60dp">
+
+                        <TextView
+                            android:layout_weight="3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sms_enabled_text" />
+
+                        <android.support.v7.widget.SwitchCompat
+                            android:layout_weight="2"
+                            android:id="@+id/enableSmsTracking"
+                            android:layout_width="80dp"
+                            android:layout_height="50dp"
+                            android:enabled="true" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="3dp"
+                            android:background="@drawable/edit_outline"
+                            android:text="@string/sms_entries_instructions" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/smsPhraseContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingBottom="90dp">
+
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:background="?android:attr/windowBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/navigation" />
+</android.support.constraint.ConstraintLayout>
