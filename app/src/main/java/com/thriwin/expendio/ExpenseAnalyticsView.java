@@ -32,6 +32,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -435,9 +436,15 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
 
         tagBasedExpenses = monthExpenses.getTagBasedExpenses();
         viewableTagExpenses = tagBasedExpenses;
+        BigDecimal totalExpenditureOfAllUsers = new BigDecimal("0");
+
         if (shouldIncludeOtherExpenses) {
             SortedMap<String, MonthWiseExpense> allSharedExpensesFor = Utils.getAllSharedExpensesFor(storageKeyForCurrentMonth);
             viewableTagExpenses = Utils.mergeTagBasedExpenses(monthExpenses, allSharedExpensesFor);
+            totalExpenditureOfAllUsers = new BigDecimal(monthExpenses.getTotalExpenditure());
+            for (Map.Entry<String, MonthWiseExpense> sharedUserExpenses : allSharedExpensesFor.entrySet()) {
+                totalExpenditureOfAllUsers = totalExpenditureOfAllUsers.add(new BigDecimal(sharedUserExpenses.getValue().getTotalExpenditure()));
+            }
         }
 
         List<PieEntry> entries = new ArrayList<>();
@@ -456,7 +463,11 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         desc.setText("Thriwin solutions.");
         pieChart.setDescription(desc);
         pieChart.setCenterTextColor(getResources().getColor(R.color.colorAccent));
-        pieChart.setCenterText(format("Expendio\n%s\n$$ %s", monthExpenses.getMonthYearHumanReadable(storageKeyForCurrentMonth), monthExpenses.getTotalExpenditure()));
+        if (shouldIncludeOtherExpenses) {
+            pieChart.setCenterText(format("Expendio\n%s\n$$ %s", monthExpenses.getMonthYearHumanReadable(storageKeyForCurrentMonth), totalExpenditureOfAllUsers.toString()));
+        } else {
+            pieChart.setCenterText(format("Expendio\n%s\n$$ %s", monthExpenses.getMonthYearHumanReadable(storageKeyForCurrentMonth), monthExpenses.getTotalExpenditure()));
+        }
         pieChart.setCenterTextSize(25);
         pieChart.setOnChartValueSelectedListener(this);
         PieData data = new PieData(set);
