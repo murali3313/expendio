@@ -35,6 +35,8 @@ public class AmountProcessor extends Processor {
         String s = "";
         int index = 0;
         for (BigDecimal value : values) {
+            if(value.toString().length()>=7)
+                continue;
             s += index > 0 ? "." + value.toString() : value.toString();
             if (index == 1)
                 break;

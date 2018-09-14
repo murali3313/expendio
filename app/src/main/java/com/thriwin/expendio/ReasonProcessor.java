@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class ReasonProcessor extends Processor {
     private SharedPreferences localStorageForPreferences;
@@ -53,6 +52,8 @@ public class ReasonProcessor extends Processor {
         put("off", true);
         put("above", true);
         put("near", true);
+        put("spent", true);
+        put("spend", true);
     }};
     private HashMap<String, Boolean> currencies = new HashMap<String, Boolean>() {{
         put("afghani", true);
@@ -199,7 +200,7 @@ public class ReasonProcessor extends Processor {
         this.localStorageForPreferences = localStorageForPreferences;
     }
 
-    public List<String> extract(StringBuilder expModifiable) {
+    public String extract(StringBuilder expModifiable) {
         String[] allWords = Utils.splitStatementBy(expModifiable.toString(), " ");
         String tags = localStorageForPreferences.getString(Utils.TAGS, "{}");
         ArrayList<String> reasons = new ArrayList<>();
@@ -214,6 +215,10 @@ public class ReasonProcessor extends Processor {
             }
         }
 
-        return reasons;
+        StringBuilder str = new StringBuilder();
+        for (String reason : reasons) {
+            str.append(reason + " ");
+        }
+        return str.toString();
     }
 }

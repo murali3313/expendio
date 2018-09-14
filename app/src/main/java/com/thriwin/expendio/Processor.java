@@ -17,16 +17,25 @@ public abstract class Processor {
 
     protected BigDecimal getDecimalFrom(String word) {
         String number = "";
+        boolean checkForExistenceOfDot = false;
         for (Character character : word.toCharArray()) {
             if (Character.isDigit(character) || character.equals('.')) {
                 number += character;
+            } else {
+                checkForExistenceOfDot = true;
             }
+        }
+        if (checkForExistenceOfDot && !word.contains(".")) {
+            return new BigDecimal(0);
         }
         number = pruneDots(number);
         return number.isEmpty() ? new BigDecimal(0) : new BigDecimal(number);
     }
 
     private String pruneDots(String number) {
+        if (number.startsWith(".")) {
+            number = number.substring(1);
+        }
         List<Integer> dotPosition = new ArrayList<>();
         char[] chars = number.toCharArray();
         for (int i = 0; i < chars.length; i++) {

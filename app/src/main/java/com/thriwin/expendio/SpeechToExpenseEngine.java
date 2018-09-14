@@ -30,8 +30,8 @@ public class SpeechToExpenseEngine {
                 StringBuilder expModifiable = new StringBuilder(expenseStatement);
                 Date spentOn = dateProcessor.extract(expModifiable);
                 BigDecimal amountSpent = amountProcessor.extract(expModifiable);
-                List<String> spentFor = reasonProcessor.extract(expModifiable);
-                expenses.add(new Expense(amountSpent, spentOn, expenseStatement));
+                String reason = reasonProcessor.extract(expModifiable);
+                expenses.add(new Expense(amountSpent, spentOn, reason));
             } catch (Exception e) {
 
             }
