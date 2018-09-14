@@ -67,6 +67,7 @@
     <string name="defaultExpenseLimitNote">The expense limit is an indicative figure to let you know whether your are within the limit or exceeded the limt.</string>
     <string name="notEditable">Shared expense, non-editable</string>
     <string name="expenseCategoryHeader">Edit - Expense Category</string>
+    <string name="offerScreenHeader">Offers for you...</string>
     <string-array name="reminder_options">
         <item>Do Not Disturb</item>
         <item>Once a day</item>

@@ -18,6 +18,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherAdView;
+
 import java.io.File;
 import java.util.Date;
 import java.util.SortedMap;
@@ -37,18 +41,6 @@ public class HomeScreenActivity extends GeneralActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_expense_listener);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         Utils.loadLocalStorageForPreferences(this.getApplicationContext());
         Context applicationContext = getApplicationContext();

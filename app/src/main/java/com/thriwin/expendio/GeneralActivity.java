@@ -4,19 +4,19 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import java.io.File;
 import java.util.SortedMap;
 
-public class GeneralActivity extends CommonActivity  implements NavigationView.OnNavigationItemSelectedListener  {
+public class GeneralActivity extends CommonActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,6 +89,9 @@ public class GeneralActivity extends CommonActivity  implements NavigationView.O
 
         } else if (id == R.id.nav_open_generated_excel) {
             openFolder();
+        } else if (id == R.id.nav_offers) {
+            Intent i = new Intent(GeneralActivity.this, OfferScreenActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_share_expendio) {
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
@@ -101,6 +104,29 @@ public class GeneralActivity extends CommonActivity  implements NavigationView.O
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Intent i = new Intent(GeneralActivity.this, ExpendioSettingsView.class);
+            startActivity(i);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void downloadAllExpenses() {
