@@ -175,11 +175,12 @@ public class Utils {
         expenses.sanitizeData();
         for (Expense expens : expenses) {
             MonthWiseExpense storedExpenses;
-            if (isNull(allMonthWiseExpenses.get(expens.getStorageKey()))) {
+            String storageKeyForSelfAndOtherDistinguished = expens.getStorageKeyForSelfAndOtherDistinguished();
+            if (isNull(allMonthWiseExpenses.get(storageKeyForSelfAndOtherDistinguished))) {
                 storedExpenses = getDeserializedMonthWiseExpenses(expens.getStorageKey());
-                allMonthWiseExpenses.put(expens.getStorageKey(), storedExpenses);
+                allMonthWiseExpenses.put(storageKeyForSelfAndOtherDistinguished, storedExpenses);
             } else {
-                storedExpenses = allMonthWiseExpenses.get(expens.getStorageKey());
+                storedExpenses = allMonthWiseExpenses.get(storageKeyForSelfAndOtherDistinguished);
             }
             storedExpenses.addExpense(expens);
 

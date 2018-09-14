@@ -20,7 +20,7 @@ import java.io.File;
 
 import static com.thriwin.expendio.Utils.isNull;
 
-public class NotificationScreenActivity extends CommonActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class NotificationScreenActivity extends GeneralActivity implements NavigationView.OnNavigationItemSelectedListener {
     static String glowFor;
 
     @Override
@@ -33,17 +33,6 @@ public class NotificationScreenActivity extends CommonActivity implements Naviga
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_expense_listener);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         Utils.loadLocalStorageForPreferences(this.getApplicationContext());
         notificationView = new NotificationView(getApplicationContext(), null);
@@ -71,95 +60,6 @@ public class NotificationScreenActivity extends CommonActivity implements Naviga
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent i = new Intent(NotificationScreenActivity.this, ExpendioSettingsView.class);
-            startActivity(i);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_tags) {
-            Intent i = new Intent(NotificationScreenActivity.this, ExpenseTagsEditView.class);
-            startActivity(i);
-
-        } else if (id == R.id.nav_usual_expenses) {
-            Intent i = new Intent(NotificationScreenActivity.this, RecurringExpensesView.class);
-            startActivity(i);
-
-        } else if (id == R.id.nav_download) {
-            downloadAllExpenses();
-
-        } else if (id == R.id.nav_general_expense_limit) {
-            Intent i = new Intent(NotificationScreenActivity.this, ExpenseDefaultLimit.class);
-            startActivity(i);
-
-        } else if (id == R.id.nav_general_data_share) {
-            Intent i = new Intent(NotificationScreenActivity.this, ExpenseShareActivity.class);
-            i.putExtra(ExpenseMonthWiseLimit.EXPENSE_STORAGE_KEY, new Expense().getStorageKey());
-            startActivity(i);
-
-        } else if (id == R.id.nav_sms_receiver) {
-            Intent i = new Intent(NotificationScreenActivity.this, ExpenseSMSPattern.class);
-            startActivity(i);
-
-        } else if (id == R.id.nav_rate_us) {
-
-            Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());
-            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
-            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
-                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT |
-                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-            try {
-                startActivity(goToMarket);
-            } catch (ActivityNotFoundException e) {
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName())));
-            }
-        } else if (id == R.id.nav_feedback) {
-            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-            emailIntent.setData(Uri.parse("mailto:thriwin.solutions@gmail.com?subject=Expendio%20App%20Feedback"));
-            try {
-                startActivity(emailIntent);
-            } catch (ActivityNotFoundException e) {
-                showToast(R.string.noEmailAppAvailable);
-            }
-
-        } else if (id == R.id.nav_open_generated_excel) {
-            openFolder();
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    private void downloadAllExpenses() {
-        File all_expenses = generator.genarateExcelForAllMonths(getBaseContext(), Utils.getAllExpensesMonthWise(), "All_Expenses");
-        presentTheFileToTheUser(all_expenses);
     }
 
     public void loadDisplayArea(DashboardView dashboardView, Intent intent) {

@@ -21,6 +21,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import static com.thriwin.expendio.ExpenseTags.MISCELLANEOUS_TAG;
+import static com.thriwin.expendio.Utils.isNull;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 import static org.apache.commons.collections4.CollectionUtils.isEmpty;
@@ -95,6 +96,18 @@ public class Expense {
         return new SimpleDateFormat("dd/MM/yyyy");
     }
 
+    @NonNull
+    @JsonIgnore
+    private SimpleDateFormat getDateFormatOfDayAndMonthAndYear() {
+        return new SimpleDateFormat("dd - MMM - yyyy");
+    }
+
+    @NonNull
+    @JsonIgnore
+    private SimpleDateFormat getDateFormatOfDayAndMonth() {
+        return new SimpleDateFormat("dd - MMM");
+    }
+
     @JsonIgnore
     public String getSpentForDisplayText() {
         expenseStatement = Utils.isEmpty(expenseStatement) ? "" : expenseStatement;
@@ -115,13 +128,18 @@ public class Expense {
     }
 
     @JsonIgnore
+    public String getStorageKeyForSelfAndOtherDistinguished() {
+        return this.spentbyOthers() ? this.getStorageKeyForUser(this.spentBy) : this.getStorageKey();
+    }
+
+    @JsonIgnore
     public String getStorageKeyForUser(String userName) {
         String storageKey = getStorageKey();
         return userName + "-" + storageKey;
     }
 
     public String getAmountSpent() {
-        return Utils.isNull(this.amountSpent) || this.amountSpent.equals(new BigDecimal(0)) ? "" : this.amountSpent.toString();
+        return isNull(this.amountSpent) || this.amountSpent.equals(new BigDecimal(0)) ? "" : this.amountSpent.toString();
     }
 
     @JsonIgnore
@@ -131,11 +149,16 @@ public class Expense {
 
     @JsonIgnore
     public String getDateMonthHumanReadable() {
-        return new SimpleDateFormat("dd - MMM").format(this.spentOn);
+        return getDateFormatOfDayAndMonth().format(this.spentOn);
+    }
+
+    @JsonIgnore
+    public String getDateMonthYearHumanReadable() {
+        return getDateFormatOfDayAndMonthAndYear().format(this.spentOn);
     }
 
     public Set<String> getAssociatedExpenseTags() {
-        if (Utils.isNull(this.associatedExpenseTags) || this.associatedExpenseTags.isEmpty()) {
+        if (isNull(this.associatedExpenseTags) || this.associatedExpenseTags.isEmpty()) {
             ArraySet<String> spenFor = new ArraySet<>();
             spenFor.add(this.getSpentForDisplayText());
             return spenFor;
@@ -157,7 +180,7 @@ public class Expense {
     public String getConcatenatedTags() {
         String tags = "";
         Set<String> associatedExpenseTags = this.getAssociatedExpenseTags();
-        if (Utils.isNull(associatedExpenseTags) || associatedExpenseTags.isEmpty()) {
+        if (isNull(associatedExpenseTags) || associatedExpenseTags.isEmpty()) {
             tags = "";
         } else {
             tags = StringUtil.join(associatedExpenseTags.toArray(), ", ");
@@ -234,7 +257,7 @@ public class Expense {
                 value = this.spentBy;
                 break;
             case "Spent On":
-                value = getDateMonthHumanReadable();
+                value = getDateMonthYearHumanReadable();
                 break;
             case "Reason":
                 value = getExpenseStatement();
@@ -311,5 +334,47 @@ public class Expense {
 
     public boolean spentbyOthers() {
         return !this.spentBy.equalsIgnoreCase("you");
+    }
+
+    public void parse(String header, String cellContent) {
+        switch (header) {
+            case "Spent by":
+                this.spentBy = cellContent;
+                break;
+            case "Spent On":
+                try {
+                    this.spentOn = getDateFormatOfDayAndMonthAndYear().parse(cellContent);
+                } catch (ParseException e) {
+                    try {
+                        int currentYear = Utils.today().getYear() + 1900;
+                        this.spentOn = getDateFormatOfDayAndMonthAndYear().parse(cellContent + " - " + currentYear);
+                    } catch (ParseException ex) {
+
+                    }
+                }
+                break;
+            case "Reason":
+                this.expenseStatement = cellContent;
+                break;
+            case "Amount":
+                try {
+                    this.amountSpent = new BigDecimal(cellContent);
+                } catch (NumberFormatException e) {
+                    this.amountSpent = new BigDecimal("0");
+                }
+                break;
+            case "Tags":
+                associatedExpenseTags = new ArraySet<>(asList(cellContent.split(",")));
+                break;
+            case "Transaction Type":
+                transactionType = TransactionType.from(cellContent);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public boolean isParseValid() {
+        return isValid() && !isNull(spentOn);
     }
 }

@@ -68,6 +68,13 @@
     <string name="notEditable">Shared expense, non-editable</string>
     <string name="expenseCategoryHeader">Edit - Expense Category</string>
     <string name="offerScreenHeader">Offers for you...</string>
+    <string name="restoreExpense">Restore Expense</string>
+    <string name="restoreExpenseNote">Paste your expense report from spreadsheet and click on the restore button above</string>
+    <string name="noHeadersPresent">Paste the expense with the headers.</string>
+    <string name="restoreExpenseAcceptanceConfirmation">Processed %s expenses. Do you wish to restore these expenses?
+        \nThis action will remove any expenses for that month found locally!!!.</string>
+    <string name="expenseRestoredSuccessfully">Expenses processed and restored successfully</string>
+    <string name="noExpenseToRestore">No expenses processed for restoration</string>
     <string-array name="reminder_options">
         <item>Do Not Disturb</item>
         <item>Once a day</item>

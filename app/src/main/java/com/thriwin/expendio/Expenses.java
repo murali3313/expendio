@@ -1,10 +1,13 @@
 package com.thriwin.expendio;
 
+import android.util.ArraySet;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
 
 import lombok.NoArgsConstructor;
 
@@ -116,5 +119,13 @@ public class Expenses extends ArrayList<Expense> {
             }
         }
         return expenses;
+    }
+
+    public Set<String> getUniqueStorageExpenseKeys() {
+        Set<String> storageExpenseKeys = new ArraySet<>();
+        for (Expense expense : this) {
+            storageExpenseKeys.add(expense.getStorageKey());
+        }
+        return storageExpenseKeys;
     }
 }

@@ -51,6 +51,11 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
         } else if (id == R.id.nav_download) {
             downloadAllExpenses();
 
+        } else if (id == R.id.nav_restore_expense) {
+            Intent i = new Intent(GeneralActivity.this, ExpenseRestoreActivity.class);
+            startActivity(i);
+
+
         } else if (id == R.id.nav_general_expense_limit) {
             Intent i = new Intent(GeneralActivity.this, ExpenseDefaultLimit.class);
             startActivity(i);

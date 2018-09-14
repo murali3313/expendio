@@ -55,6 +55,12 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
+            android:name=".ExpenseRestoreActivity"
+            android:label="@string/restoreExpense"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".ExpenseAcceptance"
             android:windowSoftInputMode="stateHidden|adjustNothing"
 
