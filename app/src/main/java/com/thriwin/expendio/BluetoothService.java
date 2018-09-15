@@ -35,7 +35,7 @@ import static com.thriwin.expendio.Utils.showToast;
 public class BluetoothService {
 
     public static final int ENABLE_BLUE_TOOTH_SEND = 5567;
-    public static final int ENABLE_BLUE_TOOTH_INITIALIZE = 687687;
+    public static final int ENABLE_BLUE_TOOTH_INITIALIZE = 68;
     private final UUID MY_UUID = UUID.fromString("d3ea5966-8bad-44b3-9c7d-335f3297919d");
     private Activity activity;
     public static final int ENABLE_BLUE_TOOTH_ADD = 1234;

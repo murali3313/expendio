@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.ads.AdSize;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherAdView;
@@ -66,6 +67,7 @@ public class HomeScreenActivity extends GeneralActivity{
 
         Intent service = new Intent(applicationContext, SMSReceiverService.class);
         applicationContext.startService(service);
+        adAnOffer("461566017681170_461794484324990", AdSize.BANNER_HEIGHT_50);
     }
 
 

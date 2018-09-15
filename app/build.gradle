@@ -6,8 +6,8 @@ android {
         applicationId "com.thriwin.expendio"
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 12
-        versionName "12"
+        versionCode 13
+        versionName "13"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -44,5 +44,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation 'com.evernote:android-job:1.2.4'
     implementation 'com.google.android.gms:play-services-ads:15.0.0'
+    compile 'com.android.support:recyclerview-v7:25.3.1' // Required Dependency by Audience Network SDK
+    compile 'com.facebook.android:audience-network-sdk:5.+'
 }
 

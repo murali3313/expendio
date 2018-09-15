@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.ads.AdSize;
+
 import java.io.File;
 
 import static com.thriwin.expendio.Utils.isNull;
@@ -39,6 +41,8 @@ public class NotificationScreenActivity extends GeneralActivity implements Navig
 
         super.onCreate(savedInstanceState);
         loadDisplayArea(DashboardView.NOTIFICATION, getIntent());
+        adAnOffer("461566017681170_461806047657167", AdSize.BANNER_HEIGHT_50);
+
     }
 
 

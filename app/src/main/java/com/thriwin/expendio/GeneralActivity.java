@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,11 +13,28 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AdListener;
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
+import com.facebook.ads.ExtraHints;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedMap;
 
+import static com.thriwin.expendio.Utils.isNull;
+
 public class GeneralActivity extends CommonActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private AdView adView;
+    private int index = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -139,5 +157,79 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
         SortedMap<String, MonthWiseExpense> allExpensesMonthWise = Utils.getAllExpensesMonthWise();
         File all_expenses = generator.genarateExcelForAllMonths(getBaseContext(), allExpensesMonthWise, "All_Expenses");
         presentTheFileToTheUser(all_expenses);
+    }
+
+    protected void adAnOffer(String placementId, AdSize adSize) {
+        adView = new AdView(this, placementId, adSize);
+        ExtraHints extraHints = new ExtraHints.Builder().keywords(getKeyWords()).build();
+        adView.setExtraHints(extraHints);
+
+        LinearLayout adContainer = findViewById(R.id.banner_container);
+        adView.setAdListener(new AdListener() {
+            private final LinearLayout afterManiAd = findViewById(R.id.afterMainAd);
+
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                if (!isNull(afterManiAd)) {
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(0,90,0,0);
+                    afterManiAd.setLayoutParams(layoutParams);
+                }
+                findViewById(R.id.banner_container).setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                findViewById(R.id.banner_container).setVisibility(View.VISIBLE);
+                View viewById = findViewById(R.id.offerLoadingMessage);
+                if (!isNull(viewById))
+                    viewById.setVisibility(View.GONE);
+                if (!isNull(afterManiAd)) {
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(0,245,0,0);
+                    afterManiAd.setLayoutParams(layoutParams);
+                }
+
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+                // Ad clicked callback
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+                // Ad impression logged callback
+            }
+        });
+        adView.setPadding(0, 3, 0, 7);
+        adContainer.addView(adView);
+        adView.loadAd();
+    }
+
+    private List<ExtraHints.Keyword> getKeyWords() {
+        ExtraHints.Keyword[] values = ExtraHints.Keyword.values();
+        ArrayList<ExtraHints.Keyword> keyWords = new ArrayList<>();
+
+        for (; index < values.length && keyWords.size() <= 5; index++) {
+            if (index == values.length - 1) {
+                index = 0;
+            }
+            keyWords.add(values[index]);
+
+        }
+        return keyWords;
+    }
+
+    @Override
+    protected void onDestroy() {
+        try {
+            if (adView != null) {
+                adView.destroy();
+            }
+        } catch (Exception e) {
+
+        }
+        super.onDestroy();
     }
 }

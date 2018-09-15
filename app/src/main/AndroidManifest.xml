@@ -21,14 +21,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <meta-data
-            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
-            android:value="true"/>
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-8899454204921425~4483354238"/>
+
         <activity
             android:name=".HomeScreenActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -40,44 +36,52 @@
         </activity>
         <activity
             android:name=".AnalyticsScreenActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".NotificationScreenActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".ExpenseShareActivity"
+            android:screenOrientation="portrait"
             android:label="@string/share_expense"
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".ExpenseRestoreActivity"
+            android:screenOrientation="portrait"
             android:label="@string/restoreExpense"
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".ExpenseAcceptance"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
         <activity
             android:name=".NewExpensesCreation"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
 
         <activity
             android:name=".ExpenseTimelineView"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ExpenseSMSPattern"
+            android:screenOrientation="portrait"
             android:label="@string/sms_tracker_title"
 
             android:windowSoftInputMode="stateHidden|adjustResize"
@@ -86,6 +90,7 @@
 
         <activity
             android:name=".RecurringExpensesView"
+            android:screenOrientation="portrait"
             android:label="@string/recurring_expenses_title"
 
             android:windowSoftInputMode="stateHidden|adjustResize"
@@ -94,16 +99,19 @@
 
         <activity
             android:name=".SharedExpenseDetailsRemove"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ExpendioSettingsView"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ExpenseTagsEditView"
+            android:screenOrientation="portrait"
             android:label="@string/expenseCategoryHeader"
             android:windowSoftInputMode="stateHidden|adjustResize"
 
@@ -111,19 +119,22 @@
 
         <activity
             android:name=".OfferScreenActivity"
-            android:label="@string/offerScreenHeader"
+            android:screenOrientation="portrait"
+            android:label="@string/offerScreenHeaderTitle"
             android:windowSoftInputMode="stateHidden|adjustResize"
 
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".DayWiseExpenseEdit"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
 
         <activity
             android:name=".TagWiseExpenseEdit"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
@@ -131,24 +142,28 @@
 
         <activity
             android:name=".MonthWiseExpenseAdd"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
 
         <activity
             android:name=".ExpenseDefaultLimit"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
 
         <activity
             android:name=".ExpenseMonthWiseLimit"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing"
 
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
 
         <activity
             android:name=".FileListActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
 
         <receiver
