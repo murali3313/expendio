@@ -9,7 +9,6 @@ import com.facebook.ads.AdSize;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import static java.util.Arrays.asList;
 
@@ -21,6 +20,14 @@ public class OfferScreenActivity extends GeneralActivity {
     String placementId4Facebook = "461566017681170_461783124326126";
     String placementId5Facebook = "461566017681170_461783280992777";
 
+    String googleAdUnitId1 = "ca-app-pub-8899454204921425/4906816055";
+    String googleAdUnitId2 = "ca-app-pub-8899454204921425/6028326033";
+    String googleAdUnitId3 = "ca-app-pub-8899454204921425/4514814258";
+    String googleAdUnitId4 = "ca-app-pub-8899454204921425/6958264323";
+    String googleAdUnitId5 = "ca-app-pub-8899454204921425/8079774307";
+
+    List<String> googleAdUnitIds = asList(googleAdUnitId1, googleAdUnitId2, googleAdUnitId3, googleAdUnitId4, googleAdUnitId5);
+
     HashMap<String, AdSize> placementAndAdSize = new HashMap<String, AdSize>() {{
         put(placementId1Facebook, AdSize.RECTANGLE_HEIGHT_250);
         put(placementId2Facebook, AdSize.RECTANGLE_HEIGHT_250);
@@ -29,11 +36,11 @@ public class OfferScreenActivity extends GeneralActivity {
         put(placementId5Facebook, AdSize.RECTANGLE_HEIGHT_250);
     }};
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.offer_screen);
         super.onCreate(savedInstanceState);
-
 
         refreshOffers();
 
@@ -52,7 +59,11 @@ public class OfferScreenActivity extends GeneralActivity {
     private void refreshOffers() {
 
         for (Map.Entry<String, AdSize> stringAdSizeEntry : placementAndAdSize.entrySet()) {
-            adAnOffer(stringAdSizeEntry.getKey(), stringAdSizeEntry.getValue());
+            addFBOffer(stringAdSizeEntry.getKey(), stringAdSizeEntry.getValue());
+        }
+
+        for (String googleAdUnit : googleAdUnitIds) {
+            addAdMobOffer(googleAdUnit, com.google.android.gms.ads.AdSize.MEDIUM_RECTANGLE, getKeyWordsForGoogle());
         }
     }
 

@@ -20,7 +20,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-8899454204921425~4483354238"/>
 
         <activity
             android:name=".HomeScreenActivity"

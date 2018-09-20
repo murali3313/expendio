@@ -1,24 +1,17 @@
 package com.thriwin.expendio;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.ads.AdSize;
-
-import java.io.File;
 
 import static com.thriwin.expendio.Utils.isNull;
 
@@ -39,7 +32,7 @@ public class AnalyticsScreenActivity extends GeneralActivity implements Navigati
 
         super.onCreate(savedInstanceState);
         loadDisplayArea(DashboardView.ANALYTICS, getIntent());
-        adAnOffer("461566017681170_461805930990512", AdSize.RECTANGLE_HEIGHT_250);
+        addAdMobOffer("ca-app-pub-8899454204921425/3509973900", com.google.android.gms.ads.AdSize.MEDIUM_RECTANGLE, getKeyWordsForGoogle());
 
     }
 

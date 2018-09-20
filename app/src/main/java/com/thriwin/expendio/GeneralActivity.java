@@ -2,28 +2,19 @@ package com.thriwin.expendio;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.text.InputFilter;
-import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Scroller;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
@@ -31,6 +22,7 @@ import com.facebook.ads.AdListener;
 import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
 import com.facebook.ads.ExtraHints;
+import com.google.android.gms.ads.AdRequest;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,6 +33,7 @@ import static com.thriwin.expendio.Utils.isNull;
 
 public class GeneralActivity extends CommonActivity implements NavigationView.OnNavigationItemSelectedListener {
     private AdView adView;
+    private com.google.android.gms.ads.AdView googleAdView;
     private int index = 0;
 
     @Override
@@ -168,7 +161,50 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
         presentTheFileToTheUser(all_expenses);
     }
 
-    protected void adAnOffer(String placementId, AdSize adSize) {
+    protected void addAdMobOffer(String adUnitId, com.google.android.gms.ads.AdSize adSize, List<String> keyWords) {
+        googleAdView = new com.google.android.gms.ads.AdView(this);
+        googleAdView.setAdSize(adSize);
+        googleAdView.setAdUnitId(adUnitId);
+
+        LinearLayout adContainer = findViewById(R.id.banner_container);
+        googleAdView.setAdListener(new com.google.android.gms.ads.AdListener() {
+            private final LinearLayout afterManiAd = findViewById(R.id.afterMainAd);
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                findViewById(R.id.banner_container).setVisibility(View.VISIBLE);
+                View viewById = findViewById(R.id.offerLoadingMessage);
+                if (!isNull(viewById))
+                    viewById.setVisibility(View.GONE);
+                if (!isNull(afterManiAd)) {
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(0, 245, 0, 0);
+                    afterManiAd.setLayoutParams(layoutParams);
+                }
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                if (!isNull(afterManiAd)) {
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(0, 90, 0, 0);
+                    afterManiAd.setLayoutParams(layoutParams);
+                }
+                findViewById(R.id.banner_container).setVisibility(View.GONE);
+            }
+        });
+        googleAdView.setPadding(0, 3, 0, 7);
+        adContainer.addView(adView);
+        AdRequest.Builder builder = new AdRequest.Builder();
+        for (String keyWord : keyWords) {
+            builder.addKeyword(keyWord);
+        }
+        googleAdView.loadAd(builder.build());
+    }
+
+    protected void addFBOffer(String placementId, AdSize adSize) {
         adView = new AdView(this, placementId, adSize);
         ExtraHints extraHints = new ExtraHints.Builder().keywords(getKeyWords()).build();
         adView.setExtraHints(extraHints);
@@ -181,7 +217,7 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
             public void onError(Ad ad, AdError adError) {
                 if (!isNull(afterManiAd)) {
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(0,90,0,0);
+                    layoutParams.setMargins(0, 90, 0, 0);
                     afterManiAd.setLayoutParams(layoutParams);
                 }
                 findViewById(R.id.banner_container).setVisibility(View.GONE);
@@ -195,7 +231,7 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
                     viewById.setVisibility(View.GONE);
                 if (!isNull(afterManiAd)) {
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(0,245,0,0);
+                    layoutParams.setMargins(0, 245, 0, 0);
                     afterManiAd.setLayoutParams(layoutParams);
                 }
 
@@ -225,6 +261,20 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
                 index = 0;
             }
             keyWords.add(values[index]);
+
+        }
+        return keyWords;
+    }
+
+    protected List<String> getKeyWordsForGoogle() {
+        ExtraHints.Keyword[] values = ExtraHints.Keyword.values();
+        ArrayList<String> keyWords = new ArrayList<>();
+
+        for (; index < values.length && keyWords.size() <= 5; index++) {
+            if (index == values.length - 1) {
+                index = 0;
+            }
+            keyWords.add(values[index].toString());
 
         }
         return keyWords;
