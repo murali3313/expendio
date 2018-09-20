@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdSize;
+
 import java.util.Date;
 
 import static com.thriwin.expendio.Utils.isEmpty;
@@ -56,7 +58,7 @@ public class HomeScreenActivity extends GeneralActivity {
 
         Intent service = new Intent(applicationContext, SMSReceiverService.class);
         applicationContext.startService(service);
-        addAdMobOffer("ca-app-pub-8899454204921425/1884781486", com.google.android.gms.ads.AdSize.BANNER, getKeyWordsForGoogle());
+        addAdMobOffer("ca-app-pub-8899454204921425/1884781486", AdSize.SMART_BANNER, getKeyWordsForGoogle());
     }
 
 

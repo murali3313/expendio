@@ -166,6 +166,8 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
         googleAdView.setAdSize(adSize);
         googleAdView.setAdUnitId(adUnitId);
 
+
+
         LinearLayout adContainer = findViewById(R.id.banner_container);
         googleAdView.setAdListener(new com.google.android.gms.ads.AdListener() {
             private final LinearLayout afterManiAd = findViewById(R.id.afterMainAd);
@@ -196,7 +198,7 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
             }
         });
         googleAdView.setPadding(0, 3, 0, 7);
-        adContainer.addView(adView);
+        adContainer.addView(googleAdView);
         AdRequest.Builder builder = new AdRequest.Builder();
         for (String keyWord : keyWords) {
             builder.addKeyword(keyWord);
