@@ -6,14 +6,28 @@ import android.widget.LinearLayout;
 
 import com.facebook.ads.AdSize;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import static java.util.Arrays.asList;
 
 public class OfferScreenActivity extends GeneralActivity {
 
-    private List<AdSize> adSizes = asList(AdSize.BANNER_HEIGHT_90, AdSize.BANNER_HEIGHT_50, AdSize.RECTANGLE_HEIGHT_250);
+    String placementId1Facebook = "461566017681170_461566217681150";
+    String placementId2Facebook = "461566017681170_461773714327067";
+    String placementId3Facebook = "461566017681170_461776120993493";
+    String placementId4Facebook = "461566017681170_461783124326126";
+    String placementId5Facebook = "461566017681170_461783280992777";
+
+    HashMap<String, AdSize> placementAndAdSize = new HashMap<String, AdSize>() {{
+        put(placementId1Facebook, AdSize.RECTANGLE_HEIGHT_250);
+        put(placementId2Facebook, AdSize.RECTANGLE_HEIGHT_250);
+        put(placementId3Facebook, AdSize.RECTANGLE_HEIGHT_250);
+        put(placementId4Facebook, AdSize.RECTANGLE_HEIGHT_250);
+        put(placementId5Facebook, AdSize.RECTANGLE_HEIGHT_250);
+    }};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,21 +50,10 @@ public class OfferScreenActivity extends GeneralActivity {
     }
 
     private void refreshOffers() {
-        String placementId1Facebook = "461566017681170_461566217681150";
-        String placementId2Facebook = "461566017681170_461773714327067";
-        String placementId3Facebook = "461566017681170_461776120993493";
-        String placementId4Facebook = "461566017681170_461783124326126";
-        String placementId5Facebook = "461566017681170_461783280992777";
-        adAnOffer(placementId1Facebook, adSizes.get(getRandomAdSize()));
-        adAnOffer(placementId2Facebook, adSizes.get(getRandomAdSize()));
-        adAnOffer(placementId3Facebook, adSizes.get(getRandomAdSize()));
-        adAnOffer(placementId4Facebook, adSizes.get(getRandomAdSize()));
-        adAnOffer(placementId5Facebook, adSizes.get(getRandomAdSize()));
-    }
 
-    private int getRandomAdSize() {
-        Random random = new Random();
-        return random.nextInt(3);
+        for (Map.Entry<String, AdSize> stringAdSizeEntry : placementAndAdSize.entrySet()) {
+            adAnOffer(stringAdSizeEntry.getKey(), stringAdSizeEntry.getValue());
+        }
     }
 
 

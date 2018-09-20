@@ -82,7 +82,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
 
             allExpensesMonths = (List<String>) dataFromThread.get("allExpensesMonths");
             String storageKeyForCurrentMonth = !isNull(intent) && !isEmpty(intent.getStringExtra("ANALYTICS_MONTH")) ?
-                    intent.getStringExtra("ANALYTICS_MONTH") : isNull(selectedMonthStorageKey) ? allExpensesMonths.get(allExpensesMonths.size() - 1) : selectedMonthStorageKey;
+                    intent.getStringExtra("ANALYTICS_MONTH") : isNull(selectedMonthStorageKey) && allExpensesMonths.size() > 0 ? allExpensesMonths.get(allExpensesMonths.size() - 1) : selectedMonthStorageKey;
             intent.putExtra("ANALYTICS_MONTH", "");
             if (allExpensesMonths.size() == 0) {
                 return true;
@@ -450,7 +450,8 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
             MonthWiseExpense monthExpenses = (MonthWiseExpense) dataFromThread.get("monthExpenses");
 
             tagBasedExpenses = (Map<String, Expenses>) dataFromThread.get("tagBasedExpenses");
-            viewableTagExpenses =  (Map<String, Expenses>) dataFromThread.get("viewableTagExpenses");;
+            viewableTagExpenses = (Map<String, Expenses>) dataFromThread.get("viewableTagExpenses");
+            ;
 
             PieDataSet set = new PieDataSet((List<PieEntry>) dataFromThread.get("entries"), "Expense analysis");
             List<Integer> colors = getColorsForPieChart();
