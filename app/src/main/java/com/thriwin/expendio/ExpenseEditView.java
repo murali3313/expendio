@@ -103,11 +103,6 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
 
     private void populateData() {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, ExpenseTags.getSavedExpenseTags().getWords());
-
-        reason.setThreshold(1);
-        //Set the adapter
-        reason.setAdapter(adapter);
         ExpenseTags expenseTags = ExpenseTags.getSavedExpenseTags();
         List<String> tags = expenseTags.getTagsOnly();
 
@@ -173,6 +168,15 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
         });
     }
 
+    public void setReasonAdapter() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, ExpenseTags.getSavedExpenseTags().getWords());
+
+        reason.setThreshold(1);
+        //Set the adapter
+        reason.setAdapter(adapter);
+
+    }
+
     private void loadTransactionType() {
         if (expense.isCashTransaction()) {
             cashTransaction.setBackgroundResource(R.drawable.transaction_border_selected);
@@ -204,5 +208,9 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
         reason.setText(reasonString.trim());
         selectedTextViewTag.setText(item.getTitle());
         return false;
+    }
+
+    public long spentDate() {
+        return this.expense.getSpentOn().getTime();
     }
 }

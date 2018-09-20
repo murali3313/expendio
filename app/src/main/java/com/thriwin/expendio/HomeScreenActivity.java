@@ -1,17 +1,12 @@
 package com.thriwin.expendio;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,18 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.ads.AdSize;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
-import com.google.android.gms.ads.doubleclick.PublisherAdView;
 
-import java.io.File;
 import java.util.Date;
-import java.util.SortedMap;
 
 import static com.thriwin.expendio.Utils.isEmpty;
 import static com.thriwin.expendio.Utils.isNull;
 
-public class HomeScreenActivity extends GeneralActivity{
+public class HomeScreenActivity extends GeneralActivity {
     static String glowFor;
 
     @Override
@@ -51,7 +41,8 @@ public class HomeScreenActivity extends GeneralActivity{
 
         super.onCreate(savedInstanceState);
 
-        loadDisplayArea(DashboardView.HOME, getIntent());
+        selectedDashboardView = DashboardView.HOME;
+//        loadDisplayArea(DashboardView.HOME, getIntent());
         if (!Utils.isReminderAlreadySet()) {
             NotificationScheduler.setReminder(applicationContext, RecurringExpensesAlarmReceiver.class);
             Utils.setReminder();
@@ -113,7 +104,6 @@ public class HomeScreenActivity extends GeneralActivity{
 
         return super.onOptionsItemSelected(item);
     }
-
 
 
     public void loadDisplayArea(DashboardView dashboardView, Intent intent) {

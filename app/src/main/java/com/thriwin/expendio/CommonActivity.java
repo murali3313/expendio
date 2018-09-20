@@ -4,9 +4,9 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,10 +16,13 @@ import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -73,7 +76,7 @@ public class CommonActivity extends AppCompatActivity {
         toast.show();
     }
 
-    public void showToast( String resourceId) {
+    public void showToast(String resourceId) {
         Toast toast = Toast.makeText(CommonActivity.this, resourceId, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.BOTTOM, 0, 500);
         toast.show();
@@ -170,6 +173,23 @@ public class CommonActivity extends AppCompatActivity {
         }
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        TextView actionView = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().
+                findItem(R.id.nav_offers));
+        actionView.setText("*** Amazing offers, waiting for you...");
+        actionView.setMarqueeRepeatLimit(-1);
+        actionView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        actionView.setSingleLine(true);
+        actionView.setTextSize(15);
+        actionView.setWidth(500);
+        actionView.setTextColor(getResources().getColor(R.color.offerText));
+        actionView.setTypeface(null, Typeface.BOLD);
+        actionView.setGravity(Gravity.CENTER_VERTICAL);
+        actionView.setFocusable(true);
+        actionView.setFocusableInTouchMode(true);
+        actionView.requestFocus();
     }
 
     View badge;

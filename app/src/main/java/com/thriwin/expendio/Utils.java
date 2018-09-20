@@ -118,7 +118,7 @@ public class Utils {
     }
 
     public static MonthWiseExpense getDeserializedMonthWiseExpenses(String expenseKey) {
-        String deserializedMonthWiseExpenses = Utils.getLocalStorageForPreferences().getString(expenseKey, "[]");
+        String deserializedMonthWiseExpenses = Utils.getLocalStorageForPreferences().getString(expenseKey, "{}");
         MonthWiseExpense expenses = new MonthWiseExpense();
         try {
             ObjectMapper obj = new ObjectMapper();

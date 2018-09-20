@@ -9,8 +9,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.Set;
-
 import static java.lang.String.format;
 
 public class ExpenseRestoreActivity extends GeneralActivity {
@@ -57,17 +55,22 @@ public class ExpenseRestoreActivity extends GeneralActivity {
                 mBottomSheetDialog.show();
 
                 mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(v1 -> {
-                    Set<String> uniqueStorageExpenseKeys = processPastedExpenses.getUniqueStorageExpenseKeys();
-                    for (String uniqueStorageExpenseKey : uniqueStorageExpenseKeys) {
-                        Utils.deleteAMonthExpense(uniqueStorageExpenseKey);
-                    }
 
-                    Utils.saveExpenses(processPastedExpenses);
-                    mBottomSheetDialog.cancel();
-                    showToast(R.string.expenseRestoredSuccessfully);
-                    HomeScreenActivity.glowFor = processPastedExpenses.getStorageKey();
-                    AnalyticsScreenActivity.glowFor = processPastedExpenses.getStorageKey();
-                    ExpenseRestoreActivity.this.finish();
+                    Handler handler = new Handler(new Callback() {
+                        @Override
+                        public boolean handleMessage(Message msg) {
+                            mBottomSheetDialog.cancel();
+                            showToast(R.string.expenseRestoredSuccessfully);
+                            HomeScreenActivity.glowFor = processPastedExpenses.getStorageKey();
+                            AnalyticsScreenActivity.glowFor = processPastedExpenses.getStorageKey();
+                            ExpenseRestoreActivity.this.finish();
+                            return true;
+                        }
+                    });
+                    ExpenseRestoreSaveLoader expenseRestoreSaveLoader = new ExpenseRestoreSaveLoader(processPastedExpenses, handler);
+                    expenseRestoreSaveLoader.start();
+
+
                 });
 
                 mBottomSheetDialog.findViewById(R.id.removeCancel).setOnClickListener(v12 -> mBottomSheetDialog.cancel());

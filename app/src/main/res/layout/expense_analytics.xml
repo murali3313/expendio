@@ -20,7 +20,7 @@
             <LinearLayout
                 android:id="@+id/userSelectorInPieChart"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="25dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:visibility="gone">
@@ -59,14 +59,9 @@
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/chart"
                 android:layout_width="360dp"
-                android:layout_height="400dp"
+                android:layout_height="370dp"
                 android:layout_gravity="center_horizontal" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/noteOnChartData"
-                android:textStyle="italic" />
         </LinearLayout>
 
         <LinearLayout
@@ -148,7 +143,7 @@
                 android:id="@+id/tagSelector"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -158,8 +153,22 @@
                 android:id="@+id/groupedBarChart"
                 android:layout_width="350dp"
                 android:layout_height="320dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp" />
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/banner_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/offerLoadingMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/offerLoadingMain"
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
 

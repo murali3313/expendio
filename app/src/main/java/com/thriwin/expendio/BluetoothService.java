@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.BottomSheetDialog;
+import android.util.Log;
 import android.view.View;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ import static com.thriwin.expendio.MessageConstants.MESSAGE_ERROR;
 import static com.thriwin.expendio.MessageConstants.MESSAGE_READ;
 import static com.thriwin.expendio.MessageConstants.MESSAGE_SUCCESS;
 import static com.thriwin.expendio.MessageConstants.MESSAGE_WRITE;
+import static com.thriwin.expendio.Utils.EXPENDIO_SMS_END;
 import static com.thriwin.expendio.Utils.EXPENDIO_SMS_END_WITHESC;
 import static com.thriwin.expendio.Utils.EXPENDIO_SMS_START_WITHESC;
 import static com.thriwin.expendio.Utils.EXPENDIO_SMS_WITHESC;
@@ -58,6 +60,7 @@ public class BluetoothService {
         return Arrays.copyOf(bytes, i + 1);
     }
 
+    StringBuilder strBuilder = new StringBuilder();
     @SuppressLint("HandlerLeak")
     Handler mHandler = new Handler() {
         @Override
@@ -74,19 +77,25 @@ public class BluetoothService {
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
-                    ShareSettings shareSettings = Utils.getShareSettings();
-                    User authenticatedBluetoothUser = shareSettings.getAuthenticatedBluetoothUser(bluetoothSocket.getRemoteDevice().getAddress(), string_recieved);
-                    if (!isNull(authenticatedBluetoothUser)) {
-                        string_recieved = string_recieved.replaceAll(EXPENDIO_SMS_START_WITHESC, "").replaceAll(EXPENDIO_SMS_WITHESC, "").replaceAll(EXPENDIO_SMS_END_WITHESC, "");
+                    Log.d("Tag", "handleMessage: " + string_recieved);
 
-                        Expenses parsedExpenses = shareSettings.getParsedExpenses(string_recieved, authenticatedBluetoothUser.getName());
-                        if (!isNull(parsedExpenses) && !parsedExpenses.isEmpty()) {
-                            Utils.saveSMSParsedExpenses(authenticatedBluetoothUser, parsedExpenses);
-                            NotificationScheduler.showNotification(activity, HomeScreenActivity.class,
-                                    "Expense shared from trusted user", "Pending for your approval from: " + authenticatedBluetoothUser.getName() + " :" + parsedExpenses.size(), RecurringExpensesAlarmReceiver.genaralTips.get(Utils.getTipsIndex()), "NOTIFICATION");
+                    strBuilder.append(string_recieved);
+                    if (string_recieved.contains(EXPENDIO_SMS_END)) {
+                        string_recieved = strBuilder.toString().replaceAll(EXPENDIO_SMS_END_WITHESC+".*","");
+                        ShareSettings shareSettings = Utils.getShareSettings();
+                        User authenticatedBluetoothUser = shareSettings.getAuthenticatedBluetoothUser(bluetoothSocket.getRemoteDevice().getAddress(), string_recieved);
+                        if (!isNull(authenticatedBluetoothUser)) {
+                            string_recieved = string_recieved.replaceAll(EXPENDIO_SMS_START_WITHESC, "").replaceAll(EXPENDIO_SMS_WITHESC, "").replaceAll(EXPENDIO_SMS_END_WITHESC, "");
+
+                            Expenses parsedExpenses = shareSettings.getParsedExpenses(string_recieved, authenticatedBluetoothUser.getName());
+                            if (!isNull(parsedExpenses) && !parsedExpenses.isEmpty()) {
+                                Utils.saveSMSParsedExpenses(authenticatedBluetoothUser, parsedExpenses);
+                                NotificationScheduler.showNotification(activity, HomeScreenActivity.class,
+                                        "Expense shared from trusted user", "Pending for your approval from: " + authenticatedBluetoothUser.getName() + " :" + parsedExpenses.size(), RecurringExpensesAlarmReceiver.genaralTips.get(Utils.getTipsIndex()), "NOTIFICATION");
+                            }
                         }
+                        strBuilder = new StringBuilder();
                     }
-
                     break;
                 case MESSAGE_WRITE:
 

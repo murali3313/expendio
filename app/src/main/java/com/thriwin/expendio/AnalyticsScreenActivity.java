@@ -33,13 +33,13 @@ public class AnalyticsScreenActivity extends GeneralActivity implements Navigati
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_expense_listener);
+        setContentView(R.layout.analytics_screen_activity);
         Utils.loadLocalStorageForPreferences(this.getApplicationContext());
         analyticsView = new ExpenseAnalyticsView(getApplicationContext(), null);
 
         super.onCreate(savedInstanceState);
         loadDisplayArea(DashboardView.ANALYTICS, getIntent());
-        adAnOffer("461566017681170_461805930990512", AdSize.BANNER_HEIGHT_50);
+        adAnOffer("461566017681170_461805930990512", AdSize.RECTANGLE_HEIGHT_250);
 
     }
 

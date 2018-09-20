@@ -3,6 +3,8 @@ package com.thriwin.expendio;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -32,18 +34,14 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.thriwin.expendio.Utils.getAllExpensesMonths;
 import static com.thriwin.expendio.Utils.getReadableMonthAndYear;
 import static com.thriwin.expendio.Utils.isEmpty;
 import static com.thriwin.expendio.Utils.isNull;
@@ -78,55 +76,64 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
     @Override
     public void load(CommonActivity expenseListener, Intent intent) {
         selectedTagBatch = 1;
-        allExpensesMonths = getAllExpensesMonths();
-        if (allExpensesMonths.size() == 0) {
-            return;
-        }
+        Handler handler = new Handler(msg -> {
 
-        String storageKeyForCurrentMonth = !isNull(intent) && !isEmpty(intent.getStringExtra("ANALYTICS_MONTH")) ?
-                intent.getStringExtra("ANALYTICS_MONTH") : isNull(selectedMonthStorageKey) ? allExpensesMonths.get(allExpensesMonths.size() - 1) : selectedMonthStorageKey;
-        intent.putExtra("ANALYTICS_MONTH", "");
+            Map<String, Object> dataFromThread = (Map<String, Object>) msg.obj;
 
-        String currentMonth = loadPieChart(storageKeyForCurrentMonth);
-        loadMonthSelector(currentMonth);
-
-        this.selectedMonthIndex = allExpensesMonths.indexOf(storageKeyForCurrentMonth);
-        View barChartContainer = findViewById(R.id.barChartContainer);
-        View pieChartContainer = findViewById(R.id.pieChartContainer);
-
-        ImageButton barChartIcon = expenseListener.findViewById(R.id.bar_chart);
-        barChartIcon.setBackgroundResource(R.drawable.ic_bar_chart);
-
-        barChartIcon.setOnClickListener(v -> {
-            LinearLayout userSelectorContainer;
-            if (isDisplayingPieChart) {
-                barChartIcon.setBackgroundResource(R.drawable.ic_pie_chart);
-                isDisplayingPieChart = false;
-                barChartContainer.setVisibility(VISIBLE);
-                pieChartContainer.setVisibility(GONE);
-                loadCurrentMonthBarChart(selectedMonthStorageKey, comparingMonthStorageKey);
-                userSelectorContainer = findViewById(R.id.userSelectorInBarChart);
-            } else {
-                barChartIcon.setBackgroundResource(R.drawable.ic_bar_chart);
-                isDisplayingPieChart = true;
-                loadMonthSelector(selectedMonthStorageKey);
-                loadPieChart(selectedMonthStorageKey);
-                barChartContainer.setVisibility(GONE);
-                pieChartContainer.setVisibility(VISIBLE);
-                userSelectorContainer = findViewById(R.id.userSelectorInPieChart);
-
+            allExpensesMonths = (List<String>) dataFromThread.get("allExpensesMonths");
+            String storageKeyForCurrentMonth = !isNull(intent) && !isEmpty(intent.getStringExtra("ANALYTICS_MONTH")) ?
+                    intent.getStringExtra("ANALYTICS_MONTH") : isNull(selectedMonthStorageKey) ? allExpensesMonths.get(allExpensesMonths.size() - 1) : selectedMonthStorageKey;
+            intent.putExtra("ANALYTICS_MONTH", "");
+            if (allExpensesMonths.size() == 0) {
+                return true;
             }
 
-            Button onlyYourExpense = (Button) userSelectorContainer.getChildAt(0);
-            Button includeOtherExpenses = (Button) userSelectorContainer.getChildAt(1);
-            if (shouldIncludeOtherExpenses) {
-                buttonHighlightForUserButton(includeOtherExpenses, onlyYourExpense);
-            } else {
-                buttonHighlightForUserButton(onlyYourExpense, includeOtherExpenses);
-            }
+
+            loadPieChart(storageKeyForCurrentMonth);
+            loadMonthSelector(storageKeyForCurrentMonth);
+
+            ExpenseAnalyticsView.this.selectedMonthIndex = allExpensesMonths.indexOf(storageKeyForCurrentMonth);
+            View barChartContainer = findViewById(R.id.barChartContainer);
+            View pieChartContainer = findViewById(R.id.pieChartContainer);
+
+            ImageButton barChartIcon = expenseListener.findViewById(R.id.bar_chart);
+            barChartIcon.setBackgroundResource(R.drawable.ic_bar_chart);
+
+            barChartIcon.setOnClickListener(v -> {
+                LinearLayout userSelectorContainer;
+                if (isDisplayingPieChart) {
+                    barChartIcon.setBackgroundResource(R.drawable.ic_pie_chart);
+                    isDisplayingPieChart = false;
+                    barChartContainer.setVisibility(VISIBLE);
+                    pieChartContainer.setVisibility(GONE);
+                    loadCurrentMonthBarChart(selectedMonthStorageKey, comparingMonthStorageKey);
+                    userSelectorContainer = findViewById(R.id.userSelectorInBarChart);
+                } else {
+                    barChartIcon.setBackgroundResource(R.drawable.ic_bar_chart);
+                    isDisplayingPieChart = true;
+                    loadMonthSelector(selectedMonthStorageKey);
+                    loadPieChart(selectedMonthStorageKey);
+                    barChartContainer.setVisibility(GONE);
+                    pieChartContainer.setVisibility(VISIBLE);
+                    userSelectorContainer = findViewById(R.id.userSelectorInPieChart);
+
+                }
+
+                Button onlyYourExpense = (Button) userSelectorContainer.getChildAt(0);
+                Button includeOtherExpenses = (Button) userSelectorContainer.getChildAt(1);
+                if (shouldIncludeOtherExpenses) {
+                    buttonHighlightForUserButton(includeOtherExpenses, onlyYourExpense);
+                } else {
+                    buttonHighlightForUserButton(onlyYourExpense, includeOtherExpenses);
+                }
+            });
+
+            loadCurrentMonthBarChart(selectedMonthStorageKey, comparingMonthStorageKey);
+
+            return false;
         });
-
-        loadCurrentMonthBarChart(selectedMonthStorageKey, comparingMonthStorageKey);
+        AnalyticsViewLoader analyticsViewLoader = new AnalyticsViewLoader(handler);
+        analyticsViewLoader.start();
     }
 
     private void loadUserSelector(LinearLayout userSelectorContainer) {
@@ -172,26 +179,30 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
     }
 
     private void loadCurrentMonthBarChart(String primaryMonth, String comparingMonth) {
-        setMonthSelectorSpinners(primaryMonth, comparingMonth);
-        Map<String, Expenses> primaryTagBasedExpenses = getTagBasedExpenseFor(primaryMonth);
-        Map<String, Expenses> comparingTagBasedExpenses = new HashMap<>();
-        if (!isNull(comparingMonth)) {
-            comparingTagBasedExpenses = getTagBasedExpenseFor(comparingMonth);
-        }
-        List<String> selectedTags = loadTagSelector(primaryTagBasedExpenses, comparingTagBasedExpenses);
+        Handler handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                Map<String, Object> dataFromThread = (Map<String, Object>) msg.obj;
 
-        loadBarChart(selectedTags, primaryTagBasedExpenses, comparingTagBasedExpenses);
+                setMonthSelectorSpinners(primaryMonth, comparingMonth);
+                Map<String, Expenses> primaryTagBasedExpenses = (Map<String, Expenses>) dataFromThread.get("primaryTagBasedExpenses");
+                Map<String, Expenses> comparingTagBasedExpenses = new HashMap<>();
+                if (!isNull(comparingMonth)) {
+                    comparingTagBasedExpenses = (Map<String, Expenses>) dataFromThread.get("comparingTagBasedExpenses");
+                }
+                List<String> selectedTags = loadTagSelector(primaryTagBasedExpenses, comparingTagBasedExpenses);
+
+                loadBarChart(selectedTags, primaryTagBasedExpenses, comparingTagBasedExpenses);
+
+                return false;
+            }
+        });
+        BarChartViewLoader barChartViewLoader = new BarChartViewLoader(primaryMonth, comparingMonth, shouldIncludeOtherExpenses, handler);
+        barChartViewLoader.start();
+
 
     }
 
-    private Map<String, Expenses> getTagBasedExpenseFor(String primaryMonth) {
-        MonthWiseExpense primaryMonthExpenses = Utils.getDeserializedMonthWiseExpenses(primaryMonth);
-        Map<String, Expenses> tagBasedExpenses = primaryMonthExpenses.getTagBasedExpenses();
-        if (shouldIncludeOtherExpenses) {
-            tagBasedExpenses = Utils.mergeTagBasedExpenses(primaryMonthExpenses, Utils.getAllSharedExpensesFor(primaryMonth));
-        }
-        return tagBasedExpenses;
-    }
 
     private List<String> loadTagSelector(Map<String, Expenses> primaryMonthTagBased, Map<String, Expenses> comparingMonthTagBased) {
         LinearLayout tagContainer = findViewById(R.id.tagSelector);
@@ -266,8 +277,9 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         barChart.getXAxis().setLabelRotationAngle(2f);
         barChart.getXAxis().setGranularityEnabled(true);
         Description desc = new Description();
-        desc.setText("");
+        desc.setText("Thriwin Solutions.");
         barChart.setDescription(desc);
+        barChart.getLegend().setEnabled(false);
 
         float groupSpace = getSpace(selectedTags.size(), "G");
         float barSpace = getSpace(selectedTags.size(), "B"); // x2 dataset
@@ -430,51 +442,48 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         loadUserSelector(findViewById(R.id.userSelectorInPieChart));
     }
 
-    private String loadPieChart(String storageKeyForCurrentMonth) {
+    private void loadPieChart(String storageKeyForCurrentMonth) {
+        Handler handler = new Handler(msg -> {
 
-        MonthWiseExpense monthExpenses = Utils.getDeserializedMonthWiseExpenses(storageKeyForCurrentMonth);
+            Map<String, Object> dataFromThread = (Map<String, Object>) msg.obj;
 
-        tagBasedExpenses = monthExpenses.getTagBasedExpenses();
-        viewableTagExpenses = tagBasedExpenses;
-        BigDecimal totalExpenditureOfAllUsers = new BigDecimal("0");
+            MonthWiseExpense monthExpenses = (MonthWiseExpense) dataFromThread.get("monthExpenses");
 
-        if (shouldIncludeOtherExpenses) {
-            SortedMap<String, MonthWiseExpense> allSharedExpensesFor = Utils.getAllSharedExpensesFor(storageKeyForCurrentMonth);
-            viewableTagExpenses = Utils.mergeTagBasedExpenses(monthExpenses, allSharedExpensesFor);
-            totalExpenditureOfAllUsers = new BigDecimal(monthExpenses.getTotalExpenditure());
-            for (Map.Entry<String, MonthWiseExpense> sharedUserExpenses : allSharedExpensesFor.entrySet()) {
-                totalExpenditureOfAllUsers = totalExpenditureOfAllUsers.add(new BigDecimal(sharedUserExpenses.getValue().getTotalExpenditure()));
+            tagBasedExpenses = (Map<String, Expenses>) dataFromThread.get("tagBasedExpenses");
+            viewableTagExpenses =  (Map<String, Expenses>) dataFromThread.get("viewableTagExpenses");;
+
+            PieDataSet set = new PieDataSet((List<PieEntry>) dataFromThread.get("entries"), "Expense analysis");
+            List<Integer> colors = getColorsForPieChart();
+
+            set.setColors(colors);
+            set.setValueTextColors(asList(getResources().getColor(R.color.primaryText)));
+            set.setValueTextSize(19);
+            Description desc = new Description();
+            desc.setText("Thriwin solutions.");
+            pieChart.setDescription(desc);
+            pieChart.getLegend().setEnabled(false);
+            pieChart.setCenterTextColor(getResources().getColor(R.color.colorAccent));
+            if (shouldIncludeOtherExpenses) {
+
+                pieChart.setCenterText(format("Expendio\n%s\n$$ %s", monthExpenses.getMonthYearHumanReadable(storageKeyForCurrentMonth), dataFromThread.get("totalExpenditureOfAllUsers").toString()));
+            } else {
+                pieChart.setCenterText(format("Expendio\n%s\n$$ %s", monthExpenses.getMonthYearHumanReadable(storageKeyForCurrentMonth), dataFromThread.get("yourExpenditure")));
             }
-        }
+            pieChart.setCenterTextSize(25);
+            pieChart.setOnChartValueSelectedListener(this);
+            PieData data = new PieData(set);
+            pieChart.setData(data);
+            pieChart.invalidate();
 
-        List<PieEntry> entries = new ArrayList<>();
+            pieChart.setEntryLabelColor(getResources().getColor(R.color.primaryText));
 
-        for (Map.Entry<String, Expenses> tagBasedExpense : viewableTagExpenses.entrySet()) {
-            entries.add(new PieEntry(Float.parseFloat(tagBasedExpense.getValue().getTotalExpenditure()), tagBasedExpense.getKey()));
-        }
+            return true;
+        });
 
-        PieDataSet set = new PieDataSet(entries, "Expense analysis");
-        List<Integer> colors = getColorsForPieChart();
+        PieChartViewLoader pieChartViewLoader = new PieChartViewLoader(storageKeyForCurrentMonth, shouldIncludeOtherExpenses, handler);
+        pieChartViewLoader.start();
 
-        set.setColors(colors);
-        set.setValueTextColors(asList(getResources().getColor(R.color.primaryText)));
-        set.setValueTextSize(19);
-        Description desc = new Description();
-        desc.setText("Thriwin solutions.");
-        pieChart.setDescription(desc);
-        pieChart.setCenterTextColor(getResources().getColor(R.color.colorAccent));
-        if (shouldIncludeOtherExpenses) {
-            pieChart.setCenterText(format("Expendio\n%s\n$$ %s", monthExpenses.getMonthYearHumanReadable(storageKeyForCurrentMonth), totalExpenditureOfAllUsers.toString()));
-        } else {
-            pieChart.setCenterText(format("Expendio\n%s\n$$ %s", monthExpenses.getMonthYearHumanReadable(storageKeyForCurrentMonth), monthExpenses.getTotalExpenditure()));
-        }
-        pieChart.setCenterTextSize(25);
-        pieChart.setOnChartValueSelectedListener(this);
-        PieData data = new PieData(set);
-        pieChart.setData(data);
-        pieChart.invalidate();
-        pieChart.setEntryLabelColor(getResources().getColor(R.color.primaryText));
-        return storageKeyForCurrentMonth;
+
     }
 
     @NonNull
@@ -484,20 +493,25 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
+        String label = ((PieEntry) e).getLabel();
         Intent i = new Intent(getContext(), TagWiseExpenseEdit.class);
         i.addFlags(FLAG_ACTIVITY_NEW_TASK);
-        String label = ((PieEntry) e).getLabel();
-        Expenses tagBasedExpenses = this.viewableTagExpenses.get(label);
 
-        if (isNull(tagBasedExpenses)) {
-            tagBasedExpenses = new Expenses(new Expense(new Date(viewableTagExpenses.get(label).getSpentOnDate())));
-        }
+        Handler handler = new Handler(msg -> {
+            Map<String, Object> dataFromThread = (Map<String, Object>) msg.obj;
+            i.putExtra("TagWiseExpenses", (String) dataFromThread.get("TagWiseExpenses"));
+            i.putExtra("TagKey", label);
+            i.putExtra("MakeDateEditable", true);
+            i.putExtra("containsOtherExpenses", shouldIncludeOtherExpenses);
+            ContextCompat.startActivity(getContext(), i, null);
 
-        i.putExtra("TagWiseExpenses", Utils.getSerializedExpenses(tagBasedExpenses));
-        i.putExtra("TagKey", label);
-        i.putExtra("MakeDateEditable", true);
-        i.putExtra("containsOtherExpenses", shouldIncludeOtherExpenses);
-        ContextCompat.startActivity(getContext(), i, null);
+            return false;
+        });
+
+        PieChartEntryClickLoader pieChartEntryClickLoader = new PieChartEntryClickLoader(label, this.viewableTagExpenses, handler);
+        pieChartEntryClickLoader.start();
+
+
     }
 
     @Override
