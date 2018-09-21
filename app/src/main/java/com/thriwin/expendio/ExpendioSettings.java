@@ -3,6 +3,7 @@ package com.thriwin.expendio;
 import android.support.annotation.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -10,17 +11,21 @@ import java.util.Date;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import static com.thriwin.expendio.Utils.isEmpty;
 import static com.thriwin.expendio.Utils.isNull;
 
 @NoArgsConstructor
 @Getter
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Setter
 public class ExpendioSettings {
 
     private Integer startDayOfMonth = 1;
     private Integer notificationHour = 20;
     private Integer reminderOptionIndex = ReminderOption.TWICE_A_DAY.ordinal();
+    private Boolean blockAds = false;
 
     private static ObjectMapper objectMapper = new ObjectMapper();
     private static ExpendioSettings expendioSetting;

@@ -35,6 +35,8 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
     private AdView adView;
     private com.google.android.gms.ads.AdView googleAdView;
     private int index = 0;
+    LinearLayout adContainer;
+    LinearLayout afterManiAd;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,7 +52,6 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         super.onCreate(savedInstanceState);
-
 
     }
 
@@ -162,15 +163,21 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
     }
 
     protected void addAdMobOffer(String adUnitId, com.google.android.gms.ads.AdSize adSize, List<String> keyWords) {
+        adContainer = findViewById(R.id.banner_container);
+        afterManiAd = findViewById(R.id.afterMainAd);
+
+        if (ExpendioSettings.loadExpendioSettings().getBlockAds()) {
+            ifAdsNotLoading();
+            return;
+        }
+
         googleAdView = new com.google.android.gms.ads.AdView(this);
         googleAdView.setAdSize(adSize);
         googleAdView.setAdUnitId(adUnitId);
 
 
 
-        LinearLayout adContainer = findViewById(R.id.banner_container);
         googleAdView.setAdListener(new com.google.android.gms.ads.AdListener() {
-            private final LinearLayout afterManiAd = findViewById(R.id.afterMainAd);
 
             @Override
             public void onAdLoaded() {
@@ -189,13 +196,10 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
             @Override
             public void onAdFailedToLoad(int i) {
                 super.onAdFailedToLoad(i);
-                if (!isNull(afterManiAd)) {
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(0, 90, 0, 0);
-                    afterManiAd.setLayoutParams(layoutParams);
-                }
-                findViewById(R.id.banner_container).setVisibility(View.GONE);
+                ifAdsNotLoading();
             }
+
+
         });
         googleAdView.setPadding(0, 3, 0, 7);
         adContainer.addView(googleAdView);
@@ -203,9 +207,19 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
         for (String keyWord : keyWords) {
             builder.addKeyword(keyWord);
         }
+        builder.addTestDevice(com.google.ads.AdRequest.TEST_EMULATOR);
         googleAdView.loadAd(builder.build());
     }
 
+
+    private void ifAdsNotLoading() {
+        if (!isNull(afterManiAd)) {
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(0, 90, 0, 0);
+            afterManiAd.setLayoutParams(layoutParams);
+        }
+        findViewById(R.id.banner_container).setVisibility(View.GONE);
+    }
     protected void addFBOffer(String placementId, AdSize adSize) {
         adView = new AdView(this, placementId, adSize);
         ExtraHints extraHints = new ExtraHints.Builder().keywords(getKeyWords()).build();

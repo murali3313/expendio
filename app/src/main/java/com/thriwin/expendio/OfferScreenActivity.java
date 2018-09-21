@@ -58,9 +58,9 @@ public class OfferScreenActivity extends GeneralActivity {
 
     private void refreshOffers() {
 
-        for (Map.Entry<String, AdSize> stringAdSizeEntry : placementAndAdSize.entrySet()) {
-            addFBOffer(stringAdSizeEntry.getKey(), stringAdSizeEntry.getValue());
-        }
+//        for (Map.Entry<String, AdSize> stringAdSizeEntry : placementAndAdSize.entrySet()) {
+//            addFBOffer(stringAdSizeEntry.getKey(), stringAdSizeEntry.getValue());
+//        }
 
         for (String googleAdUnit : googleAdUnitIds) {
             addAdMobOffer(googleAdUnit, com.google.android.gms.ads.AdSize.MEDIUM_RECTANGLE, getKeyWordsForGoogle());

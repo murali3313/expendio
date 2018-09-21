@@ -121,11 +121,10 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
 
 
                 TextView monthWiseExpenseLimitExceeded = findViewById(R.id.monthWiseExpenseLimitExceeded);
-                monthWiseExpenseLimitExceeded.setText(format("Cut-off:%s\n%s", monthWiseExpense.getMonthWiseExpenseLimit().toString(),
-                        monthWiseExpense.monthlyLimitExceededDetails()));
+                monthWiseExpenseLimitExceeded.setText(format("%s", monthWiseExpense.monthlyLimitExceededDetails()));
 
                 TextView monthWiseExpenseLimit = findViewById(R.id.monthWiseExpenseLimit);
-                monthWiseExpenseLimit.setText(format("Total Entries\nYours:%d\nOthers: %d", monthWiseExpense.getTotalEntries(),
+                monthWiseExpenseLimit.setText(format("Entries\nYours:%d\nOthers: %d", monthWiseExpense.getTotalEntries(),
                         getOtherEntries(allSharedExpenses)
                 ));
 
