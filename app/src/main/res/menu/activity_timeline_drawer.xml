@@ -5,16 +5,15 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+
         <item
-            android:id="@+id/nav_offers"
-            android:icon="@drawable/ic_offer"
-            app:actionViewClass="android.widget.TextView"
-            android:title="" />
+            android:id="@+id/nav_expendio_theme"
+            android:icon="@drawable/ic_themes"
+            android:title="@string/themeSettings" />
         <item
             android:id="@+id/nav_tags"
             android:icon="@drawable/ic_menu_tags"
             android:title="Expense Category" />
-
 
         <item
             android:id="@+id/nav_usual_expenses"
@@ -40,6 +39,11 @@
             android:id="@+id/nav_remove_sharer_expense"
             android:icon="@drawable/ic_remove"
             android:title="Remove shared expenses" />
+        <item
+            android:id="@+id/nav_offers"
+            android:icon="@drawable/ic_offer"
+            app:actionViewClass="android.widget.TextView"
+            android:title="" />
     </group>
     <item android:title="Reports">
         <menu>

@@ -3,6 +3,7 @@ package com.thriwin.expendio;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.SortedMap;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.thriwin.expendio.GeneralActivity.getBackGround;
 import static com.thriwin.expendio.Utils.timeLineColors;
 import static java.lang.String.format;
 
@@ -32,7 +34,8 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
 
         int colourIndex = index % timeLineColors.size();
         View monthBlockContainer = findViewById(R.id.monthBlockContainer);
-        monthBlockContainer.setBackgroundColor(Color.parseColor(timeLineColors.get(colourIndex)));
+        GradientDrawable drawable = (GradientDrawable) monthBlockContainer.getBackground();
+        drawable.setColor(Color.parseColor(timeLineColors.get(colourIndex)));
 
         TextView blockName = findViewById(R.id.expenseBlockName);
         String[] readableMonthAndYear = Utils.getReadableMonthAndYear(expensesBlock.getKey());
@@ -75,6 +78,7 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
             View sheetView = View.inflate(context, R.layout.bottom_delete_month_confirmation, null);
             BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(homeScreenActivity);
             mBottomSheetDialog.setContentView(sheetView);
+            ((View)sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
             mBottomSheetDialog.show();
 
             mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(new OnClickListener() {

@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.thriwin.expendio.GeneralActivity.getBackGround;
 import static com.thriwin.expendio.Utils.isNull;
 import static com.thriwin.expendio.Utils.saveDayWiseExpenses;
 import static com.thriwin.expendio.Utils.timeLineColors;
@@ -87,6 +88,7 @@ public class ExpensesTimeView extends LinearLayout {
             View sheetView = View.inflate(context, R.layout.bottom_delete_month_confirmation, null);
             BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(parentView);
             mBottomSheetDialog.setContentView(sheetView);
+            ((View)sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
             mBottomSheetDialog.show();
 
             mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(v1 -> {

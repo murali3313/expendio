@@ -6,13 +6,16 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="actionBarItemBackground">@color/transparent</item>
     </style>
 
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:colorBackground">@color/bgColor</item>
+        <item name="android:colorBackground">#c8b5aa</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -24,4 +27,9 @@
         <item name="android:textSize">108sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="Color1SwitchStyle">
+        <item name="colorControlActivated">@color/darkdivider</item>
+        <item name="android:colorControlNormal">@color/lightdivider</item>
+    </style>
+
 </resources>

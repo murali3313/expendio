@@ -49,7 +49,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="2dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -66,8 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:textAlignment="textEnd"
-                    android:textColor="@color/primaryText" />
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/monthWiseTotalExpenditure"
@@ -75,7 +75,7 @@
                     android:layout_height="match_parent"
                     android:paddingLeft="5dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/primaryText" />
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 
@@ -94,7 +94,7 @@
                 android:paddingTop="3dp"
                 android:textAlignment="center"
 
-                android:textColor="@color/primaryText" />
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/monthWiseExpenseLimitExceeded"
@@ -111,7 +111,7 @@
                 android:paddingTop="3dp"
                 android:textAlignment="center"
 
-                android:textColor="@color/primaryText" />
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -129,6 +129,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
                     android:paddingBottom="50dp">
 
                 </android.support.v7.widget.LinearLayoutCompat>
@@ -143,7 +145,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="0dp"
         android:layout_marginStart="0dp"
-        android:background="?android:attr/windowBackground"
+        android:background="@color/colorPrimaryTransparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

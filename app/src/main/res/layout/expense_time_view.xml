@@ -31,7 +31,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="4dp"
-        android:background="@drawable/transaction_border_selected"
+        android:background="@drawable/transaction_border_selected_time_view"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 

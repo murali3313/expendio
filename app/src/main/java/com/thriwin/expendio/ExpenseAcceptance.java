@@ -90,6 +90,7 @@ public class ExpenseAcceptance extends Activity {
                 unapprovedExpenses.addNewExpense();
             }
         });
+        this.findViewById(R.id.container).setBackgroundResource(GeneralActivity.getBackGround(null));
 
     }
 

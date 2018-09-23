@@ -21,7 +21,7 @@ public class FileListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.file_list);
         LinearLayout fileListContainer = findViewById(R.id.listFiles);
-
+        this.findViewById(R.id.container).setBackgroundResource(GeneralActivity.getBackGround(null));
         String[] fileLists = this.getIntent().getStringExtra("FileList").split(",");
         for (String fileList : fileLists) {
             TextView textView = new TextView(getApplicationContext());

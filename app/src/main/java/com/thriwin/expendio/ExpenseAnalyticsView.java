@@ -266,8 +266,10 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         for (int i = 0; i < selectedTags.size(); i++) {
             Expenses primaryExpenses = primaryTagBasedExpenses.get(selectedTags.get(i));
             Expenses comparingExpenses = comparingTagBasedExpenses.get(selectedTags.get(i));
-            primaryMonthEntries.add(new BarEntry(i, isNull(primaryExpenses) ? 0f : Float.parseFloat(primaryExpenses.getTotalExpenditure())));
-            comparingMonthEntries.add(new BarEntry(i, isNull(comparingExpenses) ? 0f : Float.parseFloat(comparingExpenses.getTotalExpenditure())));
+            BarEntry primaryMonthEntry = new BarEntry(i, isNull(primaryExpenses) ? 0f : Float.parseFloat(primaryExpenses.getTotalExpenditure()));
+            BarEntry comparingMonthEntry = new BarEntry(i, isNull(comparingExpenses) ? 0f : Float.parseFloat(comparingExpenses.getTotalExpenditure()));
+            primaryMonthEntries.add(primaryMonthEntry);
+            comparingMonthEntries.add(comparingMonthEntry);
             groupTitles.add(selectedTags.get(i));
         }
         barChart.getXAxis().setValueFormatter(new ValueFormatter(groupTitles));
@@ -278,7 +280,9 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         barChart.getXAxis().setGranularityEnabled(true);
         Description desc = new Description();
         desc.setText("Thriwin Solutions.");
+        desc.setTextColor(getResources().getColor(R.color.white));
         barChart.setDescription(desc);
+
         barChart.getLegend().setEnabled(false);
 
         float groupSpace = getSpace(selectedTags.size(), "G");
@@ -288,8 +292,11 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         String[] comparingReadableMonthAndYear = Utils.getReadableMonthAndYear(this.comparingMonthStorageKey);
         BarDataSet set1 = new BarDataSet(primaryMonthEntries, format("%s - %s", primaryReadableMonthAndYear[0], primaryReadableMonthAndYear[1]));
         BarDataSet set2 = new BarDataSet(comparingMonthEntries, format("%s - %s", comparingReadableMonthAndYear[0], comparingReadableMonthAndYear[1]));
+        set1.setValueTextColor(getResources().getColor(R.color.white));
+        set2.setValueTextColor(getResources().getColor(R.color.white));
         set1.setValueTextSize(10f);
         set2.setValueTextSize(10f);
+
 
 
         BarData barData = new BarData(asList(set1, set2));
@@ -303,9 +310,14 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         set2.setAxisDependency(YAxis.AxisDependency.LEFT);
 
 
+
         barChart.getAxisLeft().setDrawGridLines(false);
         barChart.getXAxis().setDrawGridLines(false);
         barChart.groupBars(0f, groupSpace, barSpace);
+        int whiteColor = Color.parseColor("#FFFFFF");
+        barChart.getAxisLeft().setTextColor(whiteColor);
+        barChart.getXAxis().setTextColor(whiteColor);
+        barChart.getLegend().setTextColor(whiteColor);
         barChart.invalidate();
         loadUserSelector(findViewById(R.id.userSelectorInBarChart));
     }
@@ -418,7 +430,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
             textView.setBackgroundResource(R.drawable.circle);
             if (expenseMonth.equals(currentMonth)) {
                 textView.setBackgroundResource(R.drawable.circle_selected);
-                textView.setTextColor(getResources().getColor(R.color.white));
+                textView.setTextColor(getResources().getColor(R.color.primaryText));
             }
             textView.setOnClickListener(new OnClickListener() {
                 @Override
@@ -461,6 +473,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
             set.setValueTextSize(19);
             Description desc = new Description();
             desc.setText("Thriwin solutions.");
+            desc.setTextColor(getResources().getColor(R.color.white));
             pieChart.setDescription(desc);
             pieChart.getLegend().setEnabled(false);
             pieChart.setCenterTextColor(getResources().getColor(R.color.colorAccent));

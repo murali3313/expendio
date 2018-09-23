@@ -28,6 +28,7 @@
                 android:layout_weight="1"
                 android:checked="true"
                 android:text="Daily"
+                android:textColor="@color/white"
                 android:textSize="15dp" />
 
             <RadioButton
@@ -38,6 +39,7 @@
                 android:layout_weight="1"
                 android:checked="false"
                 android:text="Day of week"
+                android:textColor="@color/white"
                 android:textSize="15dp" />
 
             <RadioButton
@@ -48,6 +50,7 @@
                 android:layout_weight="1"
                 android:checked="false"
                 android:text="Day of month"
+                android:textColor="@color/white"
                 android:textSize="15dp" />
         </RadioGroup>
 
@@ -87,7 +90,8 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:text="Sun"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@color/primaryText" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -98,7 +102,8 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:text="Mon"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@color/primaryText" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -109,7 +114,8 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:text="Tue"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@color/primaryText" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -120,7 +126,8 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:text="Wed"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@color/primaryText" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -131,7 +138,8 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:text="Thu"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@color/primaryText" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -142,7 +150,8 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:text="Fri"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@color/primaryText" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -153,7 +162,8 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:text="Sat"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@color/primaryText" />
             </LinearLayout>
 
             <com.thriwin.expendio.RecurringExpenseEditView
@@ -184,12 +194,14 @@
                     android:layout_height="wrap_content"
                     android:text="@string/daySelection"
                     android:textAlignment="center"
-                    android:textColor="@color/primaryText" />
+                    android:textColor="@color/white" />
 
                 <Spinner
                     android:id="@+id/dayOfMonthSelection"
+                    android:layout_marginLeft="10dp"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:gravity="left">
 
                 </Spinner>

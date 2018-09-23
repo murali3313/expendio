@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/notEditable"
-            android:textColor="@color/primaryText" />
+            android:textColor="@color/white" />
     </LinearLayout>
 
     <LinearLayout
@@ -42,7 +42,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="15dp"
             android:textAllCaps="true"
-            android:textColor="@color/primaryText"
+            android:textColor="@color/white"
             android:textScaleX="1"
             android:textSize="15dp" />
 
@@ -57,7 +57,7 @@
             android:inputType="numberDecimal"
             android:maxLength="7"
             android:paddingLeft="5dp"
-            android:textColor="@color/primaryText"
+            android:textColor="@color/white"
             android:textCursorDrawable="@null" />
 
         <LinearLayout
@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-3dp"
                 android:text="Cash"
-                android:textColor="@color/primaryText"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
@@ -128,7 +128,7 @@
             android:paddingTop="15dp"
             android:text="@string/reason"
             android:textAllCaps="true"
-            android:textColor="@color/primaryText"
+            android:textColor="@color/white"
             android:textScaleX="1"
             android:textSize="15dp" />
 
@@ -145,8 +145,8 @@
             android:inputType="textCapSentences"
             android:minHeight="35dp"
             android:paddingLeft="10dp"
-            android:textColor="@color/primaryText"
-            android:textColorHint="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:textColorHint="@color/colorPrimaryDarkTransparent"
             android:textCursorDrawable="@null"></AutoCompleteTextView>
 
         <ImageButton

@@ -29,6 +29,7 @@ public class ExpenseDefaultLimit extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.default_expense_limit_view);
+        this.findViewById(R.id.container).setBackgroundResource(GeneralActivity.getBackGround(null));
         load();
     }
 

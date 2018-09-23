@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.thriwin.expendio.GeneralActivity.getBackGround;
 import static com.thriwin.expendio.Utils.SHARED;
 import static java.lang.String.format;
 
@@ -62,6 +63,7 @@ public class UnAcceptedExpensesBaseView extends LinearLayout {
             View sheetView = View.inflate(getContext(), R.layout.bottom_delete_month_confirmation, null);
             BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(expenseListener);
             mBottomSheetDialog.setContentView(sheetView);
+            ((View)sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
             mBottomSheetDialog.show();
 
             mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(new OnClickListener() {

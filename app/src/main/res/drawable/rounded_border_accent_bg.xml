@@ -1,7 +1,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
-    <solid android:color="@color/colorPrimary"></solid>
+    <solid android:color="@color/transparent"></solid>
 
     <size android:height="@dimen/activity_horizontal_margin"></size>
 

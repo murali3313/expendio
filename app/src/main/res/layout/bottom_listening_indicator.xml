@@ -4,29 +4,30 @@
     android:id="@+id/listeningMode"
     android:layout_width="wrap_content"
     android:layout_height="500dp"
-    android:background="@color/bgColor"
     android:orientation="vertical"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryDark"
-    >
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:paddingLeft="5dp"
-        android:text="@string/AudioHeader"/>
-</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:text="@string/AudioHeader"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/talkText"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="100dp" />
@@ -76,8 +77,8 @@
                 android:layout_marginStart="20dp"
                 app:button_background="@drawable/slide_button"
                 app:button_bottom_padding="2dp"
-                app:button_image_disabled="@mipmap/ic_clear"
-                app:button_image_enabled="@mipmap/ic_clear"
+                app:button_image_disabled="@drawable/ic_clear"
+                app:button_image_enabled="@drawable/ic_clear"
                 app:button_image_height="30dp"
                 app:button_image_width="75dp"
                 app:button_left_padding="2dp"
@@ -104,8 +105,8 @@
                 android:layout_marginTop="10dp"
                 app:button_background="@drawable/slide_button"
                 app:button_bottom_padding="2dp"
-                app:button_image_disabled="@mipmap/ic_done"
-                app:button_image_enabled="@mipmap/ic_done"
+                app:button_image_disabled="@drawable/ic_done"
+                app:button_image_enabled="@drawable/ic_done"
                 app:button_image_height="30dp"
                 app:button_image_width="75dp"
                 app:button_left_padding="2dp"

@@ -63,6 +63,7 @@ public class ExpenseTagsEditView extends GeneralActivity {
             View sheetView = View.inflate(this, R.layout.bottom_factory_reset_tag_confirmation, null);
             BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(this);
             mBottomSheetDialog.setContentView(sheetView);
+            ((View)sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
             mBottomSheetDialog.show();
 
             mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(v1 -> {

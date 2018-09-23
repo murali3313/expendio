@@ -43,6 +43,7 @@
 
 
     <string name="reminder_prompt">Do Not Disturb</string>
+    <string name="backgroundTheme">MOUNTAIN</string>
     <string name="expendioSettings">Expendio Settings</string>
     <string name="sms_tracker_title">Expense from SMS</string>
     <string name="sms_enabled_text">Do you want to enable SMS based expense suggestion</string>
@@ -79,6 +80,12 @@
     <string name="noExpenseToRestore">No expenses processed for restoration</string>
     <string name="offerLoading">Loading your offers.. \nPlease wait....</string>
     <string name="offerLoadingMain">Loading offers...</string>
+    <string name="themeSettings">Theme setting</string>
+    <string name="selectThemes">Select your theme</string>
+    <string name="expendioThemeSettingSavedSuccessfully">Expendio theme is saved successfully</string>
+    <string name="monthExpenseDeleteConfirmation">Removal of expenses is an undoable action. Do you want continue?</string>
+    <string name="touchToReviewExpense">Touch here to review the expenses</string>
+    <string name="amount">Amount</string>
     <string-array name="reminder_options">
         <item>Do Not Disturb</item>
         <item>Once a day</item>
@@ -86,5 +93,14 @@
         <item>Every two hour</item>
         <item>Every hour</item>
         <item>Every 15 min.</item>
+    </string-array>
+    <string-array name="background_themes">
+        <item>WOOD</item>
+        <item>Mountain</item>
+        <item>StarWars</item>
+        <item>ComingSoon1</item>
+        <item>ComingSoon1</item>
+        <item>ComingSoon1</item>
+        <item>ComingSoon1</item>
     </string-array>
 </resources>

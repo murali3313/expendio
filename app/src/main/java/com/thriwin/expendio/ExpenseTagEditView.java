@@ -65,6 +65,7 @@ public class ExpenseTagEditView extends FlowLayout {
         TextView tagWord = new TextView(getContext(), null);
         tagWord.setText(word);
         tagWord.setTextSize(17);
+        tagWord.setTextColor(getResources().getColor(R.color.white));
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         params.setMargins(10, 10, 10, 10);
         tagWord.setLayoutParams(params);

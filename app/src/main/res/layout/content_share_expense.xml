@@ -11,7 +11,8 @@
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/expenseShareContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/edit_outline">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,7 +34,38 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/smsNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_margin="3dp"
+                    android:text="@string/smsSharingNote"
+                    android:textStyle="italic" />
+
+                <LinearLayout
+                    android:id="@+id/bluetoothNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+
+                        android:text="@string/bluetoothNote"
+                        android:textStyle="italic" />
+                </LinearLayout>
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -69,6 +101,8 @@
 
             </RelativeLayout>
 
+
+
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -100,6 +134,7 @@
                                 android:id="@+id/smsSharing"
                                 android:layout_width="wrap_content"
                                 android:layout_height="55dp"
+                                android:textColor="@color/white"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"
                                 android:checked="true"
@@ -112,39 +147,12 @@
                                 android:layout_height="55dp"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"
+                                android:textColor="@color/white"
                                 android:checked="false"
                                 android:text="Share/Receive via Bluetooth"
                                 android:textSize="15dp" />
                         </RadioGroup>
                     </RelativeLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/smsNote"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/smsSharingNote"
-                            android:textStyle="italic" />
-
-                        <LinearLayout
-                            android:id="@+id/bluetoothNote"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="gone">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/bluetoothNote"
-                                android:textStyle="italic" />
-                        </LinearLayout>
-
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -182,7 +190,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="0dp"
         android:layout_marginStart="0dp"
-        android:background="?android:attr/windowBackground"
+        android:background="@color/colorPrimaryTransparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

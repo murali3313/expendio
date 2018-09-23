@@ -6,10 +6,9 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_offers"
-            android:icon="@drawable/ic_offer"
-            app:actionViewClass="android.widget.TextView"
-            android:title="" />
+            android:id="@+id/nav_expendio_theme"
+            android:icon="@drawable/ic_themes"
+            android:title="@string/themeSettings" />
 
         <item
             android:id="@+id/nav_tags"
@@ -42,6 +41,12 @@
             android:id="@+id/nav_restore_expense"
             android:icon="@drawable/ic_restore_expense"
             android:title="@string/restoreExpense" />
+
+        <item
+            android:id="@+id/nav_offers"
+            android:icon="@drawable/ic_offer"
+            app:actionViewClass="android.widget.TextView"
+            android:title="" />
     </group>
 
     <item android:title="Reports">

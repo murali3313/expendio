@@ -80,7 +80,6 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
             ContextCompat.startActivity(getApplicationContext(), i, null);
         });
 
-//        loadTimeLineView(expenseKey);
         super.onCreate(savedInstanceState);
         loadMonthDetails(expenseKey);
     }
@@ -220,6 +219,7 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
         super.onPostResume();
         loadTimeLineView(expenseKey);
         itemSelected = "Home";
+        setBackGroundTheme(null);
     }
 
 
@@ -269,6 +269,9 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
             Intent i = new Intent(ExpenseTimelineView.this, RecurringExpensesView.class);
             startActivity(i);
 
+        } else if (id == R.id.nav_expendio_theme) {
+            Intent i = new Intent(ExpenseTimelineView.this, ExpendioThemeSettingsActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_rate_us) {
 
             Uri uri = Uri.parse("market://details?id=" + getApplicationContext().getPackageName());

@@ -112,6 +112,7 @@ public class ExpenseSMSPattern extends GeneralActivity {
         buttonLayoutParams.bottomMargin = 10;
         buttonLayoutParams.gravity = Gravity.BOTTOM;
         smsPhraseView.setText(smsPhrase);
+        smsPhraseView.setTextColor(getResources().getColor(R.color.white));
         smsPhraseView.setLayoutParams(textViewLayoutParams);
 
 

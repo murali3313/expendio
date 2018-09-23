@@ -11,7 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorAlternateDark2"
+        android:background="@color/transparent"
         android:orientation="horizontal">
 
         <EditText
@@ -19,7 +19,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:textColor="@color/primaryText"
+            android:textColor="@color/white"
             android:textCursorDrawable="@null"
             android:inputType="textCapSentences"
             android:textSize="20sp" />
@@ -52,12 +52,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="5dp"
+            android:textColor="@color/white"
             android:text="@string/newTagDescriptionWord" />
 
         <EditText
             android:id="@+id/tagWord"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:textColor="@color/white"
             android:maxLength="22"
             android:minWidth="150dp"
             android:inputType="textCapSentences"

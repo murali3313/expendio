@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import static com.thriwin.expendio.GeneralActivity.getBackGround;
 import static com.thriwin.expendio.MessageConstants.CONNECTED;
 import static com.thriwin.expendio.MessageConstants.MESSAGE_CONNECT_ERROR;
 import static com.thriwin.expendio.MessageConstants.MESSAGE_ERROR;
@@ -171,6 +172,7 @@ public class BluetoothService {
         View sheetView = View.inflate(activity, R.layout.bottom_send_bluetooth_confirmation, null);
         BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(activity);
         mBottomSheetDialog.setContentView(sheetView);
+        ((View)sheetView.getParent()).setBackgroundColor(activity.getResources().getColor(R.color.transparentOthers));
         mBottomSheetDialog.show();
 
         mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(new View.OnClickListener() {

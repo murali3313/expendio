@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import static com.thriwin.expendio.ExpenseShareActivity.SEND_SMS_CODE;
+import static com.thriwin.expendio.GeneralActivity.getBackGround;
 
 class SMSUserView extends LinearLayout {
     private User User;
@@ -53,6 +54,7 @@ class SMSUserView extends LinearLayout {
         View sheetView = View.inflate(getContext(), R.layout.bottom_send_sms_confirmation, null);
         BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(expenseShareActivity);
         mBottomSheetDialog.setContentView(sheetView);
+        ((View)sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
         mBottomSheetDialog.show();
 
         mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(new OnClickListener() {

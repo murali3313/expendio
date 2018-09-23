@@ -4,7 +4,6 @@
     android:id="@+id/expenseDeleteConfirmation"
     android:layout_width="wrap_content"
     android:layout_height="500dp"
-    android:background="@color/bgColor"
     android:orientation="vertical"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
@@ -15,6 +14,7 @@
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
+        android:textColor="@color/white"
         android:text="This action is an undoable action. Do you want to remove %s's expense for this month?"
         android:textSize="18sp" />
 

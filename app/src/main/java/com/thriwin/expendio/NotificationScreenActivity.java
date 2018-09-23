@@ -35,6 +35,8 @@ public class NotificationScreenActivity extends GeneralActivity implements Navig
         loadDisplayArea(DashboardView.NOTIFICATION, getIntent());
         addAdMobOffer("ca-app-pub-8899454204921425/5888725237", com.google.android.gms.ads.AdSize.SMART_BANNER, getKeyWordsForGoogle());
 
+        findViewById(R.id.addExpense).setVisibility(View.GONE);
+        findViewById(R.id.addExpenseVoice).setVisibility(View.GONE);
     }
 
 

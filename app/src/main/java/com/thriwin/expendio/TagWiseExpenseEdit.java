@@ -2,6 +2,8 @@ package com.thriwin.expendio;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,7 +27,7 @@ public class TagWiseExpenseEdit extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.day_wise_expense_edit);
-
+        this.findViewById(R.id.container).setBackgroundResource(GeneralActivity.getBackGround(null));
         String dayWiseExpenses = this.getIntent().getStringExtra("TagWiseExpenses");
         String tagKey = this.getIntent().getStringExtra("TagKey");
         boolean makeDateEditable = this.getIntent().getBooleanExtra("MakeDateEditable", false);
@@ -42,9 +44,17 @@ public class TagWiseExpenseEdit extends Activity {
         okButton.setOnClickListener(v -> {
             Expenses expenses = dayWiseExpensesEdit.getExpenses();
             ExpenseTimelineView.glowFor = expenses.getDateMonth();
-            Utils.saveTagWiseExpenses(this.expenses.getStorageKey(), tagKey, expenses);
 
-            TagWiseExpenseEdit.this.finish();
+            Handler handler=new Handler(new Handler.Callback() {
+                @Override
+                public boolean handleMessage(Message msg) {
+                    TagWiseExpenseEdit.this.finish();
+                    return true;
+                }
+            });
+
+            TagWiseExpenseSaver tagWiseExpenseSaver=new TagWiseExpenseSaver( handler,this.expenses.getStorageKey(), tagKey, expenses);
+            tagWiseExpenseSaver.start();
         });
 
         cancelButton.setOnClickListener(v -> TagWiseExpenseEdit.this.finish());

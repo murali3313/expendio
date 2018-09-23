@@ -44,9 +44,9 @@ public class Utils {
     public static final String EXPENDIO_SMS_END_WITHESC = "\\#ExpendioEND\\#";
     public static final String SHARED = "SHARED";
     private static String defaultExpense = "DEFAULT_EXPENSE";
-    public static List<String> timeLineColors = asList("#C39EBA", "#FFCECE", "#FF83A3",
-            "#F0DEFF", "#BAC39E", "#BF97AB", "#FFE6F9",
-            "#E1FF83", "#FFB5B5", "#E0DEFF", "#BF97AB", "#D8FFE1", "#f8f6bd");
+    public static List<String> timeLineColors = asList("#F2C39EBA", "#F2FFCECE", "#F2FF83A3",
+            "#F2F0DEFF", "#F2BAC39E", "#F2BF97AB", "#F2FFE6F9",
+            "#F2E1FF83", "#F2FFB5B5", "#F2E0DEFF", "#F2BF97AB", "#F2D8FFE1", "#F2f8f6bd");
 
     public static List<String> complimentaryTimeLineColors = asList("#9ec3a7", "#ceffff", "#83ffdf",
             "#edffde", "#a79ec3", "#97bfab", "#e6ffec",

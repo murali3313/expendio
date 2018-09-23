@@ -50,6 +50,7 @@ public class MonthWiseExpenseAdd extends Activity {
             }
         });
         ((TextView)findViewById(R.id.monthWiseExpenseHeader)).setText("Expenses for "+ this.expenses.getMonthYearHumanReadable());
+        this.findViewById(R.id.container).setBackgroundResource(GeneralActivity.getBackGround(null));
     }
 
 

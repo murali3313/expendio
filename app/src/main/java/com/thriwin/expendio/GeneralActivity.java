@@ -52,7 +52,18 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         super.onCreate(savedInstanceState);
+    }
 
+
+    public static int getBackGround(BackgroundTheme backgroundThemeValue) {
+        int bgTheme;
+        if (isNull(backgroundThemeValue)) {
+            BackgroundTheme backgroundTheme = ExpendioThemeSettings.loadExpendioThemeSettings().getBackgroundTheme();
+            bgTheme = backgroundTheme.getResurceId();
+        } else {
+            bgTheme = backgroundThemeValue.getResurceId();
+        }
+        return bgTheme;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -63,6 +74,10 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
 
         if (id == R.id.nav_tags) {
             Intent i = new Intent(GeneralActivity.this, ExpenseTagsEditView.class);
+            startActivity(i);
+
+        } else if (id == R.id.nav_expendio_theme) {
+            Intent i = new Intent(GeneralActivity.this, ExpendioThemeSettingsActivity.class);
             startActivity(i);
 
         } else if (id == R.id.nav_usual_expenses) {
@@ -176,7 +191,6 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
         googleAdView.setAdUnitId(adUnitId);
 
 
-
         googleAdView.setAdListener(new com.google.android.gms.ads.AdListener() {
 
             @Override
@@ -220,6 +234,7 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
         }
         findViewById(R.id.banner_container).setVisibility(View.GONE);
     }
+
     protected void addFBOffer(String placementId, AdSize adSize) {
         adView = new AdView(this, placementId, adSize);
         ExtraHints extraHints = new ExtraHints.Builder().keywords(getKeyWords()).build();
@@ -296,5 +311,9 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
         return keyWords;
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setBackGroundTheme(null);
+    }
 }

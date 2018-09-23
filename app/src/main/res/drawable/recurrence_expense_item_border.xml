@@ -9,4 +9,5 @@
         android:width="1dp"
         android:color="@color/colorPrimary" />
     <size android:height="@dimen/activity_horizontal_margin"></size>
+    <solid android:color="@color/colorAlternateDark1BlackBase"></solid>
 </shape>

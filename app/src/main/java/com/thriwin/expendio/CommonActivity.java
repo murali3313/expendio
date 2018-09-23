@@ -40,6 +40,7 @@ import pl.droidsonroids.gif.GifImageButton;
 
 import static com.thriwin.expendio.ExpenseAudioStatements.CLEAR;
 import static com.thriwin.expendio.ExpenseAudioStatements.defaultEndOfStatement;
+import static com.thriwin.expendio.GeneralActivity.getBackGround;
 import static com.thriwin.expendio.Utils.isNull;
 
 public class CommonActivity extends AppCompatActivity {
@@ -101,20 +102,24 @@ public class CommonActivity extends AppCompatActivity {
 
 
     public void listeningInfo(ListeningQueues listeningQueues) {
-        switch (listeningQueues) {
-            case READY:
-                indicator.setImageResource(R.drawable.listening);
-                indicatorText.setText(R.string.listening);
-                break;
-            case DEAF:
-                indicator.setImageResource(R.drawable.wait);
-                indicatorText.setText(R.string.deaf);
-                break;
-            case PROCESSING:
-                indicator.setImageResource(R.drawable.processing);
-                indicatorText.setText(R.string.processing);
+        try {
+            switch (listeningQueues) {
+                case READY:
+                    indicator.setImageResource(R.drawable.listening);
+                    indicatorText.setText(R.string.listening);
+                    break;
+                case DEAF:
+                    indicator.setImageResource(R.drawable.wait);
+                    indicatorText.setText(R.string.deaf);
+                    break;
+                case PROCESSING:
+                    indicator.setImageResource(R.drawable.processing);
+                    indicatorText.setText(R.string.processing);
 
-                break;
+                    break;
+            }
+        } catch (Exception e) {
+
         }
 
     }
@@ -124,6 +129,7 @@ public class CommonActivity extends AppCompatActivity {
         mBottomSheetDialog = new BottomSheetDialog(CommonActivity.this);
         mBottomSheetDialog.setContentView(sheetView);
         mBottomSheetDialog.setCancelable(false);
+        ((View) sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
         mBottomSheetDialog.show();
         indicator = sheetView.findViewById(R.id.audio_processor_indicator);
         indicatorText = sheetView.findViewById(R.id.audio_processor_indicator_text);
@@ -190,6 +196,15 @@ public class CommonActivity extends AppCompatActivity {
         actionView.setFocusable(true);
         actionView.setFocusableInTouchMode(true);
         actionView.requestFocus();
+        setBackGroundTheme(null);
+
+    }
+
+    public void setBackGroundTheme(BackgroundTheme backGroundTheme) {
+        View viewById = this.findViewById(R.id.firstContainer);
+        if (!isNull(viewById)) {
+            viewById.setBackgroundResource(getBackGround(backGroundTheme));
+        }
     }
 
     View badge;

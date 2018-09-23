@@ -136,6 +136,7 @@ public class ExpenseShareActivity extends GeneralActivity {
             String message = sharerDeleteNote.getText().toString();
             sharerDeleteNote.setText(String.format(message, StringUtil.join(affectedUserNames.toArray(), ", ")));
             mBottomSheetDialog.setContentView(sheetView);
+            ((View)sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
             mBottomSheetDialog.show();
 
             mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(new View.OnClickListener() {
@@ -162,11 +163,13 @@ public class ExpenseShareActivity extends GeneralActivity {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         LinearLayout linearLayout = new LinearLayout(ExpenseShareActivity.this, null);
         linearLayout.setLayoutParams(layoutParams);
+        linearLayout.setBackgroundResource(R.drawable.edit_outline);
 
         EditText child = new EditText(ExpenseShareActivity.this, null);
         child.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});
         LinearLayout.LayoutParams editTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         editTextParams.weight = 4;
+        editTextParams.setMargins(0,5,0,0);
         child.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         child.setLayoutParams(editTextParams);
 
@@ -178,6 +181,8 @@ public class ExpenseShareActivity extends GeneralActivity {
         removeButton.setBackgroundResource(R.drawable.ic_remove);
 
         child.setHint("Sharer name. Keep it short and unique.");
+        child.setHintTextColor(getResources().getColor(R.color.colorPrimaryDarkTransparent));
+        child.setTextColor(getResources().getColor(R.color.white));
         child.requestFocus();
         linearLayout.addView(child);
         linearLayout.addView(removeButton);

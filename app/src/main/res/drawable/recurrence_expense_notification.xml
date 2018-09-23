@@ -6,7 +6,6 @@
         android:bottomRightRadius="7dp"
         android:topLeftRadius="7dp"
         android:bottomLeftRadius="7dp" />
-    <solid android:color="@color/colorAlternateDark2"></solid>
+    <solid android:color="@color/transparentOthers"></solid>
     <size android:height="@dimen/activity_horizontal_margin"></size>
 </shape>
-

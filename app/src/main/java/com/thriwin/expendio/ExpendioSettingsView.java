@@ -11,10 +11,18 @@ import android.widget.Spinner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import static com.thriwin.expendio.GeneralActivity.getBackGround;
+import static com.thriwin.expendio.Utils.isNull;
+
 public class ExpendioSettingsView extends Activity {
     ObjectMapper obj = new ObjectMapper();
     int showBlockAds = 0;
-
+    public void setBackGroundTheme(BackgroundTheme backGroundTheme) {
+        View viewById = this.findViewById(R.id.firstContainer);
+        if (!isNull(viewById)) {
+            viewById.setBackgroundResource(getBackGround(backGroundTheme));
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +49,7 @@ public class ExpendioSettingsView extends Activity {
                 View sheetView = View.inflate(ExpendioSettingsView.this, R.layout.bottom_reset_all_data_confirmation, null);
                 BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(ExpendioSettingsView.this);
                 mBottomSheetDialog.setContentView(sheetView);
+                ((View)sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
                 mBottomSheetDialog.show();
 
                 mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(new View.OnClickListener() {
@@ -69,6 +78,8 @@ public class ExpendioSettingsView extends Activity {
             Utils.showToast(getBaseContext(), R.string.settingsSavedSuccessfully);
             loadSettings(notificationHour, startDayOfMonth, reminderOption, blockAds);
         });
+
+        setBackGroundTheme(null);
     }
 
     private void loadSettings(EditText notificationHour, EditText startDayOfMonth, Spinner reminderOption, SwitchCompat blockAds) {
@@ -76,6 +87,7 @@ public class ExpendioSettingsView extends Activity {
         notificationHour.setText(expendioSettings.getNotificationHour().toString());
         startDayOfMonth.setText(expendioSettings.getStartDayOfMonth().toString());
         reminderOption.setSelection(expendioSettings.getReminderOptionIndex());
+        reminderOption.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDarkTransparent));
         blockAds.setChecked(expendioSettings.getBlockAds());
     }
 }

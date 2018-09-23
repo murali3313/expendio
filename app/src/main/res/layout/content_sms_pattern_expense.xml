@@ -52,17 +52,22 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/edit_outline"
                         android:minHeight="60dp">
 
                         <TextView
                             android:layout_weight="3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/white"
                             android:text="@string/sms_enabled_text" />
 
                         <android.support.v7.widget.SwitchCompat
                             android:layout_weight="2"
+                            android:shadowColor="@color/white"
                             android:id="@+id/enableSmsTracking"
+                            android:theme="@style/Color1SwitchStyle"
+                            android:textColor="@color/white"
                             android:layout_width="80dp"
                             android:layout_height="50dp"
                             android:enabled="true" />
@@ -76,6 +81,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="3dp"
+                            android:textColor="@color/white"
                             android:background="@drawable/edit_outline"
                             android:text="@string/sms_entries_instructions" />
                     </LinearLayout>
@@ -101,7 +107,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="0dp"
         android:layout_marginStart="0dp"
-        android:background="?android:attr/windowBackground"
+        android:background="@color/colorPrimaryTransparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

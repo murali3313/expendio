@@ -8,6 +8,8 @@
         android:id="@+id/expenseAnalytics"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="30dp"
+        android:background="@color/colorAlternateDark1BlackBase"
         android:orientation="vertical">
 
         <LinearLayout
@@ -33,9 +35,9 @@
                     android:background="@drawable/circle_selected"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:textSize="12sp"
                     android:text="Only your expenses"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
                 <Button
                     android:layout_width="wrap_content"
@@ -45,8 +47,8 @@
                     android:background="@drawable/circle"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:textSize="12sp"
-                    android:text="Include shared expenses" />
+                    android:text="Include shared expenses"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -88,8 +90,8 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:text="Only your expenses"
-                    android:textSize="12sp"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
                 <Button
                     android:layout_width="wrap_content"
@@ -99,8 +101,8 @@
                     android:background="@drawable/circle"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:textSize="12sp"
-                    android:text="Include shared expenses" />
+                    android:text="Include shared expenses"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -153,8 +155,10 @@
                 android:id="@+id/groupedBarChart"
                 android:layout_width="350dp"
                 android:layout_height="320dp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/banner_container"
             android:layout_width="match_parent"

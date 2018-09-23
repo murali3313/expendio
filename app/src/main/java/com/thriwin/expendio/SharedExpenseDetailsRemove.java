@@ -13,12 +13,20 @@ import android.widget.TextView;
 import java.util.Map;
 import java.util.SortedMap;
 
+import static com.thriwin.expendio.GeneralActivity.getBackGround;
+import static com.thriwin.expendio.Utils.isNull;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
 public class SharedExpenseDetailsRemove extends Activity {
     String selectedMonthOfExpensesStorageKey;
 
+    public void setBackGroundTheme(BackgroundTheme backGroundTheme) {
+        View viewById = this.findViewById(R.id.firstContainer);
+        if (!isNull(viewById)) {
+            viewById.setBackgroundResource(getBackGround(backGroundTheme));
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +36,7 @@ public class SharedExpenseDetailsRemove extends Activity {
         TextView header = findViewById(R.id.expenseShareRemovalForMonthHeader);
         header.setText(format("Shared Expenses %s - %s", readableMonthAndYear[0], readableMonthAndYear[1]));
         loadExpenseToDelete();
+        setBackGroundTheme(null);
     }
 
     private void loadExpenseToDelete() {
@@ -49,6 +58,7 @@ public class SharedExpenseDetailsRemove extends Activity {
             nameParams.weight = 2;
             nameParams.leftMargin = 20;
             nameView.setTextSize(18);
+            nameView.setTextColor(getResources().getColor(R.color.white));
             nameView.setLayoutParams(nameParams);
 
             nameView.setText("Sharer : " + userWiseExpenses.getKey());
@@ -59,6 +69,7 @@ public class SharedExpenseDetailsRemove extends Activity {
             totalExpenses.setLayoutParams(expenseParams);
             expenseParams.weight = 2;
             totalExpenses.setTextSize(18);
+            totalExpenses.setTextColor(getResources().getColor(R.color.white));
 
             totalExpenses.setText("Spent :" + userWiseExpenses.getValue().getTotalExpenditure());
 
@@ -80,6 +91,7 @@ public class SharedExpenseDetailsRemove extends Activity {
                 TextView note = sheetView.findViewById(R.id.sharerExpenseRemoveNote);
                 note.setText(format(note.getText().toString(), userWiseExpenses.getKey()));
                 mBottomSheetDialog.setContentView(sheetView);
+                ((View)sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
                 mBottomSheetDialog.show();
 
                 mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(v1 -> {

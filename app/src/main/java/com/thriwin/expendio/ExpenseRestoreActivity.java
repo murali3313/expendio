@@ -52,6 +52,7 @@ public class ExpenseRestoreActivity extends GeneralActivity {
                 confirmation.setText(formattedext);
                 BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(ExpenseRestoreActivity.this);
                 mBottomSheetDialog.setContentView(sheetView);
+                ((View)sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
                 mBottomSheetDialog.show();
 
                 mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(v1 -> {

@@ -62,6 +62,14 @@ public class ExpensesEditView extends LinearLayout {
 
     }
 
+    private void addExpense1(boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, Expense expens, boolean isTagEditDisabled, String tagText, boolean fromSharedExpenses) {
+        ExpenseEditView expenseEditView = new ExpenseEditView(context, null, expens, ExpensesEditView.this, makeDateEditable, makeDatePermissibleWithinMonthLimit, isTagEditDisabled, tagText, fromSharedExpenses);
+        expenseEditViews.add(expenseEditView);
+        addView(expenseEditView, 0);
+        expenseEditView.requestFocus();
+
+    }
+
     private int getIndex(long l, Expense expens) {
         int size = date.size();
         if (expens.spentbyOthers()) {
@@ -99,10 +107,10 @@ public class ExpensesEditView extends LinearLayout {
     }
 
     public void addNewExpense() {
-        addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, new Expense(new Date(expenses.getSpentOnDate())), false, null, false);
+        addExpense1(makeDateEditable, makeDatePermissibleWithinMonthLimit, new Expense(new Date(expenses.getSpentOnDate())), false, null, false);
     }
 
     public void addNewExpense(boolean isTagEditDisabled, String tagText) {
-        addExpense(makeDateEditable, makeDatePermissibleWithinMonthLimit, new Expense(new Date(expenses.getSpentOnDate())), isTagEditDisabled, tagText, false);
+        addExpense1(makeDateEditable, makeDatePermissibleWithinMonthLimit, new Expense(new Date(expenses.getSpentOnDate())), isTagEditDisabled, tagText, false);
     }
 }

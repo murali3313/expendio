@@ -65,6 +65,7 @@ public class NewExpensesCreation extends Activity {
         });
 
         ((TextView)findViewById(R.id.newExpensesHeader)).setText("New Expenses");
+        this.findViewById(R.id.container).setBackgroundResource(GeneralActivity.getBackGround(null));
     }
 
     private List<Expense> getDesrializedExpenses(String expensesString) {

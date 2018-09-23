@@ -16,6 +16,7 @@ public class ExpenseMonthWiseLimit extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.expense_monthwise_limit_view);
+        this.findViewById(R.id.container).setBackgroundResource(GeneralActivity.getBackGround(null));
         load();
     }
 

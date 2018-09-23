@@ -117,7 +117,7 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
             textView.setLayoutParams(params);
             textView.setPadding(15, 5, 15, 5);
             textView.setBackgroundResource(R.drawable.edit_outline);
-            textView.setTextColor(getResources().getColor(R.color.primaryText));
+            textView.setTextColor(getResources().getColor(R.color.white));
             tagsContainer.addView(textView);
 
             if (!fromSharedExpenses) {

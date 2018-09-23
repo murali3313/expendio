@@ -18,8 +18,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:supportsRtl="true">
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-8899454204921425~4483354238"/>
@@ -40,6 +40,12 @@
             android:name=".AnalyticsScreenActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".ExpendioThemeSettingsActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/themeSettings"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
