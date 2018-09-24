@@ -33,7 +33,7 @@ public class HomeScreenView extends LinearLayout implements IDisplayAreaView {
 
     public void load(CommonActivity expenseListener, Intent intent) {
         allExpensesMonthWise = Utils.getAllExpensesMonthWise();
-        TableLayout homeScreenContainer = findViewById(R.id.homeScreen);
+        TableLayout homeScreenContainer = (TableLayout) findViewById(R.id.homeScreen);
         homeScreenContainer.removeAllViews();
         int i = 0;
         TableRow tableRow = null;
@@ -52,14 +52,14 @@ public class HomeScreenView extends LinearLayout implements IDisplayAreaView {
 
 
     public void glow(String glowFor) {
-        TableLayout homeScreenContainer = findViewById(R.id.homeScreen);
+        TableLayout homeScreenContainer =(TableLayout) findViewById(R.id.homeScreen);
         Integer blockHeight = 180;
         for (int i = 0; i < homeScreenContainer.getChildCount(); i++) {
             TableRow tableRow = (TableRow) homeScreenContainer.getChildAt(i);
             for (int j = 0; j < tableRow.getChildCount(); j++) {
                 ExpenseMonthWiseBlock childAt = (ExpenseMonthWiseBlock) tableRow.getChildAt(j);
                 if (childAt.expensesBlock.getKey().equals(glowFor)) {
-                    ScrollView scrollView = this.getRootView().findViewById(R.id.scrollParent);
+                    ScrollView scrollView = (ScrollView) this.getRootView().findViewById(R.id.scrollParent);
                     ObjectAnimator.ofInt(scrollView, "scrollY", i * blockHeight).setDuration(2000).start();
                     AppCompatResources.getDrawable(getContext(), R.drawable.expense_border);
                     View viewById = childAt.findViewById(R.id.monthBlockContainer);

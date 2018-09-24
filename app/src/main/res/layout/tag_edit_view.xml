@@ -19,9 +19,9 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
+            android:inputType="textCapSentences"
             android:textColor="@color/white"
             android:textCursorDrawable="@null"
-            android:inputType="textCapSentences"
             android:textSize="20sp" />
 
         <ImageButton
@@ -52,17 +52,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="5dp"
-            android:textColor="@color/white"
-            android:text="@string/newTagDescriptionWord" />
+            android:text="@string/newTagDescriptionWord"
+            android:textColor="@color/white" />
 
         <EditText
             android:id="@+id/tagWord"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textColor="@color/white"
+            android:inputType="textCapSentences"
             android:maxLength="22"
             android:minWidth="150dp"
-            android:inputType="textCapSentences"
+            android:textColor="@color/white"
             android:textCursorDrawable="@null" />
 
         <ImageButton

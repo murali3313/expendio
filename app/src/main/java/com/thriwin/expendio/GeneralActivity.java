@@ -1,11 +1,14 @@
 package com.thriwin.expendio;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,23 +19,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.facebook.ads.Ad;
-import com.facebook.ads.AdError;
-import com.facebook.ads.AdListener;
-import com.facebook.ads.AdSize;
-import com.facebook.ads.AdView;
-import com.facebook.ads.ExtraHints;
 import com.google.android.gms.ads.AdRequest;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
 
 import static com.thriwin.expendio.Utils.isNull;
+import static java.util.Arrays.asList;
 
 public class GeneralActivity extends CommonActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private AdView adView;
     private com.google.android.gms.ads.AdView googleAdView;
     private int index = 0;
     LinearLayout adContainer;
@@ -40,10 +36,10 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar =(Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -178,8 +174,8 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
     }
 
     protected void addAdMobOffer(String adUnitId, com.google.android.gms.ads.AdSize adSize, List<String> keyWords) {
-        adContainer = findViewById(R.id.banner_container);
-        afterManiAd = findViewById(R.id.afterMainAd);
+        adContainer =(LinearLayout) findViewById(R.id.banner_container);
+        afterManiAd =(LinearLayout) findViewById(R.id.afterMainAd);
 
         if (ExpendioSettings.loadExpendioSettings().getBlockAds()) {
             ifAdsNotLoading();
@@ -235,80 +231,12 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
         findViewById(R.id.banner_container).setVisibility(View.GONE);
     }
 
-    protected void addFBOffer(String placementId, AdSize adSize) {
-        adView = new AdView(this, placementId, adSize);
-        ExtraHints extraHints = new ExtraHints.Builder().keywords(getKeyWords()).build();
-        adView.setExtraHints(extraHints);
 
-        LinearLayout adContainer = findViewById(R.id.banner_container);
-        adView.setAdListener(new AdListener() {
-            private final LinearLayout afterManiAd = findViewById(R.id.afterMainAd);
-
-            @Override
-            public void onError(Ad ad, AdError adError) {
-                if (!isNull(afterManiAd)) {
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(0, 90, 0, 0);
-                    afterManiAd.setLayoutParams(layoutParams);
-                }
-                findViewById(R.id.banner_container).setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAdLoaded(Ad ad) {
-                findViewById(R.id.banner_container).setVisibility(View.VISIBLE);
-                View viewById = findViewById(R.id.offerLoadingMessage);
-                if (!isNull(viewById))
-                    viewById.setVisibility(View.GONE);
-                if (!isNull(afterManiAd)) {
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(0, 245, 0, 0);
-                    afterManiAd.setLayoutParams(layoutParams);
-                }
-
-            }
-
-            @Override
-            public void onAdClicked(Ad ad) {
-                // Ad clicked callback
-            }
-
-            @Override
-            public void onLoggingImpression(Ad ad) {
-                // Ad impression logged callback
-            }
-        });
-        adView.setPadding(0, 3, 0, 7);
-        adContainer.addView(adView);
-        adView.loadAd();
-    }
-
-    private List<ExtraHints.Keyword> getKeyWords() {
-        ExtraHints.Keyword[] values = ExtraHints.Keyword.values();
-        ArrayList<ExtraHints.Keyword> keyWords = new ArrayList<>();
-
-        for (; index < values.length && keyWords.size() <= 5; index++) {
-            if (index == values.length - 1) {
-                index = 0;
-            }
-            keyWords.add(values[index]);
-
-        }
-        return keyWords;
-    }
-
+    //todo: Google Keywords
     protected List<String> getKeyWordsForGoogle() {
-        ExtraHints.Keyword[] values = ExtraHints.Keyword.values();
-        ArrayList<String> keyWords = new ArrayList<>();
+        List<String> keywords = asList();
 
-        for (; index < values.length && keyWords.size() <= 5; index++) {
-            if (index == values.length - 1) {
-                index = 0;
-            }
-            keyWords.add(values[index].toString());
-
-        }
-        return keyWords;
+        return keywords;
     }
 
     @Override
@@ -316,4 +244,17 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
         super.onResume();
         setBackGroundTheme(null);
     }
+
+    public static boolean isPermissionDenied(Context ctx, String[] permissions) {
+        boolean isAnyPermissionDenied = false;
+        for (String permission : permissions) {
+            isAnyPermissionDenied = ContextCompat.checkSelfPermission(ctx, permission)
+                    != PackageManager.PERMISSION_GRANTED;
+            if (isAnyPermissionDenied) {
+                return true;
+            }
+        }
+        return isAnyPermissionDenied;
+    }
+
 }

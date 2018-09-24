@@ -20,7 +20,7 @@ public class NotificationView extends LinearLayout implements IDisplayAreaView {
 
     @Override
     public void load(CommonActivity expenseListener, Intent intent) {
-        LinearLayout container = findViewById(R.id.unAcceptedExpensesContainer);
+        LinearLayout container = (LinearLayout)findViewById(R.id.unAcceptedExpensesContainer);
         container.removeAllViews();
         HashMap<String, Expenses> unAcceptedExpenses = Utils.getAllUnAcceptedExpenses();
 

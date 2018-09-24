@@ -35,11 +35,11 @@ public class DayWiseExpenseEdit extends Activity {
         findViewById(R.id.noteIfOtherExpenseIncluded).setVisibility(containsOtherExpenses ? View.VISIBLE : View.GONE);
         this.expenses = Utils.getDeserializedExpenses(dayWiseExpenses);
 
-        ExpensesEditView dayWiseExpensesEdit = findViewById(R.id.dayWiseExpensesEdit);
+        ExpensesEditView dayWiseExpensesEdit =(ExpensesEditView) findViewById(R.id.dayWiseExpensesEdit);
         dayWiseExpensesEdit.populate(expenses, makeDateEditable, true, this, false, null, false);
 
-        okButton = findViewById(R.id.acceptedExpense);
-        cancelButton = findViewById(R.id.discardExpenses);
+        okButton =(ImageButton) findViewById(R.id.acceptedExpense);
+        cancelButton = (ImageButton) findViewById(R.id.discardExpenses);
 
         okButton.setOnClickListener(v -> {
             ExpenseTimelineView.glowFor = expenses.getDateMonth();
@@ -57,7 +57,7 @@ public class DayWiseExpenseEdit extends Activity {
 
         cancelButton.setOnClickListener(v -> DayWiseExpenseEdit.this.finish());
 
-        ImageButton addExpense = findViewById(R.id.addExpense);
+        ImageButton addExpense = (ImageButton) findViewById(R.id.addExpense);
         addExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

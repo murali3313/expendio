@@ -33,7 +33,7 @@ public class SharedExpenseDetailsRemove extends Activity {
         setContentView(R.layout.shared_expense_details_remove);
         selectedMonthOfExpensesStorageKey = getIntent().getStringExtra(ExpenseMonthWiseLimit.EXPENSE_STORAGE_KEY);
         String[] readableMonthAndYear = Utils.getReadableMonthAndYear(selectedMonthOfExpensesStorageKey);
-        TextView header = findViewById(R.id.expenseShareRemovalForMonthHeader);
+        TextView header = (TextView) findViewById(R.id.expenseShareRemovalForMonthHeader);
         header.setText(format("Shared Expenses %s - %s", readableMonthAndYear[0], readableMonthAndYear[1]));
         loadExpenseToDelete();
         setBackGroundTheme(null);
@@ -44,7 +44,7 @@ public class SharedExpenseDetailsRemove extends Activity {
         if (allSharedExpensesFor.size() == 0) {
             SharedExpenseDetailsRemove.this.finish();
         }
-        LinearLayout container = findViewById(R.id.otherUsersExpenses);
+        LinearLayout container = (LinearLayout) findViewById(R.id.otherUsersExpenses);
         container.removeAllViews();
         for (Map.Entry<String, MonthWiseExpense> userWiseExpenses : allSharedExpensesFor.entrySet()) {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -88,7 +88,7 @@ public class SharedExpenseDetailsRemove extends Activity {
             removeButton.setOnClickListener(v -> {
                 View sheetView = View.inflate(getApplicationContext(), R.layout.bottom_delete_other_expense_confirmation, null);
                 BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(SharedExpenseDetailsRemove.this);
-                TextView note = sheetView.findViewById(R.id.sharerExpenseRemoveNote);
+                TextView note = (TextView) sheetView.findViewById(R.id.sharerExpenseRemoveNote);
                 note.setText(format(note.getText().toString(), userWiseExpenses.getKey()));
                 mBottomSheetDialog.setContentView(sheetView);
                 ((View)sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));

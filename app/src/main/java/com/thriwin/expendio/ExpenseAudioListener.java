@@ -14,6 +14,7 @@ import static android.speech.RecognizerIntent.EXTRA_LANGUAGE;
 import static android.speech.RecognizerIntent.EXTRA_LANGUAGE_MODEL;
 import static android.speech.RecognizerIntent.LANGUAGE_MODEL_FREE_FORM;
 import static com.thriwin.expendio.Utils.isNull;
+import static com.thriwin.expendio.Utils.showToast;
 
 public class ExpenseAudioListener
         implements RecognitionListener {
@@ -79,6 +80,12 @@ public class ExpenseAudioListener
         if (error == 7 && !userStopped) {
             speech.cancel();
             speech.startListening(recognizerIntent);
+        }
+        if(error==2){
+            speech.cancel();
+            showToast(expenseMain,R.string.noNetwork);
+            expenseMain.doneWithListening();
+
         }
     }
 

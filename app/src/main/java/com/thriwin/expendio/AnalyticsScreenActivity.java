@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.facebook.ads.AdSize;
 
 import static com.thriwin.expendio.Utils.isNull;
 
@@ -66,13 +65,13 @@ public class AnalyticsScreenActivity extends GeneralActivity implements Navigati
 
 
     public void loadDisplayArea(DashboardView dashboardView, Intent intent) {
-        LinearLayout displayArea = findViewById(R.id.displayArea);
+        LinearLayout displayArea = (LinearLayout)findViewById(R.id.displayArea);
         displayArea.removeAllViews();
         IDisplayAreaView displayAreaView = getAppropriateView(dashboardView);
         displayArea.addView((View) displayAreaView);
         displayAreaView.load(this, intent);
         selectedDashboardView = dashboardView;
-        BottomNavigationView bottomNavigation = findViewById(R.id.navigation);
+        BottomNavigationView bottomNavigation = (BottomNavigationView)findViewById(R.id.navigation);
         View barChart = findViewById(R.id.bar_chart);
         barChart.setVisibility(View.GONE);
 
@@ -81,7 +80,7 @@ public class AnalyticsScreenActivity extends GeneralActivity implements Navigati
             glowFor = null;
         }
 
-        TextView headerText = findViewById(R.id.headingText);
+        TextView headerText =(TextView) findViewById(R.id.headingText);
         switch (dashboardView) {
             case HOME:
                 bottomNavigation.getMenu().findItem(R.id.navigation_home).setChecked(true);

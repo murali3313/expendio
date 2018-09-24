@@ -75,8 +75,8 @@ class BluetoothUserView extends LinearLayout implements PopupMenu.OnMenuItemClic
     }
 
     private void loadDetail() {
-        userName = findViewById(R.id.userName);
-        pairDetails = findViewById(R.id.userPairInfo);
+        userName = (TextView)findViewById(R.id.userName);
+        pairDetails = (TextView)findViewById(R.id.userPairInfo);
         userName.setText(bluetoothUser.getName());
         pairDetails.setText(bluetoothUser.getPairInfo());
     }

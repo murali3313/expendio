@@ -20,15 +20,15 @@ public class ExpenseTagEditView extends FlowLayout {
     public ExpenseTagEditView(Context context, @Nullable AttributeSet attrs, String tagKey, List<String> tagWords, LinearLayout parentContainer) {
         super(context, attrs);
         inflate(context, R.layout.tag_edit_view, this);
-        TextView tagHeader = findViewById(R.id.tagHeader);
+        TextView tagHeader = (TextView) findViewById(R.id.tagHeader);
         tagHeader.setText(tagKey);
-        taggedWordsContainer = findViewById(R.id.tagWords);
+        taggedWordsContainer = (FlowLayout) findViewById(R.id.tagWords);
         for (String word : tagWords) {
             addTags(taggedWordsContainer, word);
         }
 
         findViewById(R.id.addWordUnderTag).setOnClickListener(v -> {
-            EditText newTagWord = findViewById(R.id.tagWord);
+            EditText newTagWord = (EditText) findViewById(R.id.tagWord);
             String newWord = newTagWord.getText().toString();
 
             if (!tagWordContain(newWord) && !Utils.isEmpty(newWord.trim())) {
@@ -80,7 +80,7 @@ public class ExpenseTagEditView extends FlowLayout {
 
 
     public HashMap<String, List<String>> getTagAndWords() {
-        EditText tagWord = findViewById(R.id.tagHeader);
+        EditText tagWord = (EditText) findViewById(R.id.tagHeader);
         ArrayList<String> words = new ArrayList<>();
         for (int i = 0; i < taggedWordsContainer.getChildCount(); i++) {
             words.add(((TextView) taggedWordsContainer.getChildAt(i)).getText().toString());

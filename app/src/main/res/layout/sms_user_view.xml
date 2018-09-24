@@ -2,34 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/edit_outline"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    android:background="@drawable/edit_outline">
 
     <TextView
         android:id="@+id/userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Name"
-        android:textColor="@color/white"
+        android:minWidth="150dp"
         android:paddingLeft="10dp"
-        android:minWidth="150dp" />
+        android:textColor="@color/white" />
 
     <EditText
         android:id="@+id/userPhone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Phone number"
-        android:textColor="@color/white"
-        android:textColorHint="@color/colorPrimaryDarkTransparent"
         android:inputType="phone"
-        android:minWidth="150dp" />
+        android:minWidth="150dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/colorPrimaryDarkTransparent" />
 
     <ImageButton
         android:id="@+id/sync"
-        android:layout_gravity="right"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentRight="true"
+        android:layout_gravity="right"
         android:background="@drawable/ic_menu_send" />
 
 

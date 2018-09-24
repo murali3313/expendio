@@ -32,10 +32,10 @@ public class UnAcceptedExpensesBaseView extends LinearLayout {
         this.unAcceptedExpenses = unAcceptedExpenses;
         this.key = key;
         this.notificationView = notificationView;
-        TextView header = inflatedView.findViewById(R.id.unApprovedExpense);
+        TextView header = (TextView) inflatedView.findViewById(R.id.unApprovedExpense);
         header.setText(expensesHeader);
 
-        TextView count = inflatedView.findViewById(R.id.totalExpensesUnApproved);
+        TextView count = (TextView) inflatedView.findViewById(R.id.totalExpensesUnApproved);
         count.setText(format("Total unapproved expenses: %d", unAcceptedExpenses.size()));
 
         setClickAction();

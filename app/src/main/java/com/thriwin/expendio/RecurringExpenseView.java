@@ -33,11 +33,11 @@ class RecurringExpenseView extends LinearLayout implements AdapterView.OnItemSel
     public RecurringExpenseView(Context context, @Nullable AttributeSet attrs, RecurringExpensesView activity, RecurringExpense recurringExpense) {
         super(context, attrs);
         inflate(context, R.layout.recurring_expense_view, this);
-        RadioGroup recurringTypeSelection = findViewById(R.id.recurringTypeSelection);
+        RadioGroup recurringTypeSelection = (RadioGroup) findViewById(R.id.recurringTypeSelection);
         View dailyContainer = findViewById(R.id.dailyExpenseContainer);
         View specificDayOfWeekContainer = findViewById(R.id.dayOfWeekExpenseContainer);
         View specificDayOfMonthContainer = findViewById(R.id.dayOfMonthExpenseContainer);
-        daySelectionContainer = findViewById(R.id.daySelection);
+        daySelectionContainer = (LinearLayout) findViewById(R.id.daySelection);
         for (int i = 0; i < daySelectionContainer.getChildCount(); i++) {
             daySelectionContainer.getChildAt(i).setOnClickListener(new OnClickListener() {
                 @Override
@@ -77,7 +77,7 @@ class RecurringExpenseView extends LinearLayout implements AdapterView.OnItemSel
             }
         });
 
-        Spinner dayOfMonthSelector = findViewById(R.id.dayOfMonthSelection);
+        Spinner dayOfMonthSelector = (Spinner) findViewById(R.id.dayOfMonthSelection);
         ArrayList<String> days = new ArrayList<>();
         for (Integer i = 1; i <= 31; i++) {
             days.add(i.toString());
@@ -90,9 +90,9 @@ class RecurringExpenseView extends LinearLayout implements AdapterView.OnItemSel
         dayOfMonthSelector.setOnItemSelectedListener(this);
 
 
-        dailyRecurringExpenseEditView = findViewById(R.id.dailyExpenseData);
-        dayOfWeekRecurringExpenseEditView = findViewById(R.id.dayOfWeekExpenseData);
-        dayOfMonthRecurringExpenseEditView = findViewById(R.id.dayOfMonthData);
+        dailyRecurringExpenseEditView = (RecurringExpenseEditView) findViewById(R.id.dailyExpenseData);
+        dayOfWeekRecurringExpenseEditView = (RecurringExpenseEditView) findViewById(R.id.dayOfWeekExpenseData);
+        dayOfMonthRecurringExpenseEditView = (RecurringExpenseEditView) findViewById(R.id.dayOfMonthData);
 
         dailyRecurringExpenseEditView.setParent(activity, this);
         dayOfWeekRecurringExpenseEditView.setParent(activity, this);

@@ -37,12 +37,12 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
         GradientDrawable drawable = (GradientDrawable) monthBlockContainer.getBackground();
         drawable.setColor(Color.parseColor(timeLineColors.get(colourIndex)));
 
-        TextView blockName = findViewById(R.id.expenseBlockName);
+        TextView blockName = (TextView) findViewById(R.id.expenseBlockName);
         String[] readableMonthAndYear = Utils.getReadableMonthAndYear(expensesBlock.getKey());
         String expenseLimit = format("\n %s", expensesBlock.getValue().monthlyLimitExceededDetails());
         blockName.setText(readableMonthAndYear[0] + "\n" + readableMonthAndYear[1]);
-        TextView spentValue = findViewById(R.id.expenseSpentValue);
-        TextView spentBy = findViewById(R.id.expenseSpentBy);
+        TextView spentValue = (TextView) findViewById(R.id.expenseSpentValue);
+        TextView spentBy = (TextView) findViewById(R.id.expenseSpentBy);
         String totalExpenditure = expensesBlock.getValue().getTotalExpenditure();
 
         spentValue.setText(format("\n: %s", totalExpenditure));

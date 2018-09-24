@@ -71,7 +71,7 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ImageButton addExpenseInCurrentMonth = findViewById(R.id.addExpenseInCurrentMonth);
+        ImageButton addExpenseInCurrentMonth = (ImageButton) findViewById(R.id.addExpenseInCurrentMonth);
         expenseKey = this.getIntent().getStringExtra("ExpenseKey");
         addExpenseInCurrentMonth.setOnClickListener(v -> {
             Intent i = new Intent(getApplicationContext(), MonthWiseExpenseAdd.class);
@@ -98,8 +98,8 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
                 String monthWiseExpenseTotalExpenditure = (String) dataFromThread.get("monthWiseExpenseTotalExpenditure");
 
 
-                TextView monthWiseTotalExpenditure = findViewById(R.id.monthWiseTotalExpenditure);
-                TextView monthWiseTotalExpenditureFor = findViewById(R.id.monthWiseTotalExpenditureFor);
+                TextView monthWiseTotalExpenditure = (TextView) findViewById(R.id.monthWiseTotalExpenditure);
+                TextView monthWiseTotalExpenditureFor = (TextView) findViewById(R.id.monthWiseTotalExpenditureFor);
                 MenuItem sharerExpenseMenuItem = navigationView.getMenu().findItem(R.id.nav_remove_sharer_expense);
                 if (!totalExpenditureOfOtherUsers.equals(new BigDecimal("0"))) {
                     monthWiseTotalExpenditureFor.setText("You:");
@@ -119,16 +119,16 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
                 }
 
 
-                TextView monthWiseExpenseLimitExceeded = findViewById(R.id.monthWiseExpenseLimitExceeded);
+                TextView monthWiseExpenseLimitExceeded = (TextView) findViewById(R.id.monthWiseExpenseLimitExceeded);
                 monthWiseExpenseLimitExceeded.setText(format("%s", monthWiseExpense.monthlyLimitExceededDetails()));
 
-                TextView monthWiseExpenseLimit = findViewById(R.id.monthWiseExpenseLimit);
+                TextView monthWiseExpenseLimit = (TextView) findViewById(R.id.monthWiseExpenseLimit);
                 monthWiseExpenseLimit.setText(format("Entries\nYours:%d\nOthers: %d", monthWiseExpense.getTotalEntries(),
                         getOtherEntries(allSharedExpenses)
                 ));
 
 
-                LinearLayoutCompat timeMarker = findViewById(R.id.timeMarker);
+                LinearLayoutCompat timeMarker = (LinearLayoutCompat) findViewById(R.id.timeMarker);
                 timeMarker.removeAllViews();
                 int index = 0;
 
@@ -154,7 +154,7 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
                         for (int i = 0; i < monthWiseExpense.getSortedKeys().size(); i++) {
                             ExpensesTimeView childAt = (ExpensesTimeView) timeMarker.getChildAt(i);
                             if (childAt.expenses.getKey().equals(glowFor)) {
-                                ScrollView scrollView = findViewById(R.id.scrollParent);
+                                ScrollView scrollView = (ScrollView) findViewById(R.id.scrollParent);
                                 View viewById = childAt.findViewById(R.id.expenseTimeDay);
                                 ObjectAnimator.ofInt(scrollView, "scrollY", childAt.getTop()).setDuration(1500).start();
                                 AppCompatResources.getDrawable(getApplicationContext(), R.drawable.expense_border);
@@ -187,7 +187,7 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
     }
 
     private void loadMonthDetails(String expenseKey) {
-        TextView monthDetails = findViewById(R.id.monthDetails);
+        TextView monthDetails = (TextView) findViewById(R.id.monthDetails);
         String[] readableMonthAndYear = Utils.getReadableMonthAndYear(expenseKey);
         String displayedMonthAndYear = format("%s - %s", readableMonthAndYear[0], readableMonthAndYear[1]);
         monthDetails.setText(displayedMonthAndYear);

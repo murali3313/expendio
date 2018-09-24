@@ -30,15 +30,15 @@ class SMSUserView extends LinearLayout {
         inflater.inflate(R.layout.sms_user_view, this);
         smsSenderService = new SMSenderService();
 
-        userName = findViewById(R.id.userName);
+        userName = (TextView)findViewById(R.id.userName);
 
-        userPhone = findViewById(R.id.userPhone);
+        userPhone =(EditText) findViewById(R.id.userPhone);
 
         userName.setText(User.getName());
         userPhone.setText(User.getNumber());
 
 
-        EditText phoneNumber = findViewById(R.id.userPhone);
+        EditText phoneNumber = (EditText)findViewById(R.id.userPhone);
 
         findViewById(R.id.sync).setOnClickListener(new OnClickListener() {
             @Override

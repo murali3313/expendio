@@ -198,9 +198,9 @@
 
                 <Spinner
                     android:id="@+id/dayOfMonthSelection"
-                    android:layout_marginLeft="10dp"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:background="@color/white"
                     android:gravity="left">
 

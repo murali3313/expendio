@@ -8,16 +8,16 @@
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
     <TextView
+        android:id="@+id/sharerDeleteNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/sharerDeleteNote"
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
-        android:textColor="@color/white"
         android:text="Hey we have identified, that you have made some changes w.r.t to sharer names
         \n\n %s \n\nExpendio uses sharer name as a unique values to store and retrieve the data. When you edit/delete the name, you would loose expense data from that particular sharer stored in this app.
 \nRemedy: \n 1) You can re-import from your sharer app once again \n 2) Take a copy of data before this action. \n\n Do you want to continue? "
+        android:textColor="@color/white"
         android:textSize="18sp" />
 
     <LinearLayout
@@ -31,7 +31,8 @@
             android:layout_width="100dp"
             android:layout_height="35dp"
             android:background="@color/colorPrimary"
-            android:text="Continue" />
+            android:text="Continue"
+            android:textColor="@color/primaryText" />
 
         <Button
             android:id="@+id/removeCancel"
@@ -39,7 +40,8 @@
             android:layout_height="35dp"
             android:layout_marginLeft="10dp"
             android:background="@color/colorAlternateDark2"
-            android:text="Cancel" />
+            android:text="Cancel"
+            android:textColor="@color/primaryText" />
 
     </LinearLayout>
 </LinearLayout>

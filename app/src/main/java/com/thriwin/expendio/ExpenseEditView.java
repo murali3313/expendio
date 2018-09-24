@@ -51,17 +51,17 @@ public class ExpenseEditView extends LinearLayout implements PopupMenu.OnMenuIte
 
         this.fromSharedExpenses = this.expense.spentbyOthers();
 
-        spentOn = findViewById(R.id.spentOn);
+        spentOn = (TextView) findViewById(R.id.spentOn);
         spentOn.setEnabled(makeDateEditable);
-        amount = findViewById(R.id.amount);
-        reason = findViewById(R.id.reason);
-        remove = findViewById(R.id.remove);
-        tagsContainer = findViewById(R.id.tags);
+        amount = (EditText) findViewById(R.id.amount);
+        reason = (AutoCompleteTextView) findViewById(R.id.reason);
+        remove = (ImageButton) findViewById(R.id.remove);
+        tagsContainer = (FlowLayout) findViewById(R.id.tags);
 
-        cashTransaction = findViewById(R.id.cashTransaction);
-        cardTransaction = findViewById(R.id.cardTransaction);
-        transactionTypeSelected = findViewById(R.id.transactionType);
-        LinearLayout editable = findViewById(R.id.editable);
+        cashTransaction = (LinearLayout) findViewById(R.id.cashTransaction);
+        cardTransaction = (LinearLayout) findViewById(R.id.cardTransaction);
+        transactionTypeSelected = (TextView) findViewById(R.id.transactionType);
+        LinearLayout editable = (LinearLayout) findViewById(R.id.editable);
 
         spentOn.setText(expense.getSpentOnDisplayText());
         amount.setText(expense.getAmountSpent().toString());

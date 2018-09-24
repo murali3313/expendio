@@ -4,11 +4,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.LinearLayout;
 
-import com.facebook.ads.AdSize;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static java.util.Arrays.asList;
 
@@ -28,15 +24,6 @@ public class OfferScreenActivity extends GeneralActivity {
 
     List<String> googleAdUnitIds = asList(googleAdUnitId1, googleAdUnitId2, googleAdUnitId3, googleAdUnitId4, googleAdUnitId5);
 
-    HashMap<String, AdSize> placementAndAdSize = new HashMap<String, AdSize>() {{
-        put(placementId1Facebook, AdSize.RECTANGLE_HEIGHT_250);
-        put(placementId2Facebook, AdSize.RECTANGLE_HEIGHT_250);
-        put(placementId3Facebook, AdSize.RECTANGLE_HEIGHT_250);
-        put(placementId4Facebook, AdSize.RECTANGLE_HEIGHT_250);
-        put(placementId5Facebook, AdSize.RECTANGLE_HEIGHT_250);
-    }};
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.offer_screen);
@@ -44,7 +31,7 @@ public class OfferScreenActivity extends GeneralActivity {
 
         refreshOffers();
 
-        SwipeRefreshLayout swipeForChangeOffer = findViewById(R.id.swipeForMoreAdd);
+        SwipeRefreshLayout swipeForChangeOffer = (SwipeRefreshLayout) findViewById(R.id.swipeForMoreAdd);
         swipeForChangeOffer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -57,10 +44,6 @@ public class OfferScreenActivity extends GeneralActivity {
     }
 
     private void refreshOffers() {
-
-//        for (Map.Entry<String, AdSize> stringAdSizeEntry : placementAndAdSize.entrySet()) {
-//            addFBOffer(stringAdSizeEntry.getKey(), stringAdSizeEntry.getValue());
-//        }
 
         for (String googleAdUnit : googleAdUnitIds) {
             addAdMobOffer(googleAdUnit, com.google.android.gms.ads.AdSize.MEDIUM_RECTANGLE, getKeyWordsForGoogle());

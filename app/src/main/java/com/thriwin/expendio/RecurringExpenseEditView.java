@@ -29,10 +29,10 @@ public class RecurringExpenseEditView extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.recurrence_expense_edit, this);
-        amount = findViewById(R.id.amount);
+        amount = (EditText) findViewById(R.id.amount);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, ExpenseTags.getSavedExpenseTags().getWords());
-        reason = findViewById(R.id.reason);
+        reason = (AutoCompleteTextView) findViewById(R.id.reason);
         reason.setThreshold(1);
         reason.setAdapter(adapter);
 
@@ -43,9 +43,9 @@ public class RecurringExpenseEditView extends LinearLayout {
             }
         });
 
-        cashTransaction = findViewById(R.id.cashTransaction);
-        cardTransaction = findViewById(R.id.cardTransaction);
-        transactionTypeSelected = findViewById(R.id.transactionType);
+        cashTransaction = (LinearLayout) findViewById(R.id.cashTransaction);
+        cardTransaction = (LinearLayout) findViewById(R.id.cardTransaction);
+        transactionTypeSelected = (TextView) findViewById(R.id.transactionType);
 
         cashTransaction.getChildAt(0).setOnClickListener(new OnClickListener() {
             @Override

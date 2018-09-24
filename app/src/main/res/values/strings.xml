@@ -86,6 +86,7 @@
     <string name="monthExpenseDeleteConfirmation">Removal of expenses is an undoable action. Do you want continue?</string>
     <string name="touchToReviewExpense">Touch here to review the expenses</string>
     <string name="amount">Amount</string>
+    <string name="noNetwork">No/poor internet connection. You need internet connection for speech to text</string>
     <string-array name="reminder_options">
         <item>Do Not Disturb</item>
         <item>Once a day</item>

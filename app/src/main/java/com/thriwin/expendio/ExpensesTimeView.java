@@ -54,22 +54,22 @@ public class ExpensesTimeView extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View inflate = inflater.inflate(R.layout.expenses_time_view, this);
-        RelativeLayout timeMarkerContainer = findViewById(R.id.expenseTimeDay);
+        RelativeLayout timeMarkerContainer = (RelativeLayout) findViewById(R.id.expenseTimeDay);
 
         int colourIndex = index % timeLineColors.size();
         timeMarkerContainer.setBackgroundColor(Color.parseColor(timeLineColors.get(colourIndex)));
 
-        LinearLayout totalExpenseView = findViewById(R.id.totalExpenseDayWise);
+        LinearLayout totalExpenseView = (LinearLayout) findViewById(R.id.totalExpenseDayWise);
         buildNameAndExpenditure(context, totalExpenseView, "You", this.expenses.getValue().getTotalExpenditure());
         for (Map.Entry<String, Map.Entry<String, Expenses>> dayWiseExpensesFromSharer : allDayWiseExpenseFromSharer.entrySet()) {
             buildNameAndExpenditure(context, totalExpenseView, dayWiseExpensesFromSharer.getKey(), dayWiseExpensesFromSharer.getValue().getValue().getTotalExpenditure());
         }
 
 
-        TextView dateWiseRepresentation = findViewById(R.id.dateWiseString);
+        TextView dateWiseRepresentation = (TextView) findViewById(R.id.dateWiseString);
         dateWiseRepresentation.setText(getDate(expenses, allDayWiseExpenseFromSharer).getDateMonthHumanReadable());
         this.expense = this.expenses.getValue();
-        LinearLayout expensesPerDay = findViewById(R.id.expensesPerDay);
+        LinearLayout expensesPerDay = (LinearLayout) findViewById(R.id.expensesPerDay);
         for (Expense expens : this.expense) {
             ExpenseTimeView expenseTimeView = new ExpenseTimeView(context, null, expens, this, colourIndex);
             expensesPerDay.addView(expenseTimeView);

@@ -19,12 +19,12 @@ public class ExpenseRestoreActivity extends GeneralActivity {
         setContentView(R.layout.restore_expense);
         super.onCreate(savedInstanceState);
         findViewById(R.id.restoreExpense).setOnClickListener(v -> processPastedEntries());
-        EditText restorableExpensesView = findViewById(R.id.restorableExpenses);
+        EditText restorableExpensesView = (EditText) findViewById(R.id.restorableExpenses);
 
         restorableExpensesView.setOnContextClickListener(new View.OnContextClickListener() {
             @Override
             public boolean onContextClick(View v) {
-                EditText restorableExpensesView = findViewById(R.id.restorableExpenses);
+                EditText restorableExpensesView = (EditText) findViewById(R.id.restorableExpenses);
 
                 String restorableExpenses = restorableExpensesView.getText().toString().trim();
                 restorableExpensesView.setText(restorableExpenses);
@@ -34,7 +34,7 @@ public class ExpenseRestoreActivity extends GeneralActivity {
     }
 
     private void processPastedEntries() {
-        EditText restorableExpensesView = findViewById(R.id.restorableExpenses);
+        EditText restorableExpensesView = (EditText) findViewById(R.id.restorableExpenses);
 
         String restorableExpenses = restorableExpensesView.getText().toString();
         restorableExpensesView.setText(restorableExpenses);
@@ -47,7 +47,7 @@ public class ExpenseRestoreActivity extends GeneralActivity {
                     return;
                 }
                 View sheetView = View.inflate(ExpenseRestoreActivity.this, R.layout.bottom_accept_expense_confirmation, null);
-                TextView confirmation = sheetView.findViewById(R.id.restoreExpenseAcceptanceConfirmation);
+                TextView confirmation = (TextView) sheetView.findViewById(R.id.restoreExpenseAcceptanceConfirmation);
                 String formattedext = format(confirmation.getText().toString(), processPastedExpenses.size());
                 confirmation.setText(formattedext);
                 BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(ExpenseRestoreActivity.this);

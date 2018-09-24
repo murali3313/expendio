@@ -107,13 +107,13 @@ public class HomeScreenActivity extends GeneralActivity {
 
 
     public void loadDisplayArea(DashboardView dashboardView, Intent intent) {
-        LinearLayout displayArea = findViewById(R.id.displayArea);
+        LinearLayout displayArea = (LinearLayout)findViewById(R.id.displayArea);
         displayArea.removeAllViews();
         IDisplayAreaView displayAreaView = getAppropriateView(dashboardView);
         displayArea.addView((View) displayAreaView);
         displayAreaView.load(this, intent);
         selectedDashboardView = dashboardView;
-        BottomNavigationView bottomNavigation = findViewById(R.id.navigation);
+        BottomNavigationView bottomNavigation =(BottomNavigationView) findViewById(R.id.navigation);
         View barChart = findViewById(R.id.bar_chart);
         barChart.setVisibility(View.GONE);
 
@@ -122,7 +122,7 @@ public class HomeScreenActivity extends GeneralActivity {
             glowFor = null;
         }
 
-        TextView headerText = findViewById(R.id.headingText);
+        TextView headerText =(TextView) findViewById(R.id.headingText);
         switch (dashboardView) {
             case HOME:
                 bottomNavigation.getMenu().findItem(R.id.navigation_home).setChecked(true);

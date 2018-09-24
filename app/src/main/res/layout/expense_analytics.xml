@@ -8,9 +8,9 @@
         android:id="@+id/expenseAnalytics"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="30dp"
         android:background="@color/colorAlternateDark1BlackBase"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="30dp">
 
         <LinearLayout
             android:id="@+id/pieChartContainer"
@@ -48,6 +48,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:text="Include shared expenses"
+                    android:textColor="@color/primaryText"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -155,8 +156,7 @@
                 android:id="@+id/groupedBarChart"
                 android:layout_width="350dp"
                 android:layout_height="320dp"
-                android:layout_gravity="center_horizontal"
-                />
+                android:layout_gravity="center_horizontal" />
         </LinearLayout>
 
         <LinearLayout

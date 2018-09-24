@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/container"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -44,8 +44,8 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/noteIfOtherExpenseNotEditable"
                 android:textColor="@color/white"
-                android:visibility="gone"
-                android:textStyle="italic" />
+                android:textStyle="italic"
+                android:visibility="gone" />
         </LinearLayout>
 
         <ScrollView

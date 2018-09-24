@@ -11,8 +11,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:text=" $$ " />
+            android:text=" $$ "
+            android:textColor="@color/white" />
 
         <EditText
             android:id="@+id/amount"
@@ -22,20 +22,20 @@
             android:layout_marginLeft="5dp"
             android:layout_weight="2"
             android:background="@drawable/edit_outline"
-            android:textColorHint="@color/colorPrimaryDarkTransparent"
             android:hint="@string/mandatory"
             android:inputType="numberDecimal"
             android:maxLength="7"
             android:paddingLeft="5dp"
             android:textColor="@color/white"
+            android:textColorHint="@color/colorPrimaryDarkTransparent"
             android:textCursorDrawable="@null" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
-            android:textColor="@color/white"
-            android:text="For: " />
+            android:text="For: "
+            android:textColor="@color/white" />
 
         <AutoCompleteTextView
             android:id="@+id/reason"
@@ -77,12 +77,14 @@
             android:layout_marginTop="4dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
-    android:textColor="@color/white"
-    android:text="Transaction type: "/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Transaction type: "
+                android:textColor="@color/white" />
+
             <LinearLayout
                 android:id="@+id/cashTransaction"
                 android:layout_width="wrap_content"
@@ -112,9 +114,9 @@
             android:id="@+id/transactionType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cash"
             android:paddingLeft="20dp"
             android:paddingTop="10dp"
+            android:text="Cash"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textStyle="bold" />

@@ -1,7 +1,6 @@
 package com.thriwin.expendio;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -32,10 +31,10 @@ public class ExpenseSMSPattern extends GeneralActivity {
 
     private void load() {
         SMSInferenceSettings smsInfererSettings = Utils.getSMSInfererSettings();
-        SwitchCompat smsTrackkingEnabler = findViewById(R.id.enableSmsTracking);
+        SwitchCompat smsTrackkingEnabler = (SwitchCompat) findViewById(R.id.enableSmsTracking);
         smsTrackkingEnabler.setChecked(smsInfererSettings.isEnabled());
         ArrayList<String> smsPhrases = smsInfererSettings.getSmsPhrases();
-        smsPhraseContainer = findViewById(R.id.smsPhraseContainer);
+        smsPhraseContainer = (LinearLayout) findViewById(R.id.smsPhraseContainer);
         for (String smsPhrase : smsPhrases) {
             LinearLayout smsPhraseView = getSMSPhraseCoontrol(smsPhrase);
             smsPhraseContainer.addView(smsPhraseView);
@@ -56,9 +55,7 @@ public class ExpenseSMSPattern extends GeneralActivity {
             public void onClick(View v) {
                 smsInferenceSettingsToSave = new SMSInferenceSettings();
                 boolean enabled = smsTrackkingEnabler.isEnabled();
-                if (enabled) {
 
-                }
                 String[] permissions = new String[]{
                         Manifest.permission.READ_SMS,
                         Manifest.permission.RECEIVE_SMS
@@ -71,7 +68,13 @@ public class ExpenseSMSPattern extends GeneralActivity {
                 }
 
                 if (enabled) {
-                    requestPermissions(permissions, 23);
+                    if (isPermissionDenied(ExpenseSMSPattern.this, permissions)){
+                        requestPermissions(permissions, 23);
+                    }else{
+                        saveSMSPatterns();
+                    }
+
+
                 } else {
                     getBaseContext().stopService(new Intent(getBaseContext(), SMSReceiverService.class));
                 }
@@ -83,15 +86,20 @@ public class ExpenseSMSPattern extends GeneralActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 23) {
-            Utils.saveSMSInfererSettings(smsInferenceSettingsToSave);
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                getBaseContext().startService(new Intent(getBaseContext(), SMSReceiverService.class));
-                Utils.showToast(getBaseContext(), R.string.savedSmsPhrases);
+                saveSMSPatterns();
             } else {
+                Utils.saveSMSInfererSettings(smsInferenceSettingsToSave);
                 Utils.showToast(getBaseContext(), R.string.smsPermissionDenied);
             }
         }
+    }
+
+    private void saveSMSPatterns() {
+        Utils.saveSMSInfererSettings(smsInferenceSettingsToSave);
+        getBaseContext().startService(new Intent(getBaseContext(), SMSReceiverService.class));
+        Utils.showToast(getBaseContext(), R.string.savedSmsPhrases);
     }
 
 
@@ -99,7 +107,7 @@ public class ExpenseSMSPattern extends GeneralActivity {
     private LinearLayout getSMSPhraseCoontrol(String smsPhrase) {
         LinearLayout linearLayout = new LinearLayout(getBaseContext(), null);
         LinearLayout.LayoutParams linearLayoutLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        linearLayoutLayoutParams.topMargin=5;
+        linearLayoutLayoutParams.topMargin = 5;
         linearLayout.setLayoutParams(linearLayoutLayoutParams);
 
         EditText smsPhraseView = new EditText(getBaseContext(), null);

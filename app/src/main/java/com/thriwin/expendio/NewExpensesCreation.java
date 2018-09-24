@@ -37,11 +37,11 @@ public class NewExpensesCreation extends Activity {
             selectedDate= new Date(Utils.getDeserializedMonthWiseExpenses(selectedMonthKey).getLatestDate(selectedMonthKey));
         }
         this.expenses = new Expenses(new Expense(new BigDecimal(0), selectedDate, ""));
-        ExpensesEditView expenses = findViewById(R.id.newExpenses);
+        ExpensesEditView expenses = (ExpensesEditView) findViewById(R.id.newExpenses);
         expenses.populate(this.expenses, true, false, this, false, null, false);
 
-        okButton = findViewById(R.id.acceptedExpense);
-        cancelButton = findViewById(R.id.discardExpenses);
+        okButton = (ImageButton) findViewById(R.id.acceptedExpense);
+        cancelButton = (ImageButton) findViewById(R.id.discardExpenses);
 
         okButton.setOnClickListener(v -> {
             HomeScreenActivity.glowFor = this.expenses.getStorageKey();
@@ -56,7 +56,7 @@ public class NewExpensesCreation extends Activity {
                 NewExpensesCreation.this.finish();
             }
         });
-        ImageButton addExpense = findViewById(R.id.addExpense);
+        ImageButton addExpense = (ImageButton) findViewById(R.id.addExpense);
         addExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

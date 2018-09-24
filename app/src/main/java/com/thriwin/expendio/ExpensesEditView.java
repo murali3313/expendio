@@ -7,6 +7,8 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;

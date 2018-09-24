@@ -33,11 +33,11 @@ public class ExpenseTimeView extends LinearLayout {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.expense_time_view, this);
         this.expense = expense;
-        tagsContainer = findViewById(R.id.flowContainer);
-        amount = findViewById(R.id.amount);
-        user = findViewById(R.id.userName);
-        cashTransaction = findViewById(R.id.cashTransaction);
-        cardTransaction = findViewById(R.id.cardTransaction);
+        tagsContainer = (FlowLayout) findViewById(R.id.flowContainer);
+        amount = (TextView) findViewById(R.id.amount);
+        user = (TextView) findViewById(R.id.userName);
+        cashTransaction = (ImageButton) findViewById(R.id.cashTransaction);
+        cardTransaction = (ImageButton) findViewById(R.id.cardTransaction);
 
 
         cashTransaction.setVisibility(expense.isCashTransaction() ? VISIBLE : GONE);

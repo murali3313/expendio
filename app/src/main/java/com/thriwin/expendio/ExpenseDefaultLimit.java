@@ -34,7 +34,7 @@ public class ExpenseDefaultLimit extends Activity {
     }
 
     public void load() {
-        EditText defaultExpenseLimit = findViewById(R.id.defaultExpenseLimit);
+        EditText defaultExpenseLimit = (EditText) findViewById(R.id.defaultExpenseLimit);
         defaultExpenseLimit.setText(Utils.getDefaultExpenseLimit().toString());
         findViewById(R.id.acceptDefaultLimit).setOnClickListener(v -> {
             Utils.saveDefaultExpenseLimit(defaultExpenseLimit.getText().toString());

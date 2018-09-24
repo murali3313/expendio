@@ -22,7 +22,7 @@ public class ExpenseMonthWiseLimit extends Activity {
 
     public void load() {
         String expenseStorageKey = getIntent().getStringExtra(EXPENSE_STORAGE_KEY);
-        EditText expenseLimit = findViewById(R.id.monthWiseExpenseLimit);
+        EditText expenseLimit = (EditText) findViewById(R.id.monthWiseExpenseLimit);
         expenseLimit.setText(Utils.getMonthWiseExpenseLimit(expenseStorageKey).toString());
         findViewById(R.id.acceptExpenseLimit).setOnClickListener(v -> {
             Utils.saveExpenseLimit(expenseStorageKey, expenseLimit.getText().toString());

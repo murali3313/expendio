@@ -13,31 +13,31 @@
         android:layout_height="wrap_content">
 
         <Button
+            android:id="@+id/restoreExpense"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
-            android:id="@+id/restoreExpense"
             android:background="@drawable/ic_restore_expense" />
     </RelativeLayout>
 
     <ScrollView
-        android:layout_marginTop="35dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="75dp">
+        android:layout_marginBottom="75dp"
+        android:layout_marginTop="35dp">
 
         <com.thriwin.expendio.ContextMenuEditText
+            android:id="@+id/restorableExpenses"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="@color/white"
-            android:textColorHint="@color/colorPrimaryDarkTransparent"
-            android:minHeight="350dp"
             android:layout_margin="5dp"
             android:layout_marginTop="65dp"
-            android:textAlignment="gravity"
-            android:id="@+id/restorableExpenses"
             android:background="@drawable/edit_outline"
-            android:hint="@string/restoreExpenseNote" />
+            android:hint="@string/restoreExpenseNote"
+            android:minHeight="350dp"
+            android:textAlignment="gravity"
+            android:textColor="@color/white"
+            android:textColorHint="@color/colorPrimaryDarkTransparent" />
     </ScrollView>
 
     <android.support.design.widget.BottomNavigationView

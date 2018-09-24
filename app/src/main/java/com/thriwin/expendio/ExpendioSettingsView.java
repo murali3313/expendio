@@ -27,11 +27,11 @@ public class ExpendioSettingsView extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.expendio_settings_view);
-        EditText notificationHour = findViewById(R.id.notificationHour);
-        EditText startDayOfMonth = findViewById(R.id.startDayOfMonth);
-        Spinner reminderOption = findViewById(R.id.reminderOption);
-        LinearLayout blockAdsContainer = findViewById(R.id.blockAdsContainer);
-        SwitchCompat blockAds = findViewById(R.id.blockAds);
+        EditText notificationHour = (EditText) findViewById(R.id.notificationHour);
+        EditText startDayOfMonth = (EditText)findViewById(R.id.startDayOfMonth);
+        Spinner reminderOption = (Spinner) findViewById(R.id.reminderOption);
+        LinearLayout blockAdsContainer = (LinearLayout) findViewById(R.id.blockAdsContainer);
+        SwitchCompat blockAds = (SwitchCompat) findViewById(R.id.blockAds);
         loadSettings(notificationHour, startDayOfMonth, reminderOption,blockAds);
 
         startDayOfMonth.setOnClickListener(new View.OnClickListener() {

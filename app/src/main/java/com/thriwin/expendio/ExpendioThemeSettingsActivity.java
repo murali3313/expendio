@@ -16,7 +16,7 @@ public class ExpendioThemeSettingsActivity extends GeneralActivity {
         setContentView(R.layout.expendio_theme_activity);
         super.onCreate(savedInstanceState);
 
-        FlowLayout themeSelection = findViewById(R.id.themeSelection);
+        FlowLayout themeSelection = (FlowLayout) findViewById(R.id.themeSelection);
 
         selectedTheme = ExpendioThemeSettings.loadExpendioThemeSettings().getBackgroundTheme();
 

@@ -49,12 +49,12 @@ public class ExpenseAcceptance extends Activity {
         if(!isEmpty(userName)) {
             findViewById(R.id.noteIfOtherExpenseIncluded).setVisibility(View.VISIBLE);
         }
-        ExpensesEditView unapprovedExpenses = findViewById(R.id.unApprovedExpensesViaVoice);
+        ExpensesEditView unapprovedExpenses = (ExpensesEditView) findViewById(R.id.unApprovedExpensesViaVoice);
         unapprovedExpenses.populate(expenses, true, false, this, false, null,!isEmpty(userName));
 
-        okButton = findViewById(R.id.acceptedExpense);
-        cancelButton = findViewById(R.id.discardExpenses);
-        notNowButton = findViewById(R.id.notNowExpense);
+        okButton = (Button) findViewById(R.id.acceptedExpense);
+        cancelButton = (Button) findViewById(R.id.discardExpenses);
+        notNowButton = (Button) findViewById(R.id.notNowExpense);
 
         okButton.setOnClickListener(v -> {
             HomeScreenActivity.glowFor = unapprovedExpenses.getExpenses().getStorageKey();
@@ -83,7 +83,7 @@ public class ExpenseAcceptance extends Activity {
             }
         });
 
-        ImageButton addExpense = findViewById(R.id.addExpense);
+        ImageButton addExpense = (ImageButton) findViewById(R.id.addExpense);
         addExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

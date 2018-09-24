@@ -20,8 +20,8 @@ public class RecurringExpensesView extends GeneralActivity {
     }
 
     public void load() {
-        ImageButton addRecurringExpenseButton = findViewById(R.id.addRecurringExpenses);
-        recurringExpensesContainer = findViewById(R.id.recurringExpenses);
+        ImageButton addRecurringExpenseButton = (ImageButton) findViewById(R.id.addRecurringExpenses);
+        recurringExpensesContainer = (LinearLayout) findViewById(R.id.recurringExpenses);
         recurringExpensesContainer.removeAllViews();
         addRecurringExpenseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,7 +31,7 @@ public class RecurringExpensesView extends GeneralActivity {
                 recurringExpenseView.requestFocus();
             }
         });
-        ImageButton saveRecurringExpenseButton = findViewById(R.id.saveRecurringExpenses);
+        ImageButton saveRecurringExpenseButton = (ImageButton) findViewById(R.id.saveRecurringExpenses);
         saveRecurringExpenseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -20,7 +20,7 @@ public class FileListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.file_list);
-        LinearLayout fileListContainer = findViewById(R.id.listFiles);
+        LinearLayout fileListContainer = (LinearLayout) findViewById(R.id.listFiles);
         this.findViewById(R.id.container).setBackgroundResource(GeneralActivity.getBackGround(null));
         String[] fileLists = this.getIntent().getStringExtra("FileList").split(",");
         for (String fileList : fileLists) {

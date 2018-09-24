@@ -14,8 +14,8 @@
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
-        android:textColor="@color/white"
         android:text="This action is an undoable action. Do you want to remove %s's expense for this month?"
+        android:textColor="@color/white"
         android:textSize="18sp" />
 
     <LinearLayout
@@ -29,7 +29,8 @@
             android:layout_width="100dp"
             android:layout_height="35dp"
             android:background="@color/colorPrimary"
-            android:text="Continue" />
+            android:text="Continue"
+            android:textColor="@color/primaryText" />
 
         <Button
             android:id="@+id/removeCancel"
@@ -37,7 +38,8 @@
             android:layout_height="35dp"
             android:layout_marginLeft="10dp"
             android:background="@color/colorAlternateDark2"
-            android:text="Cancel" />
+            android:text="Cancel"
+            android:textColor="@color/primaryText" />
 
     </LinearLayout>
 </LinearLayout>

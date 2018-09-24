@@ -29,7 +29,7 @@ public class ExpenseTagsEditView extends GeneralActivity {
 
     public void load() {
         ExpenseTags expenseTags = ExpenseTags.getSavedExpenseTags();
-        LinearLayout tagContainer = findViewById(R.id.tagsEditContainer);
+        LinearLayout tagContainer = (LinearLayout) findViewById(R.id.tagsEditContainer);
         tagContainer.removeAllViews();
         for (Map.Entry<String, List<String>> tags : expenseTags.getTagAndWordsAssociated()) {
             ExpenseTagEditView tagEditView = new ExpenseTagEditView(this, null, tags.getKey(), tags.getValue(), tagContainer);

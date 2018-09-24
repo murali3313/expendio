@@ -29,11 +29,11 @@ public class MonthWiseExpenseAdd extends Activity {
         this.expenses = new Expenses();
         this.expenses.add(new Expense(latestDate));
 
-        ExpensesEditView monthWiseExpensesEdit = findViewById(R.id.monthWiseExpensesEdit);
+        ExpensesEditView monthWiseExpensesEdit = (ExpensesEditView) findViewById(R.id.monthWiseExpensesEdit);
         monthWiseExpensesEdit.populate(expenses, true, true, this, false, null, false);
 
-        okButton = findViewById(R.id.acceptedExpense);
-        cancelButton =  findViewById(R.id.discardExpenses);
+        okButton = (ImageButton) findViewById(R.id.acceptedExpense);
+        cancelButton = (ImageButton) findViewById(R.id.discardExpenses);
 
         okButton.setOnClickListener(v -> {
             ExpenseTimelineView.glowFor = expenses.getDateMonth();
@@ -42,7 +42,7 @@ public class MonthWiseExpenseAdd extends Activity {
         });
 
         cancelButton.setOnClickListener(v -> MonthWiseExpenseAdd.this.finish());
-        ImageButton addExpense = findViewById(R.id.addExpense);
+        ImageButton addExpense = (ImageButton) findViewById(R.id.addExpense);
         addExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

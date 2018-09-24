@@ -66,8 +66,8 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
     public ExpenseAnalyticsView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.expense_analytics, this);
-        pieChart = findViewById(R.id.chart);
-        barChart = findViewById(R.id.groupedBarChart);
+        pieChart =(PieChart) findViewById(R.id.chart);
+        barChart = (BarChart) findViewById(R.id.groupedBarChart);
 
         pieChart.setNoDataTextColor(getResources().getColor(R.color.colorPrimaryDark));
         barChart.setNoDataTextColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -96,7 +96,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
             View barChartContainer = findViewById(R.id.barChartContainer);
             View pieChartContainer = findViewById(R.id.pieChartContainer);
 
-            ImageButton barChartIcon = expenseListener.findViewById(R.id.bar_chart);
+            ImageButton barChartIcon = (ImageButton) expenseListener.findViewById(R.id.bar_chart);
             barChartIcon.setBackgroundResource(R.drawable.ic_bar_chart);
 
             barChartIcon.setOnClickListener(v -> {
@@ -107,7 +107,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
                     barChartContainer.setVisibility(VISIBLE);
                     pieChartContainer.setVisibility(GONE);
                     loadCurrentMonthBarChart(selectedMonthStorageKey, comparingMonthStorageKey);
-                    userSelectorContainer = findViewById(R.id.userSelectorInBarChart);
+                    userSelectorContainer =(LinearLayout) findViewById(R.id.userSelectorInBarChart);
                 } else {
                     barChartIcon.setBackgroundResource(R.drawable.ic_bar_chart);
                     isDisplayingPieChart = true;
@@ -115,7 +115,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
                     loadPieChart(selectedMonthStorageKey);
                     barChartContainer.setVisibility(GONE);
                     pieChartContainer.setVisibility(VISIBLE);
-                    userSelectorContainer = findViewById(R.id.userSelectorInPieChart);
+                    userSelectorContainer = (LinearLayout)findViewById(R.id.userSelectorInPieChart);
 
                 }
 
@@ -205,7 +205,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
 
 
     private List<String> loadTagSelector(Map<String, Expenses> primaryMonthTagBased, Map<String, Expenses> comparingMonthTagBased) {
-        LinearLayout tagContainer = findViewById(R.id.tagSelector);
+        LinearLayout tagContainer = (LinearLayout) findViewById(R.id.tagSelector);
         tagContainer.removeAllViews();
         Set<String> allTagsAsSet = new HashSet<>(primaryMonthTagBased.keySet());
         allTagsAsSet.addAll(comparingMonthTagBased.keySet());
@@ -237,6 +237,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
             String tag = allTags.get(i);
             displayedTags.add(tag);
             textView.setText(format("%s", tag));
+            textView.setTextColor(getResources().getColor(R.color.primaryText));
             textView.setPadding(15, 5, 15, 5);
             LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.setMargins(10, 0, 10, 0);
@@ -319,7 +320,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         barChart.getXAxis().setTextColor(whiteColor);
         barChart.getLegend().setTextColor(whiteColor);
         barChart.invalidate();
-        loadUserSelector(findViewById(R.id.userSelectorInBarChart));
+        loadUserSelector((LinearLayout) findViewById(R.id.userSelectorInBarChart));
     }
 
     private float getSpace(int size, String g) {
@@ -363,8 +364,8 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
     }
 
     private void setMonthSelectorSpinners(String primaryMonth, String comparingMonth) {
-        Spinner primaryMonthSelector = findViewById(R.id.primaryMonth);
-        Spinner comparingMonthSelector = findViewById(R.id.comparingMonth);
+        Spinner primaryMonthSelector = (Spinner) findViewById(R.id.primaryMonth);
+        Spinner comparingMonthSelector = (Spinner) findViewById(R.id.comparingMonth);
 
         ArrayAdapter<String> primaryAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_item_primary, getAllMonthHumanReadable(allExpensesMonths));
         primaryMonthSelector.setAdapter(primaryAdapter);
@@ -393,7 +394,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
 
     private void loadMonthSelector(String currentMonth) {
         this.selectedMonthStorageKey = currentMonth;
-        LinearLayout monthContainer = findViewById(R.id.monthSelector);
+        LinearLayout monthContainer =(LinearLayout) findViewById(R.id.monthSelector);
         monthContainer.removeAllViews();
         int indexOfSelectedMonth = allExpensesMonths.indexOf(currentMonth);
         ImageButton leftArrow = new ImageButton(getContext(), null);
@@ -411,26 +412,21 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
         int endAt = startFrom + 2 >= allExpensesMonths.size() ? allExpensesMonths.size() - 1 : startFrom + 2;
         if (startFrom > 0) {
             monthContainer.addView(leftArrow);
-            leftArrow.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    loadMonthSelector(allExpensesMonths.get(startFrom));
-                }
-            });
+            leftArrow.setOnClickListener(v -> loadMonthSelector(allExpensesMonths.get(startFrom)));
         }
         for (int i = startFrom; i <= endAt; i++) {
             TextView textView = new TextView(this.getContext(), null);
             String expenseMonth = allExpensesMonths.get(i);
             String[] readableMonthAndYear = getReadableMonthAndYear(expenseMonth);
-            textView.setText(format("%s - %s", readableMonthAndYear[0], readableMonthAndYear[1]));
+            textView.setText(format("%s - %s", readableMonthAndYear[0].substring(0,3), readableMonthAndYear[1]));
             textView.setPadding(15, 5, 15, 5);
             LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.setMargins(10, 0, 10, 0);
             textView.setLayoutParams(params);
             textView.setBackgroundResource(R.drawable.circle);
+            textView.setTextColor(getResources().getColor(R.color.primaryText));
             if (expenseMonth.equals(currentMonth)) {
                 textView.setBackgroundResource(R.drawable.circle_selected);
-                textView.setTextColor(getResources().getColor(R.color.primaryText));
             }
             textView.setOnClickListener(new OnClickListener() {
                 @Override
@@ -451,7 +447,7 @@ public class ExpenseAnalyticsView extends LinearLayout implements IDisplayAreaVi
                 }
             });
         }
-        loadUserSelector(findViewById(R.id.userSelectorInPieChart));
+        loadUserSelector((LinearLayout) findViewById(R.id.userSelectorInPieChart));
     }
 
     private void loadPieChart(String storageKeyForCurrentMonth) {

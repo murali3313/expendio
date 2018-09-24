@@ -4,11 +4,11 @@
     android:id="@+id/monthBlockContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="2dp"
+    android:background="@drawable/expenses_block_border"
     android:gravity="center_horizontal"
     android:minHeight="180dp"
     android:orientation="vertical"
-    android:layout_margin="2dp"
-    android:background="@drawable/expenses_block_border"
     tools:context="com.thriwin.expendio.ExpenseMonthWiseBlock">
 
     <TextView

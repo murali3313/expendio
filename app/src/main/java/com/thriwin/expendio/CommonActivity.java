@@ -18,7 +18,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -41,6 +40,7 @@ import pl.droidsonroids.gif.GifImageButton;
 import static com.thriwin.expendio.ExpenseAudioStatements.CLEAR;
 import static com.thriwin.expendio.ExpenseAudioStatements.defaultEndOfStatement;
 import static com.thriwin.expendio.GeneralActivity.getBackGround;
+import static com.thriwin.expendio.GeneralActivity.isPermissionDenied;
 import static com.thriwin.expendio.Utils.isNull;
 
 public class CommonActivity extends AppCompatActivity {
@@ -66,7 +66,7 @@ public class CommonActivity extends AppCompatActivity {
 
 
     public void updateWithUserSpeech(ExpenseAudioStatements expenseAudioStatements) {
-        TextView textTalk = sheetView.findViewById(R.id.talkText);
+        TextView textTalk = (TextView) sheetView.findViewById(R.id.talkText);
         textTalk.setText(expenseAudioStatements.getAllUserFormattedStatements());
         clearLastStatementSlider.setEnabled(!expenseAudioStatements.getAllStatements().isEmpty());
     }
@@ -131,22 +131,27 @@ public class CommonActivity extends AppCompatActivity {
         mBottomSheetDialog.setCancelable(false);
         ((View) sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
         mBottomSheetDialog.show();
-        indicator = sheetView.findViewById(R.id.audio_processor_indicator);
-        indicatorText = sheetView.findViewById(R.id.audio_processor_indicator_text);
-        clearLastStatementSlider = sheetView.findViewById(R.id.clear_last_statement);
+        indicator = (GifImageButton) sheetView.findViewById(R.id.audio_processor_indicator);
+        indicatorText = (TextView) sheetView.findViewById(R.id.audio_processor_indicator_text);
+        clearLastStatementSlider = (SwipeButton) sheetView.findViewById(R.id.clear_last_statement);
         clearLastStatementSlider.setOnActiveListener(() -> {
             expenseAudioListener.processAudioResult(CLEAR);
 
         });
         clearLastStatementSlider.setEnabled(false);
 
-        stopStatementSlider = sheetView.findViewById(R.id.stop_listening);
+        stopStatementSlider = (SwipeButton) sheetView.findViewById(R.id.stop_listening);
         stopStatementSlider.setOnActiveListener(() -> {
             expenseAudioListener.processAudioResult(defaultEndOfStatement);
         });
 
         mBottomSheetDialog.setOnCancelListener(dialog -> expenseAudioListener.stopListening());
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, REQ_CODE_SPEECH_INPUT);
+        String[] permissions = {Manifest.permission.RECORD_AUDIO};
+        if (isPermissionDenied(CommonActivity.this, permissions)) {
+            ActivityCompat.requestPermissions(this, permissions, REQ_CODE_SPEECH_INPUT);
+        }else{
+            startListening();
+        }
     }
 
     @Override
@@ -156,16 +161,20 @@ public class CommonActivity extends AppCompatActivity {
             case REQ_CODE_SPEECH_INPUT: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (!isNull(expenseAudioListener)) {
-                        expenseAudioListener.reset();
-                    }
-                    expenseAudioListener.startListening();
+                    startListening();
                 } else {
                     showToast(R.string.audio_record_permission_denied);
                 }
                 return;
             }
         }
+    }
+
+    private void startListening() {
+        if (!isNull(expenseAudioListener)) {
+            expenseAudioListener.reset();
+        }
+        expenseAudioListener.startListening();
     }
 
 
@@ -177,10 +186,10 @@ public class CommonActivity extends AppCompatActivity {
             listenButton.setOnClickListener(v -> listenExpense(v));
             expenseAudioListener = ExpenseAudioListener.getInstance(this);
         }
-        BottomNavigationView navigation = findViewById(R.id.navigation);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         TextView actionView = (TextView) MenuItemCompat.getActionView(navigationView.getMenu().
                 findItem(R.id.nav_offers));
@@ -212,7 +221,7 @@ public class CommonActivity extends AppCompatActivity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        BottomNavigationView navigation = findViewById(R.id.navigation);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationMenuView bottomNavigationMenuView =
                 (BottomNavigationMenuView) navigation.getChildAt(0);
         View v = bottomNavigationMenuView.getChildAt(2);
@@ -303,18 +312,18 @@ public class CommonActivity extends AppCompatActivity {
                     i = new Intent(getApplicationContext(), HomeScreenActivity.class);
                     itemSelected = getResources().getString(R.string.title_home);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    ContextCompat.startActivity(getApplicationContext(), i, null);
+                    startActivity(i, null);
                     return true;
                 case R.id.navigation_analytics:
                     i = new Intent(getApplicationContext(), AnalyticsScreenActivity.class);
                     itemSelected = getResources().getString(R.string.title_expense_analysis);
                     i.putExtra("ANALYTICS_MONTH", getMonthForAnalytics());
-                    ContextCompat.startActivity(getApplicationContext(), i, null);
+                    startActivity(i, null);
                     return true;
                 case R.id.navigation_notifications:
                     i = new Intent(getApplicationContext(), NotificationScreenActivity.class);
                     itemSelected = getResources().getString(R.string.title_notifications);
-                    ContextCompat.startActivity(getApplicationContext(), i, null);
+                    startActivity(i, null);
                     return true;
             }
             return false;
