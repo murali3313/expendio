@@ -34,7 +34,7 @@
     <string name="noEmailAppAvailable">No email app available. Please manually send mail to muralidharan.nandhakumar@gmail.com</string>
     <string name="startDayOfMonth">Expense start day</string>
     <string name="startDayOfMonthNote">Please input a day from 1-28. If not it will be defaulted to day 1. If start day is changed in between an expense month, it will affect all entries after this change.</string>
-    <string name="notificationHour">Recurring expenses, Notification hour</string>
+    <string name="notificationHour">Recurring expenses\nNotification hour</string>
     <string name="notificationHourNote">Please input value from 0 - 23, If not it will be defaulted to 8 PM i.e. 20 hrs</string>
     <string name="settingsSavedSuccessfully">Settings saved successfully</string>
     <string name="eraseAllData">Reset of all your expenses, tags and recurring expenses.</string>
@@ -87,6 +87,7 @@
     <string name="touchToReviewExpense">Touch here to review the expenses</string>
     <string name="amount">Amount</string>
     <string name="noNetwork">No/poor internet connection. You need internet connection for speech to text</string>
+    <string name="dayWiseDeleteOfOtherExpenseNotPossible">Shared expenses cannot be removed day-wise. \nFor complete removal of shared expenses use option in side menu. </string>
     <string-array name="reminder_options">
         <item>Do Not Disturb</item>
         <item>Once a day</item>

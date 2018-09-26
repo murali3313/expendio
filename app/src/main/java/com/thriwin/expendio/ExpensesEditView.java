@@ -2,13 +2,12 @@ package com.thriwin.expendio;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputConnection;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -46,21 +45,31 @@ public class ExpensesEditView extends LinearLayout {
     }
 
     private void addExpense(boolean makeDateEditable, boolean makeDatePermissibleWithinMonthLimit, Expense expens, boolean isTagEditDisabled, String tagText, boolean fromSharedExpenses) {
-        Handler handler = new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                ExpenseEditView expenseEditView = (ExpenseEditView) msg.obj;
-                expenseEditViews.add(expenseEditView);
-                expenseEditView.setReasonAdapter();
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
 
-                addView(expenseEditView, getIndex(expenseEditView.spentDate(), expens));
-                ExpensesEditView.this.getChildAt(0).requestFocus();
-                return true;
-            }
-        });
+            Handler handler = new Handler(new Handler.Callback() {
+                @Override
+                public boolean handleMessage(Message msg) {
+                    ExpenseEditView expenseEditView = (ExpenseEditView) msg.obj;
+                    expenseEditViews.add(expenseEditView);
+                    expenseEditView.setReasonAdapter();
 
-        ExpenseEditViewLoader expenseEditViewLoader = new ExpenseEditViewLoader(context, this, expens, makeDateEditable, makeDatePermissibleWithinMonthLimit, isTagEditDisabled, tagText, fromSharedExpenses, handler);
-        expenseEditViewLoader.start();
+                    addView(expenseEditView, getIndex(expenseEditView.spentDate(), expens));
+                    ExpensesEditView.this.getChildAt(0).requestFocus();
+                    return true;
+                }
+            });
+
+            ExpenseEditViewLoader expenseEditViewLoader = new ExpenseEditViewLoader(context, this, expens, makeDateEditable, makeDatePermissibleWithinMonthLimit, isTagEditDisabled, tagText, fromSharedExpenses, handler);
+            expenseEditViewLoader.start();
+        } else {
+            ExpenseEditView expenseEditView = new ExpenseEditView(context, null, expens, this, makeDateEditable, makeDatePermissibleWithinMonthLimit, isTagEditDisabled, tagText, fromSharedExpenses);
+            expenseEditViews.add(expenseEditView);
+            expenseEditView.setReasonAdapter();
+
+            addView(expenseEditView, getIndex(expenseEditView.spentDate(), expens));
+            ExpensesEditView.this.getChildAt(0).requestFocus();
+        }
 
     }
 
@@ -68,6 +77,7 @@ public class ExpensesEditView extends LinearLayout {
         ExpenseEditView expenseEditView = new ExpenseEditView(context, null, expens, ExpensesEditView.this, makeDateEditable, makeDatePermissibleWithinMonthLimit, isTagEditDisabled, tagText, fromSharedExpenses);
         expenseEditViews.add(expenseEditView);
         addView(expenseEditView, 0);
+        expenseEditView.setReasonAdapter();
         expenseEditView.requestFocus();
 
     }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
@@ -42,7 +41,6 @@ public class HomeScreenActivity extends GeneralActivity {
         super.onCreate(savedInstanceState);
 
         selectedDashboardView = DashboardView.HOME;
-//        loadDisplayArea(DashboardView.HOME, getIntent());
         if (!Utils.isReminderAlreadySet()) {
             NotificationScheduler.setReminder(applicationContext, RecurringExpensesAlarmReceiver.class);
             Utils.setReminder();
@@ -53,7 +51,7 @@ public class HomeScreenActivity extends GeneralActivity {
         if (!isEmpty(displayView) && displayView.equals("NOTIFICATION")) {
             Intent i = new Intent(applicationContext, NotificationScreenActivity.class);
             itemSelected = getResources().getString(R.string.title_notifications);
-            ContextCompat.startActivity(applicationContext, i, null);
+            startActivity(i, null);
         }
 
         Intent service = new Intent(applicationContext, SMSReceiverService.class);

@@ -80,12 +80,16 @@ public class ExpenseAudioListener
         if (error == 7 && !userStopped) {
             speech.cancel();
             speech.startListening(recognizerIntent);
-        }
-        if(error==2){
+            expenseMain.listeningInfo(ListeningQueues.READY);
+        } else if (error == 2) {
             speech.cancel();
-            showToast(expenseMain,R.string.noNetwork);
+            showToast(expenseMain, R.string.noNetwork);
             expenseMain.doneWithListening();
 
+        } else {
+            speech.cancel();
+            speech.startListening(recognizerIntent);
+            expenseMain.listeningInfo(ListeningQueues.READY);
         }
     }
 
@@ -145,11 +149,20 @@ public class ExpenseAudioListener
     }
 
     public void reset() {
-        if (!isNull(speech)) {
-            speech.stopListening();
-            speech.cancel();
-        }
+        this.destroy();
         speech = SpeechRecognizer.createSpeechRecognizer(expenseMain);
         speech.setRecognitionListener(this);
+    }
+
+    public void destroy() {
+        try {
+            if (!isNull(speech)) {
+                speech.stopListening();
+                speech.cancel();
+                speech.destroy();
+            }
+        } catch (Exception e) {
+
+        }
     }
 }

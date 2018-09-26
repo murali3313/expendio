@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import com.google.android.gms.ads.AdRequest;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
 
@@ -234,9 +235,20 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
 
     //todo: Google Keywords
     protected List<String> getKeyWordsForGoogle() {
-        List<String> keywords = asList();
+        return asList();
+//        List<String> values = ExpenseTags.getSavedExpenseTags().getWords();
+//
+//        List<String> keyWords=new ArrayList<>();
+//
+//        for (; index < values.size() && keyWords.size() <= 5; index++) {
+//            keyWords.add(values.get(index));
+//
+//        }
+//        if (index == values.size() - 1) {
+//            index = 0;
+//        }
+//        return keyWords;
 
-        return keywords;
     }
 
     @Override

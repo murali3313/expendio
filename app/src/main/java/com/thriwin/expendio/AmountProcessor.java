@@ -20,12 +20,30 @@ public class AmountProcessor extends Processor {
             }
             index++;
         }
-        return values.isEmpty() ? new BigDecimal(0) : getRupeesAndPaiseFormat(values);
+        return values.isEmpty() ? findFromText(allWords,expModifiable) : getRupeesAndPaiseFormat(values);
+    }
+
+    private BigDecimal findFromText(String[] allWords, StringBuilder expModifiable) {
+        BigDecimal value = new BigDecimal(0);
+        for (String allWord : allWords) {
+            switch (allWord.toLowerCase()) {
+                case "hundred":
+                    value = new BigDecimal("100");
+                    removeProcessedText(expModifiable, allWord);
+                    break;
+                case "thousand":
+                    value = new BigDecimal("1000");
+                    removeProcessedText(expModifiable, allWord);
+                    break;
+            }
+            return value;
+        }
+        return null;
     }
 
     protected void removeAllTextBetweenTwoNumerals(StringBuilder expModifiable, String[] allWords, Integer firstOccurenceOfNumber, int index) {
         if (firstOccurenceOfNumber >= 0) {
-                for (int i = firstOccurenceOfNumber + 1; i <= index + 1; i++) {
+            for (int i = firstOccurenceOfNumber + 1; i <= index + 1; i++) {
                 removeProcessedText(expModifiable, allWords[i]);
             }
         }
@@ -35,7 +53,7 @@ public class AmountProcessor extends Processor {
         String s = "";
         int index = 0;
         for (BigDecimal value : values) {
-            if(value.toString().length()>=7)
+            if (value.toString().length() >= 7)
                 continue;
             s += index > 0 ? "." + value.toString() : value.toString();
             if (index == 1)

@@ -86,6 +86,7 @@ public class CommonActivity extends AppCompatActivity {
 
     public void displayExpenseForCorrection(Expenses processedExpenses) {
         String key = Utils.saveUnacceptedExpenses(processedExpenses);
+        expenseAudioListener.clearAudioStatements();
         doneWithListening();
 
         Intent i = new Intent(CommonActivity.this, ExpenseAcceptance.class);
@@ -142,14 +143,16 @@ public class CommonActivity extends AppCompatActivity {
 
         stopStatementSlider = (SwipeButton) sheetView.findViewById(R.id.stop_listening);
         stopStatementSlider.setOnActiveListener(() -> {
+            expenseAudioListener.destroy();
             expenseAudioListener.processAudioResult(defaultEndOfStatement);
+
         });
 
         mBottomSheetDialog.setOnCancelListener(dialog -> expenseAudioListener.stopListening());
         String[] permissions = {Manifest.permission.RECORD_AUDIO};
         if (isPermissionDenied(CommonActivity.this, permissions)) {
             ActivityCompat.requestPermissions(this, permissions, REQ_CODE_SPEECH_INPUT);
-        }else{
+        } else {
             startListening();
         }
     }
@@ -183,8 +186,8 @@ public class CommonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         View listenButton = this.findViewById(R.id.addExpenseVoice);
         if (!isNull(listenButton)) {
-            listenButton.setOnClickListener(v -> listenExpense(v));
             expenseAudioListener = ExpenseAudioListener.getInstance(this);
+            listenButton.setOnClickListener(v -> listenExpense(v));
         }
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -329,6 +332,14 @@ public class CommonActivity extends AppCompatActivity {
             return false;
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (!isNull(expenseAudioListener)) {
+            expenseAudioListener.destroy();
+        }
+    }
 
     public boolean shouldRedirectToNewActivity(@NonNull MenuItem item) {
         return !itemSelected.equalsIgnoreCase(item.getTitle().toString()) || (!(CommonActivity.this instanceof HomeScreenActivity) && item.getTitle().toString().equals("Home"));

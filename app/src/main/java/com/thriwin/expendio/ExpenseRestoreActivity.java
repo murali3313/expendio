@@ -20,17 +20,18 @@ public class ExpenseRestoreActivity extends GeneralActivity {
         super.onCreate(savedInstanceState);
         findViewById(R.id.restoreExpense).setOnClickListener(v -> processPastedEntries());
         EditText restorableExpensesView = (EditText) findViewById(R.id.restorableExpenses);
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
+            restorableExpensesView.setOnContextClickListener(new View.OnContextClickListener() {
+                @Override
+                public boolean onContextClick(View v) {
+                    EditText restorableExpensesView = (EditText) findViewById(R.id.restorableExpenses);
 
-        restorableExpensesView.setOnContextClickListener(new View.OnContextClickListener() {
-            @Override
-            public boolean onContextClick(View v) {
-                EditText restorableExpensesView = (EditText) findViewById(R.id.restorableExpenses);
-
-                String restorableExpenses = restorableExpensesView.getText().toString().trim();
-                restorableExpensesView.setText(restorableExpenses);
-                return false;
-            }
-        });
+                    String restorableExpenses = restorableExpensesView.getText().toString().trim();
+                    restorableExpensesView.setText(restorableExpenses);
+                    return false;
+                }
+            });
+        }
     }
 
     private void processPastedEntries() {
@@ -52,7 +53,7 @@ public class ExpenseRestoreActivity extends GeneralActivity {
                 confirmation.setText(formattedext);
                 BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(ExpenseRestoreActivity.this);
                 mBottomSheetDialog.setContentView(sheetView);
-                ((View)sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
+                ((View) sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
                 mBottomSheetDialog.show();
 
                 mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(v1 -> {

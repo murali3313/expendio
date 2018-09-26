@@ -25,9 +25,10 @@ import java.util.List;
 import java.util.Map;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.thriwin.expendio.GeneralActivity.getBackGround;
 import static com.thriwin.expendio.Utils.isNull;
 import static com.thriwin.expendio.Utils.saveDayWiseExpenses;
+import static com.thriwin.expendio.Utils.showLongToast;
+import static com.thriwin.expendio.Utils.showToast;
 import static com.thriwin.expendio.Utils.timeLineColors;
 
 public class ExpensesTimeView extends LinearLayout {
@@ -85,15 +86,22 @@ public class ExpensesTimeView extends LinearLayout {
         inflate.setLongClickable(true);
         OnLongClickListener onLongClickListener = v -> {
             isLongPressed = true;
+            String storageKey = this.expenses.getValue().getStorageKey();
+            if (storageKey.equalsIgnoreCase("NA")) {
+                showLongToast(getContext(), R.string.dayWiseDeleteOfOtherExpenseNotPossible);
+                return false;
+            }
             View sheetView = View.inflate(context, R.layout.bottom_delete_month_confirmation, null);
             BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(parentView);
             mBottomSheetDialog.setContentView(sheetView);
-            ((View)sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
+            ((View) sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
             mBottomSheetDialog.show();
 
             mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(v1 -> {
-                saveDayWiseExpenses(this.expenses.getValue().getStorageKey(), this.expenses.getValue().getDateMonth(), new Expenses());
-                parentView.loadTimeLineView(this.expenses.getValue().getStorageKey());
+
+                saveDayWiseExpenses(storageKey, this.expenses.getValue().getDateMonth(), new Expenses());
+                parentView.loadTimeLineView(storageKey);
+
                 mBottomSheetDialog.cancel();
             });
 

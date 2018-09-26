@@ -310,6 +310,12 @@ public class Utils {
         toast.show();
     }
 
+    public static void showLongToast(Context cx, int resourceId) {
+        Toast toast = Toast.makeText(cx, resourceId, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.BOTTOM, 0, 500);
+        toast.show();
+    }
+
     public static void showToast(Context cx, String resourceId) {
         Toast toast = Toast.makeText(cx, resourceId, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.BOTTOM, 0, 500);
@@ -494,6 +500,7 @@ public class Utils {
     }
 
     public static boolean isReminderAlreadySet() {
+//        return false;
         return Utils.getLocalStorageForPreferences().getBoolean("REMINDER", false);
     }
 
