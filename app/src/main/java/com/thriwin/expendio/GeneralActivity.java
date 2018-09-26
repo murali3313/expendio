@@ -22,7 +22,6 @@ import android.widget.LinearLayout;
 import com.google.android.gms.ads.AdRequest;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
 
@@ -37,7 +36,7 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Toolbar toolbar =(Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -175,8 +174,8 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
     }
 
     protected void addAdMobOffer(String adUnitId, com.google.android.gms.ads.AdSize adSize, List<String> keyWords) {
-        adContainer =(LinearLayout) findViewById(R.id.banner_container);
-        afterManiAd =(LinearLayout) findViewById(R.id.afterMainAd);
+        adContainer = (LinearLayout) findViewById(R.id.banner_container);
+        afterManiAd = (LinearLayout) findViewById(R.id.afterMainAd);
 
         if (ExpendioSettings.loadExpendioSettings().getBlockAds()) {
             ifAdsNotLoading();
@@ -199,7 +198,7 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
                     viewById.setVisibility(View.GONE);
                 if (!isNull(afterManiAd)) {
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(0, 245, 0, 0);
+                    layoutParams.setMargins(0, (int)DimentionUtils.converPixelsToDP(75,GeneralActivity.this) , 0, 0);
                     afterManiAd.setLayoutParams(layoutParams);
                 }
             }

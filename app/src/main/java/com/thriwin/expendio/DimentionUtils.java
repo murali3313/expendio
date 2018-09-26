@@ -10,4 +10,8 @@ final class DimentionUtils {
     static float converPixelsToSp(float px, Context context) {
         return px / context.getResources().getDisplayMetrics().scaledDensity;
     }
+
+    static float converPixelsToDP(float px, Context context) {
+        return px * context.getResources().getDisplayMetrics().scaledDensity;
+    }
 }
