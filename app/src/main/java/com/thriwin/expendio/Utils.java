@@ -131,14 +131,33 @@ public class Utils {
     }
 
     public static String getSerializedExpenses(List<Expense> expenses) {
-        String expensesString = null;
+        String expensesString = convertObjectToString(expenses);
+        return expensesString;
+    }
+
+    private static String convertObjectToString(Object o) {
+        String objectString = "";
+
         try {
             ObjectMapper obj = new ObjectMapper();
-            expensesString = obj.writeValueAsString(expenses);
+            objectString = obj.writeValueAsString(o);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return expensesString;
+        return objectString;
+    }
+
+    private static HashMap<String, String> convertStringToMap(String o) {
+        HashMap<String, String> objectString = new HashMap<>();
+
+        try {
+            ObjectMapper obj = new ObjectMapper();
+            objectString = obj.readValue(o, new TypeReference<Map<String, String>>() {
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return objectString;
     }
 
     public static String getSerializedExpenses(MonthWiseExpense monthWiseExpense) {
@@ -697,5 +716,70 @@ public class Utils {
             }
         }
         return tagBasedExpenses;
+    }
+
+    public static String getAllSettingsInfo() {
+        Map<String, Object> settingsData = new HashMap<>();
+        Map<String, ?> all = Utils.getLocalStorageForPreferences().getAll();
+        for (Map.Entry<String, ?> entry : all.entrySet()) {
+            if (!entry.getKey().contains("Expense-")) {
+                settingsData.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return convertObjectToString(settingsData);
+    }
+
+    public static void readAndSaveSettings(String settingsJson) {
+        ExpenseTags.clearExpensetags();
+        HashMap<String, String> settings = convertStringToMap(settingsJson);
+        for (Map.Entry<String, String> settingsEntry : settings.entrySet()) {
+            Utils.saveGeneric(settingsEntry.getKey(), settingsEntry.getValue());
+        }
+    }
+
+    private static void saveGeneric(String key, String value) {
+        if (key.equalsIgnoreCase("REMINDER")) {
+            Utils.getLocalStorageForPreferences().edit().putBoolean(key, Boolean.valueOf(value)).commit();
+        } else {
+            Utils.getLocalStorageForPreferences().edit().putString(key, value).commit();
+        }
+    }
+
+    public static String getExpenseInfo(String expenseKey) {
+        return Utils.getLocalStorageForPreferences().getString(expenseKey, "");
+    }
+
+    public static String getStoredNameForGoogle() {
+        return Utils.getLocalStorageForPreferences().getString("GoogleName", "Yours") + "-";
+    }
+
+
+    public static void markSettingsForSyncing(Boolean forSyncing) {
+        Utils.getLocalStorageForPreferences().edit().putString("MARK_SETTINGS_SYNC", forSyncing.toString()).commit();
+    }
+
+    public static boolean isSettingsForSyncing() {
+        String string = Utils.getLocalStorageForPreferences().getString("MARK_SETTINGS_SYNC", "true");
+        return Boolean.valueOf(string);
+    }
+
+    public static void markExpenseForSyncing(String expenseKey) {
+        String expenseKeys = Utils.getLocalStorageForPreferences().getString("MARK_EXPENSE_SYNC", "");
+        String expenseKeysForSyncing = isEmpty(expenseKeys) ? expenseKey : expenseKeys + "," + expenseKey;
+        Utils.getLocalStorageForPreferences().edit().putString("MARK_EXPENSE_SYNC", expenseKeysForSyncing).commit();
+    }
+
+    public static String getExpenseForSyncing() {
+        return Utils.getLocalStorageForPreferences().getString("MARK_EXPENSE_SYNC", "");
+
+    }
+
+    public static void clearExpenseForSyncing() {
+        Utils.getLocalStorageForPreferences().edit().remove("MARK_EXPENSE_SYNC").commit();
+    }
+
+    public static boolean isExpenseForSyncing() {
+        String string = Utils.getLocalStorageForPreferences().getString("MARK_EXPENSE_SYNC", "");
+        return !isEmpty(string);
     }
 }

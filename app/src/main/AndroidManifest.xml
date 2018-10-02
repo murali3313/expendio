@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -22,6 +23,10 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-8899454204921425~4483354238"/>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <activity
             android:name=".HomeScreenActivity"
@@ -133,6 +138,15 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
+            android:name=".GoogleCloudSynchActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/googleCloudSync"
+
+            android:windowSoftInputMode="stateHidden|adjustResize"
+
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
             android:name=".DayWiseExpenseEdit"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustNothing"
@@ -172,6 +186,7 @@
             android:name=".FileListActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
+
 
         <receiver
             android:name=".RecurringExpensesAlarmReceiver"

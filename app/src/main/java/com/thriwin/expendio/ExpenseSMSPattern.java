@@ -3,10 +3,8 @@ package com.thriwin.expendio;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.SwitchCompat;
 import android.view.Gravity;
 import android.view.View;
@@ -70,11 +68,12 @@ public class ExpenseSMSPattern extends GeneralActivity {
                 }
 
                 if (enabled) {
-                    if (isPermissionDenied(ExpenseSMSPattern.this, permissions)){
+                    if (isPermissionDenied(ExpenseSMSPattern.this, permissions)) {
                         requestPermissions(permissions, 23);
-                    }else{
+                    } else {
                         saveSMSPatterns();
                     }
+                    Utils.markSettingsForSyncing(true);
 
 
                 } else {

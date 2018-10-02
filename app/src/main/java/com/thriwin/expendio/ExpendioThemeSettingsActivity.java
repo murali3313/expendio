@@ -42,6 +42,7 @@ public class ExpendioThemeSettingsActivity extends GeneralActivity {
             public void onClick(View v) {
                 ExpendioThemeSettings.saveExpendioThemeSettings(new ExpendioThemeSettings(selectedTheme));
                 showToast(R.string.expendioThemeSettingSavedSuccessfully);
+                Utils.markSettingsForSyncing(true);
                 ExpendioThemeSettingsActivity.this.finish();
 
             }

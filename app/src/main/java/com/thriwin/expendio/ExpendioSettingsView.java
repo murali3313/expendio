@@ -55,6 +55,7 @@ public class ExpendioSettingsView extends Activity {
                 mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        ExpenseTags.clearExpensetags();
                         Utils.clearAllData();
                         mBottomSheetDialog.cancel();
                         ExpendioSettingsView.this.finish();

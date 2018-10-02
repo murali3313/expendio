@@ -27,6 +27,7 @@ public class SharedExpenseDetailsRemove extends Activity {
             viewById.setBackgroundResource(getBackGround(backGroundTheme));
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,12 +92,13 @@ public class SharedExpenseDetailsRemove extends Activity {
                 TextView note = (TextView) sheetView.findViewById(R.id.sharerExpenseRemoveNote);
                 note.setText(format(note.getText().toString(), userWiseExpenses.getKey()));
                 mBottomSheetDialog.setContentView(sheetView);
-                ((View)sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
+                ((View) sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
                 mBottomSheetDialog.show();
 
                 mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(v1 -> {
                     Utils.removeAllSharerInfo(asList(userWiseExpenses.getKey()));
                     loadExpenseToDelete();
+                    Utils.markSettingsForSyncing(true);
                     mBottomSheetDialog.cancel();
                 });
 

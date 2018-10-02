@@ -173,6 +173,7 @@ public class ExpenseTags {
         }
         writeToPersistence(new ExpenseTag(wordAndTags));
         savedExpenseTags = null;
+        Utils.markSettingsForSyncing(true);
     }
 
     private static void writeToPersistence(ExpenseTag wordAndTags) {
@@ -199,5 +200,9 @@ public class ExpenseTags {
             tags.add(tagEntry.getKey());
         }
         return tags;
+    }
+
+    public static void clearExpensetags() {
+        savedExpenseTags = null;
     }
 }

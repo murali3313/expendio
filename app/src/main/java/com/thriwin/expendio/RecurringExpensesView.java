@@ -1,6 +1,5 @@
 package com.thriwin.expendio;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -45,6 +44,8 @@ public class RecurringExpensesView extends GeneralActivity {
                 }
                 Utils.saveRecurrigExpenses(recurringExpenses);
                 Utils.showToast(getApplicationContext(), R.string.recurringExpensesSavedSuccessfully);
+                Utils.markSettingsForSyncing(true);
+
                 loadRecurringExpenses();
 
             }

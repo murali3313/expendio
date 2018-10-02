@@ -87,7 +87,31 @@
     <string name="touchToReviewExpense">Touch here to review the expenses</string>
     <string name="amount">Amount</string>
     <string name="noNetwork">No/poor internet connection. You need internet connection for speech to text</string>
+    <string name="noNetworkForGoogleSync">No/poor internet connection. You need internet connection for syncing data to google</string>
     <string name="dayWiseDeleteOfOtherExpenseNotPossible">Shared expenses cannot be removed day-wise. \nFor complete removal of shared expenses use option in side menu. </string>
+    <string name="googleCloudSync">Google cloud sync</string>
+    <string name="clientId">459334050180-bki334m4rcvrl4puib014kdbrnr9vi1p.apps.googleusercontent.com</string>
+    <string name="syncData">Sync Data</string>
+    <string name="settingsSyncFailure">Sync failure</string>
+    <string name="select_file">Select File</string>
+    <string name="fileNotPresent">File not exist</string>
+    <string name="setupGoogleSync">Setup google sync</string>
+    <string name="googleRestoreSettingFailed">Restoring from google failed. Please try again...</string>
+    <string name="googleRestoreSettingSuccess">Successfully restored settings information from google.</string>
+    <string name="settingsSyncSuccess">Settings synched successfully...</string>
+    <string name="googleAccountSetupSuccesfully">Your google setup was successfull...</string>
+    <string name="googleAccountFailure">Google account setup failed... Please try again...</string>
+    <string name="syncDetails">Syncing account: %s</string>
+    <string name="stopGoogleSync">Detach Google account</string>
+    <string name="logoutSuccessfull">Google sigount successfull..</string>
+    <string name="expenseSyncFailure">Expense syncing failed...</string>
+    <string name="settingsRestorationAndSync"><![CDATA[Settings Restore & Sync]]></string>
+    <string name="syncSettings">Backup settings</string>
+    <string name="restoreSettings">Restore settings</string>
+    <string name="expenseRestorationAndSync"><![CDATA[Expense Restore & Sync]]></string>
+    <string name="syncExpenses">Backup expenses</string>
+    <string name="restoreExpenses">Restore expenses</string>
+    <string name="manual">Manual syncing...</string>
     <string-array name="reminder_options">
         <item>Do Not Disturb</item>
         <item>Once a day</item>

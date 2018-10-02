@@ -4,9 +4,12 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -38,6 +41,7 @@ import java.io.File;
 import pl.droidsonroids.gif.GifImageButton;
 
 import static com.thriwin.expendio.ExpenseAudioStatements.CLEAR;
+import static com.thriwin.expendio.ExpenseAudioStatements.REFRESH;
 import static com.thriwin.expendio.ExpenseAudioStatements.defaultEndOfStatement;
 import static com.thriwin.expendio.GeneralActivity.getBackGround;
 import static com.thriwin.expendio.GeneralActivity.isPermissionDenied;
@@ -60,6 +64,7 @@ public class CommonActivity extends AppCompatActivity {
     NotificationView notificationView;
 
     DashboardView selectedDashboardView;
+    static ConnectivityManager connectivityManager;
 
 
     protected ExcelGenerator generator = new ExcelGenerator();
@@ -132,6 +137,15 @@ public class CommonActivity extends AppCompatActivity {
         mBottomSheetDialog.setCancelable(false);
         ((View) sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
         mBottomSheetDialog.show();
+
+        sheetView.findViewById(R.id.close_audio_listener).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expenseAudioListener.destroy();
+                expenseAudioListener.processAudioResult(REFRESH);
+                expenseAudioListener.processAudioResult(defaultEndOfStatement);
+            }
+        });
         indicator = (GifImageButton) sheetView.findViewById(R.id.audio_processor_indicator);
         indicatorText = (TextView) sheetView.findViewById(R.id.audio_processor_indicator_text);
         clearLastStatementSlider = (SwipeButton) sheetView.findViewById(R.id.clear_last_statement);
@@ -209,6 +223,7 @@ public class CommonActivity extends AppCompatActivity {
         actionView.setFocusableInTouchMode(true);
         actionView.requestFocus();
         setBackGroundTheme(null);
+        connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
     }
 
@@ -398,6 +413,11 @@ public class CommonActivity extends AppCompatActivity {
         } catch (Exception e) {
 
         }
+    }
+
+    public static boolean isNetworkAvailable() {
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 

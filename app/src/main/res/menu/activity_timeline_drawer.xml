@@ -47,7 +47,10 @@
     </group>
     <item android:title="Reports">
         <menu>
-
+            <item
+                android:id="@+id/nav_google_sync"
+                android:icon="@mipmap/ic_menu_excel"
+                android:title="@string/googleCloudSync" />
             <item
                 android:id="@+id/nav_download"
                 android:icon="@mipmap/ic_menu_excel"

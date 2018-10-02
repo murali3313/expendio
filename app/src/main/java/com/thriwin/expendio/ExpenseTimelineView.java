@@ -300,6 +300,10 @@ public class ExpenseTimelineView extends CommonActivity implements NavigationVie
         } else if (id == R.id.nav_download) {
             downloadMonthWiseExpense();
 
+        } else if (id == R.id.nav_google_sync) {
+            Intent i = new Intent(ExpenseTimelineView.this, GoogleCloudSynchActivity.class);
+            startActivity(i);
+
         } else if (id == R.id.nav_expense_limit) {
             Intent i = new Intent(ExpenseTimelineView.this, ExpenseMonthWiseLimit.class);
             i.putExtra(ExpenseMonthWiseLimit.EXPENSE_STORAGE_KEY, expenseKey);

@@ -12,6 +12,7 @@ class ExpenseAudioStatements {
     private final String keyEndOfStatement = "END_OF_STATEMENT_MARKER";
     public static final String defaultEndOfStatement = "STOP";
     public static final String CLEAR = "Clear";
+    public static final String REFRESH = "Refresh";
 
     private List<String> userStatements = new ArrayList<>();
     SpeechToExpenseEngine speechToExpenseEngine;

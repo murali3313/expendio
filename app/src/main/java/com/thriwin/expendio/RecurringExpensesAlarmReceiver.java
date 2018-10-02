@@ -34,6 +34,27 @@ public class RecurringExpensesAlarmReceiver extends BroadcastReceiver {
         }
         remindExpenseFilling(context);
         recurrenceExpenseNotifier(context);
+        syncSettings(context);
+        syncExpenses(context);
+    }
+
+    private void syncExpenses(Context context) {
+        if (Utils.isExpenseForSyncing()) {
+            String expenseForSyncing = Utils.getExpenseForSyncing();
+            String[] expenseKeys = expenseForSyncing.split(",");
+            for (String expenseKey : expenseKeys) {
+                GoogleCloudSynchActivity.silentSignInAndWriteMyExpenseToGoogleSync(context, expenseKey);
+            }
+
+            Utils.clearExpenseForSyncing();
+        }
+    }
+
+    private void syncSettings(Context context) {
+        if (Utils.isSettingsForSyncing()) {
+            GoogleCloudSynchActivity.silentSignInAndWriteSettingsToGoogleSync(context);
+            Utils.markSettingsForSyncing(false);
+        }
     }
 
 
@@ -59,7 +80,7 @@ public class RecurringExpensesAlarmReceiver extends BroadcastReceiver {
                     Utils.saveNotificationExpenses(todaysExpenses);
 
                     NotificationScheduler.showNotification(context, HomeScreenActivity.class,
-                            "Expenses pending for approval", "Pending for your approval:" + todaysExpenses.size() , genaralTips.get(Utils.getTipsIndex()), "NOTIFICATION");
+                            "Expenses pending for approval", "Pending for your approval:" + todaysExpenses.size(), genaralTips.get(Utils.getTipsIndex()), "NOTIFICATION");
                 }
                 Utils.markRecurrenceCheckerRanToday();
 

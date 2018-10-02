@@ -83,6 +83,10 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
         } else if (id == R.id.nav_download) {
             downloadAllExpenses();
 
+        } else if (id == R.id.nav_google_sync) {
+            Intent i = new Intent(GeneralActivity.this, GoogleCloudSynchActivity.class);
+            startActivity(i);
+
         } else if (id == R.id.nav_restore_expense) {
             Intent i = new Intent(GeneralActivity.this, ExpenseRestoreActivity.class);
             startActivity(i);
@@ -176,7 +180,8 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
     protected void addAdMobOffer(String adUnitId, com.google.android.gms.ads.AdSize adSize, List<String> keyWords) {
         adContainer = (LinearLayout) findViewById(R.id.banner_container);
         afterManiAd = (LinearLayout) findViewById(R.id.afterMainAd);
-
+        if (1 == 1)
+            return;
         if (ExpendioSettings.loadExpendioSettings().getBlockAds()) {
             ifAdsNotLoading();
             return;
@@ -198,7 +203,7 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
                     viewById.setVisibility(View.GONE);
                 if (!isNull(afterManiAd)) {
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(0, (int)DimentionUtils.converPixelsToDP(75,GeneralActivity.this) , 0, 0);
+                    layoutParams.setMargins(0, (int) DimentionUtils.converPixelsToDP(75, GeneralActivity.this), 0, 0);
                     afterManiAd.setLayoutParams(layoutParams);
                 }
             }
