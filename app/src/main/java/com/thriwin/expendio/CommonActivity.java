@@ -64,7 +64,7 @@ public class CommonActivity extends AppCompatActivity {
     NotificationView notificationView;
 
     DashboardView selectedDashboardView;
-    static ConnectivityManager connectivityManager;
+    public static ConnectivityManager connectivityManager;
 
 
     protected ExcelGenerator generator = new ExcelGenerator();
@@ -141,9 +141,13 @@ public class CommonActivity extends AppCompatActivity {
         sheetView.findViewById(R.id.close_audio_listener).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                expenseAudioListener.destroy();
-                expenseAudioListener.processAudioResult(REFRESH);
-                expenseAudioListener.processAudioResult(defaultEndOfStatement);
+                try {
+                    expenseAudioListener.destroy();
+                    expenseAudioListener.processAudioResult(REFRESH);
+                    expenseAudioListener.processAudioResult(defaultEndOfStatement);
+                } finally {
+                    mBottomSheetDialog.cancel();
+                }
             }
         });
         indicator = (GifImageButton) sheetView.findViewById(R.id.audio_processor_indicator);

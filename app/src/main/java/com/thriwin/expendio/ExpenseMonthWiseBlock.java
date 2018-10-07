@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.SortedMap;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.thriwin.expendio.GeneralActivity.getBackGround;
 import static com.thriwin.expendio.Utils.timeLineColors;
 import static java.lang.String.format;
 
@@ -30,6 +29,7 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
     public ExpenseMonthWiseBlock(Context context, @Nullable AttributeSet attrs, Map.Entry<String, MonthWiseExpense> expensesBlock, HomeScreenView homeScreenView, HomeScreenActivity homeScreenActivity, int index) {
         super(context, attrs);
         this.expensesBlock = expensesBlock;
+        final String storageKey = expensesBlock.getKey();
         inflate(context, R.layout.expense_month_block, this);
 
         int colourIndex = index % timeLineColors.size();
@@ -38,9 +38,9 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
         drawable.setColor(Color.parseColor(timeLineColors.get(colourIndex)));
 
         TextView blockName = (TextView) findViewById(R.id.expenseBlockName);
-        String[] readableMonthAndYear = Utils.getReadableMonthAndYear(expensesBlock.getKey());
+        String[] readableMonthAndYear = Utils.getReadableMonthAndYear(storageKey);
         String expenseLimit = format("\n %s", expensesBlock.getValue().monthlyLimitExceededDetails());
-        blockName.setText(readableMonthAndYear[0] + "\n" + readableMonthAndYear[1]);
+        blockName.setText(readableMonthAndYear[0] + " - " + readableMonthAndYear[1]);
         TextView spentValue = (TextView) findViewById(R.id.expenseSpentValue);
         TextView spentBy = (TextView) findViewById(R.id.expenseSpentBy);
         String totalExpenditure = expensesBlock.getValue().getTotalExpenditure();
@@ -48,7 +48,7 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
         spentValue.setText(format("\n: %s", totalExpenditure));
         spentBy.setText(format("\nYou spent "));
 
-        SortedMap<String, MonthWiseExpense> allSharedExpensesFor = Utils.getAllSharedExpensesFor(expensesBlock.getKey());
+        SortedMap<String, MonthWiseExpense> allSharedExpensesFor = Utils.getAllSharedExpensesFor(storageKey);
 
         BigDecimal totalExpenditureOfAllUsers = new BigDecimal(expensesBlock.getValue().getTotalExpenditure());
         for (Map.Entry<String, MonthWiseExpense> sharedUserExpenses : allSharedExpensesFor.entrySet()) {
@@ -57,18 +57,18 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
             totalExpenditureOfAllUsers = totalExpenditureOfAllUsers.add(new BigDecimal(sharedUserExpenses.getValue().getTotalExpenditure()));
         }
 
-        if (allSharedExpensesFor.size() == 0) {
-            ((TextView) findViewById(R.id.expenseLimitValue)).setText(expenseLimit);
-        } else {
-            spentBy.append(format("\n\nTotal"));
-            spentValue.append(format("\n\n: %s", totalExpenditureOfAllUsers));
-        }
+
+        ((TextView) findViewById(R.id.expenseLimitValue)).setText(expenseLimit);
+        spentBy.append(format("\n\nTotal"));
+        spentValue.append(format("\n\n: %s", totalExpenditureOfAllUsers));
+        ((TextView) findViewById(R.id.backedupOn)).setText(Utils.lastBackgroundExpenseSyncDone(storageKey));
+
 
         blockName.setTextAlignment(TEXT_ALIGNMENT_CENTER);
         monthBlockContainer.setOnClickListener(v -> {
             Intent i = new Intent(context, ExpenseTimelineView.class);
             i.addFlags(FLAG_ACTIVITY_NEW_TASK);
-            i.putExtra("ExpenseKey", expensesBlock.getKey());
+            i.putExtra("ExpenseKey", storageKey);
             ContextCompat.startActivity(context, i, null);
         });
 
@@ -78,13 +78,13 @@ public class ExpenseMonthWiseBlock extends LinearLayout {
             View sheetView = View.inflate(context, R.layout.bottom_delete_month_confirmation, null);
             BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(homeScreenActivity);
             mBottomSheetDialog.setContentView(sheetView);
-            ((View)sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
+            ((View) sheetView.getParent()).setBackgroundColor(getResources().getColor(R.color.transparentOthers));
             mBottomSheetDialog.show();
 
             mBottomSheetDialog.findViewById(R.id.removeContinue).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Utils.deleteAMonthExpense(expensesBlock.getKey());
+                    Utils.deleteAMonthExpense(storageKey);
                     homeScreenActivity.loadDisplayArea(DashboardView.HOME, null);
                     mBottomSheetDialog.cancel();
                 }

@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -39,7 +38,7 @@ public class HomeScreenView extends LinearLayout implements IDisplayAreaView {
         TableRow tableRow = null;
 
         for (Map.Entry<String, MonthWiseExpense> monthWise : allExpensesMonthWise.entrySet()) {
-            boolean isNewLayoutStarted = i % Utils.oneOrTwoColumns() == 0;
+            boolean isNewLayoutStarted = true;
             if (isNewLayoutStarted) {
                 tableRow = new TableRow(getContext(), null);
                 homeScreenContainer.addView(tableRow);
@@ -52,7 +51,7 @@ public class HomeScreenView extends LinearLayout implements IDisplayAreaView {
 
 
     public void glow(String glowFor) {
-        TableLayout homeScreenContainer =(TableLayout) findViewById(R.id.homeScreen);
+        TableLayout homeScreenContainer = (TableLayout) findViewById(R.id.homeScreen);
         Integer blockHeight = 180;
         for (int i = 0; i < homeScreenContainer.getChildCount(); i++) {
             TableRow tableRow = (TableRow) homeScreenContainer.getChildAt(i);

@@ -180,8 +180,8 @@ public class GeneralActivity extends CommonActivity implements NavigationView.On
     protected void addAdMobOffer(String adUnitId, com.google.android.gms.ads.AdSize adSize, List<String> keyWords) {
         adContainer = (LinearLayout) findViewById(R.id.banner_container);
         afterManiAd = (LinearLayout) findViewById(R.id.afterMainAd);
-        if (1 == 1)
-            return;
+//        if (1 == 1)
+//            return;
         if (ExpendioSettings.loadExpendioSettings().getBlockAds()) {
             ifAdsNotLoading();
             return;

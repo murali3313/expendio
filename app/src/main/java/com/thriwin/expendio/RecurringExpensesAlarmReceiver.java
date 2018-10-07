@@ -3,6 +3,7 @@ package com.thriwin.expendio;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 
 import java.util.Date;
 import java.util.List;
@@ -34,26 +35,56 @@ public class RecurringExpensesAlarmReceiver extends BroadcastReceiver {
         }
         remindExpenseFilling(context);
         recurrenceExpenseNotifier(context);
-        syncSettings(context);
-        syncExpenses(context);
-    }
-
-    private void syncExpenses(Context context) {
-        if (Utils.isExpenseForSyncing()) {
-            String expenseForSyncing = Utils.getExpenseForSyncing();
-            String[] expenseKeys = expenseForSyncing.split(",");
-            for (String expenseKey : expenseKeys) {
-                GoogleCloudSynchActivity.silentSignInAndWriteMyExpenseToGoogleSync(context, expenseKey);
-            }
-
-            Utils.clearExpenseForSyncing();
+        Utils.recordBackgroundTimer();
+        if (Utils.isSyncingEnabled()) {
+            backupSettings(context);
+            backUpExpenses(context);
+            pullExpenses(context);
         }
     }
 
-    private void syncSettings(Context context) {
-        if (Utils.isSettingsForSyncing()) {
-            GoogleCloudSynchActivity.silentSignInAndWriteSettingsToGoogleSync(context);
-            Utils.markSettingsForSyncing(false);
+    private void pullExpenses(Context context) {
+        GoogleCloudSynchActivity.connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        try {
+            GoogleCloudSynchActivity.readExpense(context, new Expense().getStorageKey());
+
+        } catch (Exception e) {
+            if (!ExpendioSettings.loadExpendioSettings().getBlockSync()) {
+                NotificationScheduler.showNotification(context, HomeScreenActivity.class,
+                        "Expendio", "Backing up your expenses was successful...", genaralTips.get(Utils.getTipsIndex()), "HOME");
+            }
+        }
+    }
+
+    private void backUpExpenses(Context context) {
+        GoogleCloudSynchActivity.connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        try {
+
+            if (Utils.isExpenseForSyncing()) {
+                String expenseForSyncing = Utils.getExpenseForSyncing();
+                String[] expenseKeys = expenseForSyncing.split(",");
+                for (String expenseKey : expenseKeys) {
+                    GoogleCloudSynchActivity.silentSignInAndWriteMyExpenseToGoogleSync(context, expenseKey);
+                }
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void backupSettings(Context context) {
+        GoogleCloudSynchActivity.connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        try {
+            if (Utils.isSettingsForSyncing()) {
+                boolean synched = GoogleCloudSynchActivity.silentSignInAndWriteSettingsToGoogleSync(context);
+                if (synched) {
+                    if (!ExpendioSettings.loadExpendioSettings().getBlockSync()) {
+                        NotificationScheduler.showNotification(context, HomeScreenActivity.class,
+                                "Expendio", "Changed settings successfully backed up...", genaralTips.get(Utils.getTipsIndex()), "HOME");
+                    }
+                }
+            }
+        } catch (Exception e) {
         }
     }
 

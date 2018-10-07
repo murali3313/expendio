@@ -32,7 +32,8 @@ public class ExpendioSettingsView extends Activity {
         Spinner reminderOption = (Spinner) findViewById(R.id.reminderOption);
         LinearLayout blockAdsContainer = (LinearLayout) findViewById(R.id.blockAdsContainer);
         SwitchCompat blockAds = (SwitchCompat) findViewById(R.id.blockAds);
-        loadSettings(notificationHour, startDayOfMonth, reminderOption,blockAds);
+        SwitchCompat syncGoogleNotification = (SwitchCompat) findViewById(R.id.blockSyncNotification);
+        loadSettings(notificationHour, startDayOfMonth, reminderOption,blockAds,syncGoogleNotification);
 
         startDayOfMonth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,20 +76,22 @@ public class ExpendioSettingsView extends Activity {
             ExpendioSettings settings = new ExpendioSettings(startDayOfMonth.getText().toString(),
                     notificationHour.getText().toString(), ReminderOption.values()[reminderOption.getSelectedItemPosition()]);
             settings.setBlockAds(blockAds.isChecked());
+            settings.setBlockSync(syncGoogleNotification.isChecked());
             ExpendioSettings.saveExpendioSettings(settings);
             Utils.showToast(getBaseContext(), R.string.settingsSavedSuccessfully);
-            loadSettings(notificationHour, startDayOfMonth, reminderOption, blockAds);
+            loadSettings(notificationHour, startDayOfMonth, reminderOption, blockAds, syncGoogleNotification);
         });
 
         setBackGroundTheme(null);
     }
 
-    private void loadSettings(EditText notificationHour, EditText startDayOfMonth, Spinner reminderOption, SwitchCompat blockAds) {
+    private void loadSettings(EditText notificationHour, EditText startDayOfMonth, Spinner reminderOption, SwitchCompat blockAds, SwitchCompat syncGoogleNotification) {
         ExpendioSettings expendioSettings = ExpendioSettings.loadExpendioSettings();
         notificationHour.setText(expendioSettings.getNotificationHour().toString());
         startDayOfMonth.setText(expendioSettings.getStartDayOfMonth().toString());
         reminderOption.setSelection(expendioSettings.getReminderOptionIndex());
         reminderOption.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDarkTransparent));
         blockAds.setChecked(expendioSettings.getBlockAds());
+        syncGoogleNotification.setChecked(expendioSettings.getBlockSync());
     }
 }

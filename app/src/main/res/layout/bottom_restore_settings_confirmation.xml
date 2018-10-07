@@ -13,7 +13,7 @@
         android:layout_marginBottom="20dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
-        android:text="You will lose any local-only settings information. This restoration will not affect any expense data. \nDo you want to continue?"
+        android:text="You will lose any local-only settings information. This restoration will not affect any expense data. Do you want to continue?"
         android:textColor="@color/white"
         android:textSize="18sp" />
 

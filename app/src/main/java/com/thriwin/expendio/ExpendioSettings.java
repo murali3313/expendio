@@ -26,6 +26,7 @@ public class ExpendioSettings {
     private Integer notificationHour = 20;
     private Integer reminderOptionIndex = ReminderOption.TWICE_A_DAY.ordinal();
     private Boolean blockAds = false;
+    private Boolean blockSync = false;
 
     private static ObjectMapper objectMapper = new ObjectMapper();
     private static ExpendioSettings expendioSetting;

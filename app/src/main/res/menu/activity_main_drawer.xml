@@ -33,16 +33,6 @@
             android:title="Set default expense limit" />
 
         <item
-            android:id="@+id/nav_general_data_share"
-            android:icon="@drawable/ic_menu_share"
-            android:title="Share Expense" />
-
-        <item
-            android:id="@+id/nav_restore_expense"
-            android:icon="@drawable/ic_restore_expense"
-            android:title="@string/restoreExpense" />
-
-        <item
             android:id="@+id/nav_offers"
             android:icon="@drawable/ic_offer"
             android:title=""
@@ -53,8 +43,18 @@
         <menu>
             <item
                 android:id="@+id/nav_google_sync"
-                android:icon="@mipmap/ic_menu_excel"
+                android:icon="@drawable/ic_cloud"
                 android:title="@string/googleCloudSync" />
+
+            <item
+                android:id="@+id/nav_general_data_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share Expense" />
+
+            <item
+                android:id="@+id/nav_restore_expense"
+                android:icon="@drawable/ic_restore_expense"
+                android:title="@string/restoreExpense" />
             <item
                 android:id="@+id/nav_download"
                 android:icon="@mipmap/ic_menu_excel"

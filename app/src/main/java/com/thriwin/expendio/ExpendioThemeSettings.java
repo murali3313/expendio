@@ -66,4 +66,12 @@ public class ExpendioThemeSettings {
             e.printStackTrace();
         }
     }
+
+    @Nullable
+    @JsonIgnore
+    public static void clear() {
+
+        expendioThemeSettings = null;
+
+    }
 }

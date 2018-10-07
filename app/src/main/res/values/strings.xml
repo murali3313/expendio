@@ -92,26 +92,43 @@
     <string name="googleCloudSync">Google cloud sync</string>
     <string name="clientId">459334050180-bki334m4rcvrl4puib014kdbrnr9vi1p.apps.googleusercontent.com</string>
     <string name="syncData">Sync Data</string>
-    <string name="settingsSyncFailure">Sync failure</string>
+    <string name="settingsSyncFailure">Sync failure.. Please allow some cool off period before trying next time. This could be because of overload on google cloud APIs</string>
     <string name="select_file">Select File</string>
     <string name="fileNotPresent">File not exist</string>
     <string name="setupGoogleSync">Setup google sync</string>
     <string name="googleRestoreSettingFailed">Restoring from google failed. Please try again...</string>
     <string name="googleRestoreSettingSuccess">Successfully restored settings information from google.</string>
     <string name="settingsSyncSuccess">Settings synched successfully...</string>
-    <string name="googleAccountSetupSuccesfully">Your google setup was successfull...</string>
+    <string name="googleAccountSetupSuccesfully">Your google setup was successful...</string>
     <string name="googleAccountFailure">Google account setup failed... Please try again...</string>
     <string name="syncDetails">Syncing account: %s</string>
     <string name="stopGoogleSync">Detach Google account</string>
-    <string name="logoutSuccessfull">Google sigount successfull..</string>
+    <string name="logoutSuccessfull">Google sigount successful..</string>
     <string name="expenseSyncFailure">Expense syncing failed...</string>
     <string name="settingsRestorationAndSync"><![CDATA[Settings Restore & Sync]]></string>
-    <string name="syncSettings">Backup settings</string>
-    <string name="restoreSettings">Restore settings</string>
+    <string name="syncSettings">Backup settings to Google</string>
+    <string name="restoreSettings">Restore settings from Google</string>
     <string name="expenseRestorationAndSync"><![CDATA[Expense Restore & Sync]]></string>
-    <string name="syncExpenses">Backup expenses</string>
-    <string name="restoreExpenses">Restore expenses</string>
+    <string name="syncExpenses">Backup all expenses to Google</string>
+    <string name="restoreExpenses">Restore all expenses from Google</string>
     <string name="manual">Manual syncing...</string>
+    <string name="AllExpensesAreBackedUp">All expenses in your phone is backed up successfully...</string>
+    <string name="AllExpensesBackedUpFailure">Backing to Google failed... Please try again later...</string>
+    <string name="expenseSyncSuccess">Expense data sync successfull</string>
+    <string name="googleRestoreExpensesFailed">Restoring expenses failed... Please try again later...</string>
+    <string name="googleRestoreExpensesSuccess">Expense saved successfully</string>
+    <string name="myGoogleAccount">I\'m the primary user of this account</string>
+    <string name="defineGoogleAccountOwnership">Define Google account ownership</string>
+    <string name="sharedGoogleAccount"> I share a common Google account with the below mentioned user and I identify myself with below name.
+        So that my expense will be automatically synced to primary user\'s phone and vice versa</string>
+    <string name="primaryUserName">Primary account \nholder name</string>
+    <string name="yourName">Your name\n</string>
+    <string name="updateGoogleOwnership"><![CDATA[Update account ownership & activate syncing]]></string>
+    <string name="bothYourNameAndPrimaryUserNamesAreMandatory">Please enter your name and primary account holder name.</string>
+    <string name="ownershipUpdatedSuccessfully"><![CDATA[Updated successfully & sync with google server started]]></string>
+    <string name="backgroundSyncNotification">Silence your Google sync notification of the expenses.</string>
+
+
     <string-array name="reminder_options">
         <item>Do Not Disturb</item>
         <item>Once a day</item>
@@ -120,13 +137,5 @@
         <item>Every hour</item>
         <item>Every 15 min.</item>
     </string-array>
-    <string-array name="background_themes">
-        <item>WOOD</item>
-        <item>Mountain</item>
-        <item>StarWars</item>
-        <item>ComingSoon1</item>
-        <item>ComingSoon1</item>
-        <item>ComingSoon1</item>
-        <item>ComingSoon1</item>
-    </string-array>
+
 </resources>

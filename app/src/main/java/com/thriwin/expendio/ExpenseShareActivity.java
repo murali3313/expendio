@@ -165,7 +165,7 @@ public class ExpenseShareActivity extends GeneralActivity {
         linearLayout.setBackgroundResource(R.drawable.edit_outline);
 
         EditText child = new EditText(ExpenseShareActivity.this, null);
-        child.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});
+        child.setFilters(new InputFilter[]{new InputFilter.LengthFilter(7)});
         LinearLayout.LayoutParams editTextParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         editTextParams.weight = 4;
         editTextParams.setMargins(0, 5, 0, 0);

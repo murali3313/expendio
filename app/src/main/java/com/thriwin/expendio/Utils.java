@@ -31,6 +31,7 @@ import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 import static android.content.Context.MODE_PRIVATE;
+import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
 public class Utils {
@@ -208,16 +209,19 @@ public class Utils {
 
         for (Map.Entry<String, MonthWiseExpense> allEditedExpense : allMonthWiseExpenses.entrySet()) {
             edit.putString(allEditedExpense.getKey(), getSerializedExpenses(allEditedExpense.getValue()));
+            markExpenseForSyncing(allEditedExpense.getKey());
         }
-        edit.apply();
+        edit.commit();
     }
 
     public static void deleteAMonthExpense(String storageKey) {
         CachedSharedPreferences localStorageForPreferences = getLocalStorageForPreferences();
         CachedSharedPreferences.Editor edit = localStorageForPreferences.edit();
         edit.remove(storageKey);
-        edit.apply();
+        edit.commit();
+        Utils.clearLastBackgroundSyncDone(storageKey);
     }
+
 
     public static void saveDayWiseExpenses(String storageKey, String dateMonth, Expenses expenses) {
         expenses.sanitizeData();
@@ -228,7 +232,8 @@ public class Utils {
         CachedSharedPreferences.Editor edit = localStorageForPreferences.edit();
 
         edit.putString(storageKey, getSerializedExpenses(storedExpenses));
-        edit.apply();
+        edit.commit();
+        markExpenseForSyncing(storageKey);
     }
 
 
@@ -278,6 +283,17 @@ public class Utils {
         return allExpenses;
     }
 
+    public static List<String> getAllExpensesStorageKeys() {
+        List<String> storageKeys = new ArrayList<>();
+        Map<String, ?> all = Utils.getLocalStorageForPreferences().getAll();
+        for (Map.Entry<String, ?> entry : all.entrySet()) {
+            if (entry.getKey().startsWith("Expense-")) {
+                storageKeys.add(entry.getKey());
+            }
+        }
+        return storageKeys;
+    }
+
     public static List<String> getAllExpensesMonths() {
         List<String> allExpenseMonths = new ArrayList<>();
         Map<String, ?> all = Utils.getLocalStorageForPreferences().getAll();
@@ -307,7 +323,7 @@ public class Utils {
             return null;
         }
         int monthIndex = DateProcessor.allMonths.indexOf(monthAndYear[0].trim().toLowerCase());
-        return String.format("Expense-%s-%02d", monthAndYear[1].trim(), monthIndex + 1);
+        return format("Expense-%s-%02d", monthAndYear[1].trim(), monthIndex + 1);
     }
 
     public static BigDecimal getDefaultExpenseLimit() {
@@ -323,7 +339,7 @@ public class Utils {
 
     }
 
-    public static void showToast(Context cx, int resourceId) {
+    protected static void showToast(Context cx, int resourceId) {
         Toast toast = Toast.makeText(cx, resourceId, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.BOTTOM, 0, 500);
         toast.show();
@@ -363,7 +379,8 @@ public class Utils {
         CachedSharedPreferences.Editor edit = localStorageForPreferences.edit();
 
         edit.putString(storageKey, getSerializedExpenses(storedExpenses));
-        edit.apply();
+        edit.commit();
+        markExpenseForSyncing(storageKey);
     }
 
     public static RecurringExpenses getAllRecurringExpenses() {
@@ -431,7 +448,7 @@ public class Utils {
 
     public static void markRecurrenceCheckerRanToday() {
         String dateMonth = new SimpleDateFormat("MM-dd").format(today());
-        Utils.getLocalStorageForPreferences().edit().putString("CHECKER_RAN_ON", dateMonth).apply();
+        Utils.getLocalStorageForPreferences().edit().putString("CHECKER_RAN_ON", dateMonth).commit();
     }
 
 
@@ -456,7 +473,7 @@ public class Utils {
 
 
     public static void clearUnAcceptedExpense(String key) {
-        getLocalStorageForPreferences().edit().remove(key).apply();
+        getLocalStorageForPreferences().edit().remove(key).commit();
     }
 
     public static String getUnApprovedExpensesCount() {
@@ -482,7 +499,7 @@ public class Utils {
         CachedSharedPreferences.Editor edit = Utils.getLocalStorageForPreferences().edit();
         String key = Utils.UNACCEPTED_EXPENSES + "-" + Math.random();
         edit.putString(key, serializeExpenses(processedExpenses));
-        edit.apply();
+        edit.commit();
         return key;
     }
 
@@ -515,7 +532,7 @@ public class Utils {
 
     public static void lastNotifiedOn(Date date) {
         String format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(date);
-        Utils.getLocalStorageForPreferences().edit().putString("NOTIFIER", format).apply();
+        Utils.getLocalStorageForPreferences().edit().putString("NOTIFIER", format).commit();
     }
 
     public static boolean isReminderAlreadySet() {
@@ -559,7 +576,7 @@ public class Utils {
     public static void saveSMSInferredExpense(Expense probableExpenses) {
         CachedSharedPreferences.Editor edit = Utils.getLocalStorageForPreferences().edit();
         edit.putString(Utils.UNACCEPTED_SMS_EXPENSES + "-" + Math.random(), serializeExpenses(new Expenses(probableExpenses)));
-        edit.apply();
+        edit.commit();
     }
 
     public static void saveSMSParsedExpenses(User authenticatedUser, Expenses parsedExpenses) {
@@ -567,7 +584,7 @@ public class Utils {
         String key = Utils.UNACCEPTED_SHARED_SMS_EXPENSES + "-" + authenticatedUser.getName() + "-" +
                 parsedExpenses.getMonthYearHumanReadable() + "-" + SHARED;
         edit.putString(key, serializeExpenses(parsedExpenses));
-        edit.apply();
+        edit.commit();
     }
 
     public static ShareSettings getShareSettings() {
@@ -636,7 +653,7 @@ public class Utils {
         SortedMap<String, MonthWiseExpense> allExpenses = new TreeMap<>(Collections.reverseOrder());
         Map<String, ?> all = Utils.getLocalStorageForPreferences().getAll();
         for (Map.Entry<String, ?> entry : all.entrySet()) {
-            if (entry.getKey().endsWith(key) && !entry.getKey().equals(key)) {
+            if (entry.getKey().endsWith(key) && !entry.getKey().equals(key) && !entry.getKey().contains("GOOGLE")) {
                 try {
                     String userName = entry.getKey().split("-")[0];
                     MonthWiseExpense expenses = ExpenseTags.objectMapper.readValue(all.get(entry.getKey()).toString(), new TypeReference<MonthWiseExpense>() {
@@ -722,7 +739,7 @@ public class Utils {
         Map<String, Object> settingsData = new HashMap<>();
         Map<String, ?> all = Utils.getLocalStorageForPreferences().getAll();
         for (Map.Entry<String, ?> entry : all.entrySet()) {
-            if (!entry.getKey().contains("Expense-")) {
+            if (!entry.getKey().contains("Expense-") && !entry.getKey().startsWith("GOOGLE_") && !entry.getKey().startsWith("REMINDER")) {
                 settingsData.put(entry.getKey(), entry.getValue());
             }
         }
@@ -731,6 +748,7 @@ public class Utils {
 
     public static void readAndSaveSettings(String settingsJson) {
         ExpenseTags.clearExpensetags();
+        ExpendioThemeSettings.clear();
         HashMap<String, String> settings = convertStringToMap(settingsJson);
         for (Map.Entry<String, String> settingsEntry : settings.entrySet()) {
             Utils.saveGeneric(settingsEntry.getKey(), settingsEntry.getValue());
@@ -738,9 +756,7 @@ public class Utils {
     }
 
     private static void saveGeneric(String key, String value) {
-        if (key.equalsIgnoreCase("REMINDER")) {
-            Utils.getLocalStorageForPreferences().edit().putBoolean(key, Boolean.valueOf(value)).commit();
-        } else {
+        if (!key.equalsIgnoreCase("REMINDER") && !key.equalsIgnoreCase("TipIndex")) {
             Utils.getLocalStorageForPreferences().edit().putString(key, value).commit();
         }
     }
@@ -749,37 +765,166 @@ public class Utils {
         return Utils.getLocalStorageForPreferences().getString(expenseKey, "");
     }
 
-    public static String getStoredNameForGoogle() {
-        return Utils.getLocalStorageForPreferences().getString("GoogleName", "Yours") + "-";
-    }
-
-
     public static void markSettingsForSyncing(Boolean forSyncing) {
-        Utils.getLocalStorageForPreferences().edit().putString("MARK_SETTINGS_SYNC", forSyncing.toString()).commit();
+        Utils.getLocalStorageForPreferences().edit().putString("GOOGLE_MARK_SETTINGS_SYNC", forSyncing.toString()).commit();
+        if (!forSyncing)
+            Utils.getLocalStorageForPreferences().edit().putString("GOOGLE_SETTINGS_BACKED_UP_LAST", String.valueOf(today().getTime())).commit();
     }
 
     public static boolean isSettingsForSyncing() {
-        String string = Utils.getLocalStorageForPreferences().getString("MARK_SETTINGS_SYNC", "true");
+        String string = Utils.getLocalStorageForPreferences().getString("GOOGLE_MARK_SETTINGS_SYNC", "false");
         return Boolean.valueOf(string);
     }
 
     public static void markExpenseForSyncing(String expenseKey) {
-        String expenseKeys = Utils.getLocalStorageForPreferences().getString("MARK_EXPENSE_SYNC", "");
+        String expenseKeys = Utils.getLocalStorageForPreferences().getString("GOOGLE_MARK_EXPENSE_SYNC", "");
+        if (expenseKeys.contains(expenseKey)) {
+            return;
+        }
         String expenseKeysForSyncing = isEmpty(expenseKeys) ? expenseKey : expenseKeys + "," + expenseKey;
-        Utils.getLocalStorageForPreferences().edit().putString("MARK_EXPENSE_SYNC", expenseKeysForSyncing).commit();
+        Utils.getLocalStorageForPreferences().edit().putString("GOOGLE_MARK_EXPENSE_SYNC", expenseKeysForSyncing).commit();
     }
+
+    public static void expenseSyncingDone(String storageKey) {
+
+        String expenseKeys = Utils.getLocalStorageForPreferences().getString("GOOGLE_MARK_EXPENSE_SYNC", "");
+        String[] split = expenseKeys.split(",");
+        String remaining = "";
+        for (String s : split) {
+            if (!s.equalsIgnoreCase(storageKey)) {
+                remaining += s + ",";
+            }
+        }
+        if (remaining.lastIndexOf(",") > -1) {
+            remaining = remaining.substring(0, remaining.length() - 1);
+        }
+
+
+        Utils.getLocalStorageForPreferences().edit().putString("GOOGLE_MARK_EXPENSE_SYNC", remaining).commit();
+
+
+        Utils.getLocalStorageForPreferences().edit().putString("GOOGLE_EXPENSE_BACKED_UP_LAST" + storageKey, String.valueOf(today().getTime())).commit();
+
+    }
+
 
     public static String getExpenseForSyncing() {
-        return Utils.getLocalStorageForPreferences().getString("MARK_EXPENSE_SYNC", "");
+        return Utils.getLocalStorageForPreferences().getString("GOOGLE_MARK_EXPENSE_SYNC", "");
 
-    }
-
-    public static void clearExpenseForSyncing() {
-        Utils.getLocalStorageForPreferences().edit().remove("MARK_EXPENSE_SYNC").commit();
     }
 
     public static boolean isExpenseForSyncing() {
-        String string = Utils.getLocalStorageForPreferences().getString("MARK_EXPENSE_SYNC", "");
+        String string = Utils.getLocalStorageForPreferences().getString("GOOGLE_MARK_EXPENSE_SYNC", "");
         return !isEmpty(string);
+    }
+
+    private static boolean isExpenseForSyncing(String storageKey) {
+        return Utils.getLocalStorageForPreferences().getString("GOOGLE_MARK_EXPENSE_SYNC", "")
+                .toLowerCase().contains(storageKey.toLowerCase());
+    }
+
+
+    public static String getLastSettingBackedOn() {
+        String lastBackedOn = Utils.getLocalStorageForPreferences().getString("GOOGLE_SETTINGS_BACKED_UP_LAST", "0");
+        Date date = new Date(Long.valueOf(lastBackedOn));
+        if (lastBackedOn.equalsIgnoreCase("0")) {
+            return "";
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM hh:mm a");
+        return format("Settings - Last backedup on : %s", simpleDateFormat.format(date));
+    }
+
+    public static void saveExpense(String expenseKey, String expenseSerialzedString) {
+        Utils.getLocalStorageForPreferences().edit().putString(expenseKey, expenseSerialzedString).commit();
+
+    }
+
+    public static String getStoredNameForGoogle() {
+        return Utils.getLocalStorageForPreferences().getString("GOOGLE_GoogleName", "Yours") + "-";
+    }
+
+
+    public static String getStoredNameForPrimaryGoogle() {
+        return Utils.getLocalStorageForPreferences().getString("GOOGLE_GoogleName_primary", "PrimaryUser") + "-";
+    }
+
+    public static void setStoredNameForGoogle(String name) {
+        Utils.getLocalStorageForPreferences().edit().putString("GOOGLE_GoogleName", name).commit();
+    }
+
+
+    public static void setStoredNameForPrimaryGoogle(String name) {
+        Utils.getLocalStorageForPreferences().edit().putString("GOOGLE_GoogleName_primary", name).commit();
+    }
+
+    public static void enableSyncing(boolean enabled) {
+        Utils.getLocalStorageForPreferences().edit().putBoolean("GOOGLE_Sync_enabled", enabled).commit();
+
+    }
+
+    public static boolean isSyncingEnabled() {
+        return Utils.getLocalStorageForPreferences().getBoolean("GOOGLE_Sync_enabled", false);
+
+    }
+
+    public static void lastBackgroundSyncDone(String storedInGoogleFileName, String modifiedTime) {
+        Utils.getLocalStorageForPreferences().edit().putString("GOOGLE_LASTSYNC_TIME_" + storedInGoogleFileName, modifiedTime).commit();
+    }
+
+    public static String lastBackgroundExpenseSyncDone(String storageKey) {
+        if (isExpenseForSyncing()) {
+            String lastBackedOn = Utils.getLocalStorageForPreferences().getString("GOOGLE_EXPENSE_BACKED_UP_LAST" + storageKey, "0");
+            Date date = new Date(Long.valueOf(lastBackedOn));
+            if (lastBackedOn.equalsIgnoreCase("0")) {
+                return "";
+            }
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM hh:mm a");
+            String lastBackup = format("Last Backup on : %s", simpleDateFormat.format(date));
+
+            String nextBackgroundTimer = nextBackgroundTimer();
+            if (isExpenseForSyncing(storageKey) && !isEmpty(nextBackgroundTimer)) {
+                lastBackup += format("\n Next Backup at : %s", nextBackgroundTimer);
+            }
+            return lastBackup;
+        } else {
+            return "";
+        }
+
+    }
+
+
+    private static void clearLastBackgroundSyncDone(String storageKey) {
+
+        Map<String, Object> all = Utils.getLocalStorageForPreferences().getAll();
+        for (String key : all.keySet()) {
+            if (key.toLowerCase().contains(storageKey.toLowerCase()) && key.startsWith("GOOGLE_LASTSYNC_TIME_")) {
+                Utils.getLocalStorageForPreferences().edit().remove(key).commit();
+            }
+        }
+
+
+    }
+
+    public static String lastBackgroundSyncDoneFor(String storedInGoogleFileName) {
+        return Utils.getLocalStorageForPreferences().getString("GOOGLE_LASTSYNC_TIME_" + storedInGoogleFileName, "");
+    }
+
+    public static void recordBackgroundTimer() {
+        Utils.getLocalStorageForPreferences().edit().putString("BACKUP_TIME", String.valueOf(today().getTime()));
+    }
+
+    public static String nextBackgroundTimer() {
+        String lastBGRan = Utils.getLocalStorageForPreferences().getString("BACKUP_TIME", "0");
+        Date date = new Date(Long.valueOf(lastBGRan));
+        if (lastBGRan.equalsIgnoreCase("0")) {
+            return "";
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM hh:mm a");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MINUTE, 15);
+        date = cal.getTime();
+        return simpleDateFormat.format(date);
+
     }
 }
