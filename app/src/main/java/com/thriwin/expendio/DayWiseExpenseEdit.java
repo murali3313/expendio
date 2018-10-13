@@ -33,7 +33,7 @@ public class DayWiseExpenseEdit extends Activity {
         boolean makeDateEditable = this.getIntent().getBooleanExtra("MakeDateEditable", false);
         boolean containsOtherExpenses = this.getIntent().getBooleanExtra("containsOtherExpenses", false);
         findViewById(R.id.noteIfOtherExpenseIncluded).setVisibility(containsOtherExpenses ? View.VISIBLE : View.GONE);
-        this.expenses = Utils.getDeserializedExpenses(dayWiseExpenses);
+            this.expenses = Utils.getDeserializedExpenses(dayWiseExpenses);
 
         ExpensesEditView dayWiseExpensesEdit =(ExpensesEditView) findViewById(R.id.dayWiseExpensesEdit);
         dayWiseExpensesEdit.populate(expenses, makeDateEditable, true, this, false, null, false);

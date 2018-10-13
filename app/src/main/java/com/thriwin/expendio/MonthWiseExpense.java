@@ -236,4 +236,10 @@ public class MonthWiseExpense {
         }
         return totalEntries;
     }
+
+    public void setExpenseFor(String expenseFor) {
+        for (Map.Entry<String, Expenses> expensesEntry : dayWiseExpenses.entrySet()) {
+            expensesEntry.getValue().setUserName(expenseFor);
+        }
+    }
 }

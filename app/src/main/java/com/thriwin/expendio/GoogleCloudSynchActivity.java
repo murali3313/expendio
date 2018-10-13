@@ -270,7 +270,8 @@ public class GoogleCloudSynchActivity extends GeneralActivity implements PopupMe
                         showToast(R.string.ownershipUpdatedSuccessfully);
                     }
                 } else {
-
+                    Utils.setStoredNameForGoogle("");
+                    Utils.setStoredNameForPrimaryGoogle("");
                     Utils.enableSyncing(true);
                     showToast(R.string.ownershipUpdatedSuccessfully);
                 }
@@ -792,7 +793,7 @@ public class GoogleCloudSynchActivity extends GeneralActivity implements PopupMe
                     }
 
                     String expenseKey = getExpenseKey(storedInGoogleFileName);
-                    Utils.saveExpense(expenseKey, builder.toString());
+                    Utils.saveExpense(expenseKey, builder.toString(), getExpenseFor(storedInGoogleFileName));
                     Utils.lastBackgroundSyncDone(storedInGoogleFileName, modifiedTime);
                     if (isBackground) {
                         if (!ExpendioSettings.loadExpendioSettings().getBlockSync()) {
@@ -844,6 +845,29 @@ public class GoogleCloudSynchActivity extends GeneralActivity implements PopupMe
 
         }
         return keyName.replace(".json", "");
+    }
+
+    private static String getExpenseFor(String storedInGoogleFileName) {
+        String whoSpent;
+        String whoAreYou = Utils.getStoredNameForGoogle();
+        String whoisPrimary = Utils.getStoredNameForPrimaryGoogle();
+        if (whoAreYou.equalsIgnoreCase("Yours-")) {
+            if (storedInGoogleFileName.startsWith(whoAreYou)) {
+                whoSpent = "You";
+            } else {
+                whoSpent = storedInGoogleFileName.substring(0, storedInGoogleFileName.indexOf("-"));
+            }
+        } else {
+            if (storedInGoogleFileName.startsWith(whoAreYou)) {
+                whoSpent = "You";
+            } else if (storedInGoogleFileName.startsWith("Yours-")) {
+                whoSpent = whoisPrimary;
+            } else {
+                whoSpent = storedInGoogleFileName.substring(0, storedInGoogleFileName.indexOf("-"));
+            }
+
+        }
+        return whoSpent.replace(".json", "");
     }
 
     @Override

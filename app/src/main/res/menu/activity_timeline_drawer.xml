@@ -37,7 +37,7 @@
             app:actionViewClass="android.widget.TextView"
             android:title="" />
     </group>
-    <item android:title="Reports">
+    <item android:title="@string/sharingAndRestorationHeader">
         <menu>
             <item
                 android:id="@+id/nav_google_sync"
@@ -64,7 +64,7 @@
                 android:title="View genarated Excels" />
         </menu>
     </item>
-    <item android:title="Communicate">
+    <item android:title="@string/feedbackHeader">
         <menu>
             <item
                 android:id="@+id/nav_feedback"

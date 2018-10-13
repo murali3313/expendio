@@ -127,6 +127,8 @@
     <string name="bothYourNameAndPrimaryUserNamesAreMandatory">Please enter your name and primary account holder name.</string>
     <string name="ownershipUpdatedSuccessfully"><![CDATA[Updated successfully & sync with google server started]]></string>
     <string name="backgroundSyncNotification">Silence your Google sync notification of the expenses.</string>
+    <string name="feedbackHeader"><![CDATA[App Feedback & Ratings]]></string>
+    <string name="sharingAndRestorationHeader"><![CDATA[Share & Restore Expenses]]></string>
 
 
     <string-array name="reminder_options">

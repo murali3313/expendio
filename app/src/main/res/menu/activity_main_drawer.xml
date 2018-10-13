@@ -39,7 +39,7 @@
             app:actionViewClass="android.widget.TextView" />
     </group>
 
-    <item android:title="Reports">
+    <item android:title="@string/sharingAndRestorationHeader">
         <menu>
             <item
                 android:id="@+id/nav_google_sync"
@@ -69,7 +69,7 @@
         </menu>
     </item>
 
-    <item android:title="Communicate">
+    <item android:title="@string/feedbackHeader">
         <menu>
             <item
                 android:id="@+id/nav_feedback"

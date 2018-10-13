@@ -118,6 +118,18 @@ public class Utils {
         return isNull(expenses) ? new Expenses() : expenses;
     }
 
+    public static MonthWiseExpense getDeserializedExpensesForAMonth(String monthWiseExpensesString) {
+        MonthWiseExpense monthWiseExpense = new MonthWiseExpense();
+        try {
+            ObjectMapper obj = new ObjectMapper();
+            monthWiseExpense = obj.readValue(monthWiseExpensesString, new TypeReference<MonthWiseExpense>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return isNull(monthWiseExpense) ? new MonthWiseExpense() : monthWiseExpense;
+    }
+
     public static MonthWiseExpense getDeserializedMonthWiseExpenses(String expenseKey) {
         String deserializedMonthWiseExpenses = Utils.getLocalStorageForPreferences().getString(expenseKey, "{}");
         MonthWiseExpense expenses = new MonthWiseExpense();
@@ -536,8 +548,8 @@ public class Utils {
     }
 
     public static boolean isReminderAlreadySet() {
-//        return false;
-        return Utils.getLocalStorageForPreferences().getBoolean("REMINDER", false);
+        return false;
+//        return Utils.getLocalStorageForPreferences().getBoolean("REMINDER", false);
     }
 
     public static void setReminder() {
@@ -681,20 +693,6 @@ public class Utils {
         return count;
     }
 
-    public static int oneOrTwoColumns() {
-        List<String> allExpensesMonths = getAllExpensesMonths();
-        int oneColumnInHomeScreen = 1;
-        int twoColumnInHomeScreen = 2;
-
-        for (String allExpensesMonth : allExpensesMonths) {
-            if (getUserCountOfSharedExpensesFor(allExpensesMonth) >= 3) {
-                return oneColumnInHomeScreen;
-            }
-        }
-
-        return twoColumnInHomeScreen;
-    }
-
 
     public static void removeAllSharerInfo(List<String> userNames) {
 
@@ -834,9 +832,11 @@ public class Utils {
         return format("Settings - Last backedup on : %s", simpleDateFormat.format(date));
     }
 
-    public static void saveExpense(String expenseKey, String expenseSerialzedString) {
-        Utils.getLocalStorageForPreferences().edit().putString(expenseKey, expenseSerialzedString).commit();
+    public static void saveExpense(String expenseKey, String expenseSerialzedString, String expenseFor) {
 
+        MonthWiseExpense backedUpExpenses = Utils.getDeserializedExpensesForAMonth(expenseSerialzedString);
+        backedUpExpenses.setExpenseFor(expenseFor);
+        Utils.getLocalStorageForPreferences().edit().putString(expenseKey, getSerializedExpenses(backedUpExpenses)).commit();
     }
 
     public static String getStoredNameForGoogle() {
@@ -872,23 +872,21 @@ public class Utils {
     }
 
     public static String lastBackgroundExpenseSyncDone(String storageKey) {
-        if (isExpenseForSyncing()) {
-            String lastBackedOn = Utils.getLocalStorageForPreferences().getString("GOOGLE_EXPENSE_BACKED_UP_LAST" + storageKey, "0");
-            Date date = new Date(Long.valueOf(lastBackedOn));
-            if (lastBackedOn.equalsIgnoreCase("0")) {
-                return "";
-            }
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM hh:mm a");
-            String lastBackup = format("Last Backup on : %s", simpleDateFormat.format(date));
 
-            String nextBackgroundTimer = nextBackgroundTimer();
-            if (isExpenseForSyncing(storageKey) && !isEmpty(nextBackgroundTimer)) {
-                lastBackup += format("\n Next Backup at : %s", nextBackgroundTimer);
-            }
-            return lastBackup;
-        } else {
+        String lastBackedOn = Utils.getLocalStorageForPreferences().getString("GOOGLE_EXPENSE_BACKED_UP_LAST" + storageKey, "0");
+        Date date = new Date(Long.valueOf(lastBackedOn));
+        if (lastBackedOn.equalsIgnoreCase("0")) {
             return "";
         }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM hh:mm a");
+        String lastBackup = format("Last Backup on : %s", simpleDateFormat.format(date));
+        if (isExpenseForSyncing()) {
+            String nextBackgroundTimer = nextBackgroundTimer();
+            if (isExpenseForSyncing(storageKey) && !isEmpty(nextBackgroundTimer)) {
+                lastBackup += format("\nLocal changes present.\n Next Backup at : %s", nextBackgroundTimer);
+            }
+        }
+        return lastBackup;
 
     }
 

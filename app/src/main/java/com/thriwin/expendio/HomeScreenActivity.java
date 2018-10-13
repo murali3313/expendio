@@ -41,12 +41,10 @@ public class HomeScreenActivity extends GeneralActivity {
         super.onCreate(savedInstanceState);
 
         selectedDashboardView = DashboardView.HOME;
-        if (!Utils.isReminderAlreadySet()) {
-            NotificationScheduler.setReminder(applicationContext, RecurringExpensesAlarmReceiver.class);
-            Utils.setReminder();
-            Utils.lastNotifiedOn(new Date());
 
-        }
+        NotificationScheduler.setReminder(applicationContext, RecurringExpensesAlarmReceiver.class);
+        Utils.setReminder();
+        Utils.lastNotifiedOn(new Date());
         String displayView = getIntent().getStringExtra("DISPLAY_VIEW");
         if (!isEmpty(displayView) && displayView.equals("NOTIFICATION")) {
             Intent i = new Intent(applicationContext, NotificationScreenActivity.class);
@@ -105,13 +103,13 @@ public class HomeScreenActivity extends GeneralActivity {
 
 
     public void loadDisplayArea(DashboardView dashboardView, Intent intent) {
-        LinearLayout displayArea = (LinearLayout)findViewById(R.id.displayArea);
+        LinearLayout displayArea = (LinearLayout) findViewById(R.id.displayArea);
         displayArea.removeAllViews();
         IDisplayAreaView displayAreaView = getAppropriateView(dashboardView);
         displayArea.addView((View) displayAreaView);
         displayAreaView.load(this, intent);
         selectedDashboardView = dashboardView;
-        BottomNavigationView bottomNavigation =(BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView bottomNavigation = (BottomNavigationView) findViewById(R.id.navigation);
         View barChart = findViewById(R.id.bar_chart);
         barChart.setVisibility(View.GONE);
 
@@ -120,7 +118,7 @@ public class HomeScreenActivity extends GeneralActivity {
             glowFor = null;
         }
 
-        TextView headerText =(TextView) findViewById(R.id.headingText);
+        TextView headerText = (TextView) findViewById(R.id.headingText);
         switch (dashboardView) {
             case HOME:
                 bottomNavigation.getMenu().findItem(R.id.navigation_home).setChecked(true);

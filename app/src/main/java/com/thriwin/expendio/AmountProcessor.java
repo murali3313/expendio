@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.thriwin.expendio.Utils.isEmpty;
+
 public class AmountProcessor extends Processor {
     public BigDecimal extract(StringBuilder expModifiable) {
         String[] allWords = Utils.splitStatementBy(expModifiable.toString(), " ");
@@ -53,13 +55,14 @@ public class AmountProcessor extends Processor {
         String s = "";
         int index = 0;
         for (BigDecimal value : values) {
-            if (value.toString().length() >= 7)
+            if (value.toString().length() >= 10)
                 continue;
             s += index > 0 ? "." + value.toString() : value.toString();
             if (index == 1)
                 break;
             index++;
         }
-        return new BigDecimal(s);
+
+        return new BigDecimal(isEmpty(s)?"0":s);
     }
 }

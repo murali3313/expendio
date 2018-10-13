@@ -12,7 +12,7 @@ import java.util.Set;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class Expenses extends ArrayList<Expense> {
+public class    Expenses extends ArrayList<Expense> {
 
     public Expenses(Expense e) {
         this.add(e);
@@ -127,5 +127,11 @@ public class Expenses extends ArrayList<Expense> {
             storageExpenseKeys.add(expense.getStorageKey());
         }
         return storageExpenseKeys;
+    }
+
+    public void setUserName(String userName) {
+        for (Expense expense : this) {
+            expense.setSpentBy(userName);
+        }
     }
 }

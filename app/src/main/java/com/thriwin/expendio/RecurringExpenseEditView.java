@@ -82,7 +82,9 @@ public class RecurringExpenseEditView extends LinearLayout {
     }
 
     public void populate(RecurringExpense recurringExpense) {
-        amount.setText(recurringExpense.getAmount().toString());
+        String amount = recurringExpense.getAmount().toString();
+        amount = amount.equals("0") ? "" : amount;
+        this.amount.setText(amount);
         reason.setText(recurringExpense.getReason());
         selectedTransaction = recurringExpense.getTransactionType();
         loadTransactionType();

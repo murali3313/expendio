@@ -23,5 +23,6 @@
     <color name="transparent">#80000000</color>
     <color name="transparentOthers">#40000000</color>
     <color name="colorAlternateDark1BlackAnalogous">#886451</color>
+    <color name="black">#000000</color>
 </resources>
 
